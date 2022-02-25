@@ -2024,6 +2024,10 @@ export default defineMessages({
         defaultMessage: 'Legacy accounts',
         id: 'TR_LEGACY_ACCOUNTS',
     },
+    TR_CARDANO_LEDGER_ACCOUNTS: {
+        defaultMessage: 'Ledger accounts',
+        id: 'TR_CARDANO_LEDGER_ACCOUNTS',
+    },
     TR_LOG: {
         defaultMessage: 'Application log',
         description: 'application event and error',
