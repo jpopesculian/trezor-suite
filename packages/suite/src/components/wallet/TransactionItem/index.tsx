@@ -284,6 +284,10 @@ const TransactionItem = React.memo(
                                                 ) : (
                                                     <TokenTransfer
                                                         transfer={t.payload}
+                                                        // @ts-ignore
+                                                        target={{
+                                                            n: 0,
+                                                        }}
                                                         transaction={transaction}
                                                         singleRowLayout={useSingleRowLayout}
                                                         isFirst={i === 0}
@@ -292,6 +296,9 @@ const TransactionItem = React.memo(
                                                                 ? false
                                                                 : i === previewTargets.length - 1
                                                         }
+                                                        accountMetadata={accountMetadata}
+                                                        accountKey={accountKey}
+                                                        isActionDisabled={isActionDisabled}
                                                     />
                                                 )}
                                             </React.Fragment>

@@ -34,14 +34,59 @@ interface TokenTransferProps {
 export const TokenTransfer = ({
     transfer,
     transaction,
-
+    // @ts-ignore todo
+    target,
+    // @ts-ignore todo
+    accountMetadata,
+    // @ts-ignore todo
+    accountKey,
+    // @ts-ignore todo
+    isActionDisabled,
     ...baseLayoutProps
 }: TokenTransferProps) => {
+    const targetMetadata = accountMetadata?.outputLabels?.[transaction.txid]?.[target.n];
+
     const operation = getTxOperation(transfer);
     return (
         <BaseTargetLayout
             {...baseLayoutProps}
-            addressLabel={<TokenTransferAddressLabel transfer={transfer} type={transaction.type} />}
+            addressLabel={
+                <MetadataLabeling
+                    isDisabled={isActionDisabled}
+                    defaultVisibleValue={
+                        <TokenTransferAddressLabel transfer={transfer} type={transaction.type} />
+                    }
+                    // todo: items in dropdown?
+                    // dropdownOptions={[
+                    //     {
+                    //         callback: () => {
+                    //             if (!target?.addresses) {
+                    //                 // probably should not happen?
+                    //                 return addNotification({
+                    //                     type: 'error',
+                    //                     error: 'There is nothing to copy',
+                    //                 });
+                    //             }
+                    //             const result = copyToClipboard(target.addresses.join(), null);
+                    //             if (typeof result === 'string') {
+                    //                 return addNotification({ type: 'error', error: result });
+                    //             }
+                    //             return addNotification({ type: 'copy-to-clipboard' });
+                    //         },
+                    //         label: <Translation id="TR_ADDRESS_MODAL_CLIPBOARD" />,
+                    //         key: 'copy-address',
+                    //     },
+                    // ]}
+                    payload={{
+                        type: 'outputLabel',
+                        accountKey,
+                        txid: transaction.txid,
+                        outputIndex: target.n,
+                        defaultValue: `${transaction.txid}-${target.n}`,
+                        value: targetMetadata,
+                    }}
+                />
+            }
             amount={
                 !baseLayoutProps.singleRowLayout && (
                     <StyledHiddenPlaceholder>
