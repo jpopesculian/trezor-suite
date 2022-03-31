@@ -1,0 +1,11 @@
+{
+    "extends": "../../tsconfig.lib.json",
+    "compilerOptions": {
+        "outDir": "lib",
+        "target": "es2017",
+        "types": ["chrome"],
+        "importHelpers": true,
+        "strictPropertyInitialization": false
+    },
+    "include": ["./src"]
+}
