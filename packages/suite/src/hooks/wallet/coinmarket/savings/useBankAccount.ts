@@ -21,7 +21,7 @@ export const useBankAccount = ({
 
     const { register } = methods;
 
-    const onSubmit = async ({ accountNumber, routingNumber }: SavingsBankAccountFormState) => {
+    const onSubmit = ({ accountNumber, routingNumber }: SavingsBankAccountFormState) => {
         console.log({ accountNumber });
         console.log({ routingNumber });
     };
