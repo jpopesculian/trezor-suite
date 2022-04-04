@@ -5,9 +5,10 @@ import * as notificationActions from '@suite-actions/notificationActions';
 import * as coinmarketCommonActions from '@wallet-actions/coinmarket/coinmarketCommonActions';
 import * as coinmarketSavingsActions from '@wallet-actions/coinmarketSavingsActions';
 import { useInvityNavigation } from '@wallet-hooks/useInvityNavigation';
-import { useCoinmarketNavigation } from '@wallet-hooks/useCoinmarketNavigation';
 import type { AppState } from '@suite-types';
 import invityAPI from '@suite-services/invityAPI';
+import { getPrefixedURL, getRoute } from '@suite-utils/router';
+import { submitRequestForm } from '@suite-utils/env';
 
 export interface InvityAuthenticationContextProps {
     iframeMessage?: IframeMessage;
@@ -83,7 +84,6 @@ const InvityAuthentication: React.FC<InvityAuthenticationProps> = ({
     });
     const { navigateToInvityRegistrationSuccessful, navigateToInvitySettingsSuccessful } =
         useInvityNavigation(account);
-    const { navigateToSavings } = useCoinmarketNavigation(account);
 
     useEffectOnce(() => {
         const messageHandler = (event: MessageEvent) => {
@@ -114,7 +114,23 @@ const InvityAuthentication: React.FC<InvityAuthenticationProps> = ({
                     break;
                 case 'login-successful': {
                     if (invityAuthentication && selectedProvider) {
-                        loadSavingsTrade(selectedProvider.name);
+                        if (selectedProvider.flow.afterLogin.isEnabled) {
+                            const returnUrl = `${window.location.origin}${getPrefixedURL(
+                                getRoute('wallet-invity-user-info'),
+                            )}`;
+                            invityAPI
+                                .getAfterLogin(selectedProvider.name, returnUrl)
+                                .then(response => {
+                                    if (response.form) {
+                                        const { formMethod, formAction, fields } = response.form;
+                                        submitRequestForm(formMethod, formAction, fields);
+                                    } else {
+                                        loadSavingsTrade(selectedProvider.name);
+                                    }
+                                });
+                        } else {
+                            loadSavingsTrade(selectedProvider.name);
+                        }
                     } else {
                         loadInvityAuthentication(redirectUnauthorizedUserToLogin);
                     }
@@ -139,7 +155,6 @@ const InvityAuthentication: React.FC<InvityAuthenticationProps> = ({
         loadInvityAuthentication,
         loadSavingsTrade,
         navigateToInvityRegistrationSuccessful,
-        navigateToSavings,
         redirectUnauthorizedUserToLogin,
         clearInvityAuthentication,
         selectedProvider,

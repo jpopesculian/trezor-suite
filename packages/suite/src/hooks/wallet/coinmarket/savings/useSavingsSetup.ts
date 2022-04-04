@@ -124,9 +124,13 @@ export const useSavingsSetup = ({
                     fiatStringAmount: getFiatAmountEffective(fiatAmount, customFiatAmount),
                     receivingCryptoAddresses: [address],
                 };
-                const response = await invityAPI.doSavingsTrade({
-                    trade,
-                });
+                // TODO: returnUrl
+                const response = await invityAPI.doSavingsTrade(
+                    {
+                        trade,
+                    },
+                    '',
+                );
                 if (response) {
                     saveSavingsTradeResponse(response);
                     navigateToSavingsPaymentInfo();

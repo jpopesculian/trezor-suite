@@ -30,7 +30,8 @@ export const useSavingsAML = ({ selectedAccount }: UseSavingsAMLProps): SavingsA
     useEffect(() => {
         if (selectedProvider && !savingsTrade) {
             invityAPI
-                .getSavingsTrade(selectedProvider.name)
+                // TODO: returnUrl
+                .getSavingsTrade(selectedProvider.name, '')
                 .then(response => response && saveSavingsTradeResponse(response));
         }
     }, [selectedProvider, saveSavingsTradeResponse, savingsTrade]);
@@ -45,7 +46,8 @@ export const useSavingsAML = ({ selectedAccount }: UseSavingsAMLProps): SavingsA
                         amlAnswers,
                     },
                 };
-                const response = await invityAPI.doSavingsTrade(savingsTradeRequest);
+                // TODO: returnUrl
+                const response = await invityAPI.doSavingsTrade(savingsTradeRequest, '');
                 if (!response?.errorMessage) {
                     navigateToSavingsSetup();
                 } else {

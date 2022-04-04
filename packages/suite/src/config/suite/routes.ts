@@ -233,6 +233,13 @@ const routes = [
         exact: true,
     },
     {
+        name: 'wallet-invity-bank-account',
+        pattern: '/accounts/invity/bank-account',
+        app: 'wallet',
+        params: walletParams,
+        exact: true,
+    },
+    {
         name: 'wallet-invity-login',
         pattern: '/accounts/invity/login',
         app: 'wallet',

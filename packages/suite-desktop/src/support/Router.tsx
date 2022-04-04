@@ -29,6 +29,7 @@ import WalletCoinmarketSavingsUnsupportedCountry from '@wallet-views/coinmarket/
 import WalletCoinmarketSavingsSetup from '@wallet-views/coinmarket/savings/setup';
 import WalletCoinmarketSavingsPaymentInfo from '@wallet-views/coinmarket/savings/payment-info';
 import WalletCoinmarketSavingsOverview from '@wallet-views/coinmarket/savings/overview';
+import WalletInvityBankAccount from '@wallet-views/invity/bank-account';
 import WalletInvityLogin from '@wallet-views/invity/login';
 import WalletInvityRecovery from '@wallet-views/invity/recovery';
 import WalletInvityRecoverySent from '@wallet-views/invity/recovery-sent';
@@ -76,6 +77,7 @@ const components: { [key: string]: React.ComponentType<any> } = {
     'wallet-coinmarket-savings-setup': WalletCoinmarketSavingsSetup,
     'wallet-coinmarket-savings-payment-info': WalletCoinmarketSavingsPaymentInfo,
     'wallet-coinmarket-savings-overview': WalletCoinmarketSavingsOverview,
+    'wallet-invity-bank-account': WalletInvityBankAccount,
     'wallet-invity-login': WalletInvityLogin,
     'wallet-invity-recovery': WalletInvityRecovery,
     'wallet-invity-recovery-sent': WalletInvityRecoverySent,

@@ -38,5 +38,6 @@ export const useInvityNavigation = (account: Account) => {
         navigateToInvitySettingsSuccessful: useNavigateToRouteName(
             'wallet-invity-settings-successful',
         ),
+        navigateToInvityBankAccount: useNavigateToRouteName('wallet-invity-bank-account'),
     };
 };

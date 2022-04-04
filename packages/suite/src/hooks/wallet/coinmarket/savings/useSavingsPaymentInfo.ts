@@ -32,7 +32,8 @@ export const useSavingsPaymentInfo = ({
     const handleSubmit = useCallback(async () => {
         setIsSubmitting(true);
         if (savingsTrade) {
-            const response = await invityAPI.doSavingsTrade({ trade: savingsTrade });
+            // TODO: returnUrl
+            const response = await invityAPI.doSavingsTrade({ trade: savingsTrade }, '');
             if (response) {
                 saveSavingsTradeResponse(response);
                 navigateToSavingsOverview();

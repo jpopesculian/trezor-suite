@@ -274,6 +274,7 @@ describe('coinmarketSavingsMiddleware', () => {
                                 ...INVITY_AUTHENTICATION.accountInfo!.settings,
                                 givenName: 'FAKE',
                                 familyName: 'FAKE',
+                                phoneNumberPrefix: 'FAKE',
                                 phoneNumber: 'FAKE',
                             },
                         },
@@ -287,7 +288,15 @@ describe('coinmarketSavingsMiddleware', () => {
                             supportedFiatCurrencies: new Set<string>(),
                             country: 'CZ',
                         },
-                        selectedProvider: SELECTED_PROVIDER,
+                        selectedProvider: {
+                            ...SELECTED_PROVIDER,
+                            flow: {
+                                ...SELECTED_PROVIDER.flow,
+                                phoneVerification: {
+                                    isEnabled: true,
+                                },
+                            },
+                        },
                     },
                 },
             }),
@@ -393,7 +402,17 @@ describe('coinmarketSavingsMiddleware', () => {
                                 supportedFiatCurrencies: new Set<string>(),
                                 country: 'CZ',
                             },
-                            selectedProvider: SELECTED_PROVIDER,
+                            selectedProvider: {
+                                ...SELECTED_PROVIDER,
+                                flow: {
+                                    ...SELECTED_PROVIDER.flow,
+                                    kyc: {
+                                        isEnabled: true,
+                                        documentUploadType: 'ClientApp',
+                                        isWaitingForKYCResult: false,
+                                    },
+                                },
+                            },
                         },
                     },
                 }),

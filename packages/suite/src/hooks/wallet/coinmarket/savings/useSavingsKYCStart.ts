@@ -84,12 +84,12 @@ export const useSavingsKYCStart = ({
                 country: unsupportedCountryFormState?.country || country,
                 exchange: selectedProvider.name,
                 cryptoCurrency: selectedAccount.account.symbol,
-                fiatCurrency: 'EUR',
+                fiatCurrency: selectedProvider.tradedFiatCurrencies[0],
                 status: 'KYC',
                 kycStatus: 'Open',
                 userKYCStart,
             } as SavingsTrade;
-            const response = await invityAPI.doSavingsTrade({ trade });
+            const response = await invityAPI.doSavingsTrade({ trade }, '');
             if (response) {
                 saveSavingsTradeResponse(response);
                 startWatchingKYCStatus(trade.exchange);

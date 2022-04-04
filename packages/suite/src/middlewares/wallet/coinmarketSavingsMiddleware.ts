@@ -8,7 +8,6 @@ import * as routerActions from '@suite-actions/routerActions';
 import type { Account } from '@wallet-types';
 import * as notificationActions from '@suite-actions/notificationActions';
 import { getFormDraftKey } from '@wallet-utils/formDraftUtils';
-import { submitRequestForm } from '@suite-utils/env';
 
 const navigateToRouteName = (routeName: Route['name'], account: Account) =>
     routerActions.goto(routeName, {
@@ -54,22 +53,6 @@ const coinmarketSavingsMiddleware =
                     return action;
                 }
 
-                if (flow.afterLogin.isEnabled) {
-                    invityAPI.getAfterLogin(selectedProvider.name).then(result => {
-                        if (result.form) {
-                            const { formMethod, formAction, fields } = result.form;
-                            submitRequestForm(formMethod, formAction, fields);
-                        } else {
-                            // TODO: Need to decide where to navigate user.
-                            api.dispatch(navigateToRouteName('wallet-coinmarket-savings', account));
-                            next(action);
-                            return action;
-                        }
-                    });
-                    next(action);
-                    return action;
-                }
-
                 const userInfoRequired =
                     !!invityAuthentication.accountInfo?.settings &&
                     (!invityAuthentication.accountInfo.settings.givenName ||
@@ -82,6 +65,7 @@ const coinmarketSavingsMiddleware =
                 }
 
                 const phoneNumberVerificationRequired =
+                    flow.phoneVerification.isEnabled &&
                     !!invityAuthentication.accountInfo &&
                     !invityAuthentication.accountInfo.settings?.phoneNumberVerified;
                 if (phoneNumberVerificationRequired) {
@@ -92,100 +76,118 @@ const coinmarketSavingsMiddleware =
                     return action;
                 }
 
-                const phoneNumberVerified =
-                    !phoneNumberVerificationRequired &&
-                    !!invityAuthentication.accountInfo &&
-                    !!invityAuthentication.accountInfo.settings?.phoneNumberVerified;
-                if (phoneNumberVerified) {
-                    api.dispatch(coinmarketSavingsActions.setSavingsTradeResponseLoading(true));
-                    invityAPI
-                        .getSavingsTrade(action.exchangeName)
-                        .then(response => {
-                            if (response?.trade && !response.errorCode && !response.errorMessage) {
-                                api.dispatch(
-                                    coinmarketSavingsActions.saveSavingsTradeResponse(response),
-                                );
-                                if (response.trade.kycStatus === 'InProgress') {
+                if (flow.kyc.isEnabled) {
+                    if (flow.kyc.documentUploadType === 'ClientApp') {
+                        api.dispatch(coinmarketSavingsActions.setSavingsTradeResponseLoading(true));
+                        invityAPI
+                            .getSavingsTrade(action.exchangeName, '')
+                            .then(response => {
+                                if (
+                                    response?.trade &&
+                                    !response.errorCode &&
+                                    !response.errorMessage
+                                ) {
                                     api.dispatch(
-                                        coinmarketSavingsActions.startWatchingKYCStatus(
-                                            response.trade.exchange,
-                                        ),
+                                        coinmarketSavingsActions.saveSavingsTradeResponse(response),
                                     );
+                                    if (response.trade.kycStatus === 'InProgress') {
+                                        api.dispatch(
+                                            coinmarketSavingsActions.startWatchingKYCStatus(
+                                                response.trade.exchange,
+                                            ),
+                                        );
+                                    }
+                                    if (response.trade.kycStatus === 'Open') {
+                                        api.dispatch(
+                                            navigateToRouteName('wallet-invity-kyc-start', account),
+                                        );
+                                        next(action);
+                                        return action;
+                                    }
+                                    if (response.trade.kycStatus === 'Failed') {
+                                        api.dispatch(
+                                            navigateToRouteName(
+                                                'wallet-invity-kyc-failed',
+                                                account,
+                                            ),
+                                        );
+                                        next(action);
+                                        return action;
+                                    }
+                                    if (
+                                        response.trade.status === 'AML' &&
+                                        response.trade.amlStatus === 'Open'
+                                    ) {
+                                        api.dispatch(
+                                            navigateToRouteName('wallet-invity-aml', account),
+                                        );
+                                        next(action);
+                                        return action;
+                                    }
+                                    if (response.trade.status === 'SetSavingsParameters') {
+                                        api.dispatch(
+                                            navigateToRouteName(
+                                                'wallet-coinmarket-savings-setup',
+                                                account,
+                                            ),
+                                        );
+                                        next(action);
+                                        return action;
+                                    }
+
+                                    if (response.trade.status === 'ConfirmPaymentInfo') {
+                                        api.dispatch(
+                                            navigateToRouteName(
+                                                'wallet-coinmarket-savings-payment-info',
+                                                account,
+                                            ),
+                                        );
+                                        next(action);
+                                        return action;
+                                    }
+
+                                    if (response.trade.status === 'Active') {
+                                        api.dispatch(
+                                            navigateToRouteName(
+                                                'wallet-coinmarket-savings-overview',
+                                                account,
+                                            ),
+                                        );
+                                        next(action);
+                                        return action;
+                                    }
+
+                                    next(action);
+                                    return action;
                                 }
-                                if (response.trade.kycStatus === 'Open') {
+                                if (response?.errorCode === 'SavingsTransactionNotFound') {
                                     api.dispatch(
                                         navigateToRouteName('wallet-invity-kyc-start', account),
                                     );
                                     next(action);
                                     return action;
                                 }
-                                if (response.trade.kycStatus === 'Failed') {
-                                    api.dispatch(
-                                        navigateToRouteName('wallet-invity-kyc-failed', account),
-                                    );
-                                    next(action);
-                                    return action;
-                                }
-                                if (
-                                    response.trade.status === 'AML' &&
-                                    response.trade.amlStatus === 'Open'
-                                ) {
-                                    api.dispatch(navigateToRouteName('wallet-invity-aml', account));
-                                    next(action);
-                                    return action;
-                                }
-                                if (response.trade.status === 'SetSavingsParameters') {
-                                    api.dispatch(
-                                        navigateToRouteName(
-                                            'wallet-coinmarket-savings-setup',
-                                            account,
-                                        ),
-                                    );
-                                    next(action);
-                                    return action;
-                                }
-
-                                if (response.trade.status === 'ConfirmPaymentInfo') {
-                                    api.dispatch(
-                                        navigateToRouteName(
-                                            'wallet-coinmarket-savings-payment-info',
-                                            account,
-                                        ),
-                                    );
-                                    next(action);
-                                    return action;
-                                }
-
-                                if (response.trade.status === 'Active') {
-                                    api.dispatch(
-                                        navigateToRouteName(
-                                            'wallet-coinmarket-savings-overview',
-                                            account,
-                                        ),
-                                    );
-                                    next(action);
-                                    return action;
-                                }
-
-                                next(action);
-                                return action;
-                            }
-                            if (response?.errorCode === 'SavingsTransactionNotFound') {
+                            })
+                            .catch(error => {
+                                console.error(error);
+                            })
+                            .finally(() => {
                                 api.dispatch(
-                                    navigateToRouteName('wallet-invity-kyc-start', account),
+                                    coinmarketSavingsActions.setSavingsTradeResponseLoading(false),
                                 );
-                                next(action);
-                                return action;
-                            }
-                        })
-                        .catch(error => {
-                            console.error(error);
-                        })
-                        .finally(() => {
+                            });
+                    } else if (flow.kyc.documentUploadType === 'External') {
+                        api.dispatch(
+                            coinmarketSavingsActions.startWatchingKYCStatus(selectedProvider.name),
+                        );
+                        if (flow.bankAccount.isEnabled) {
                             api.dispatch(
-                                coinmarketSavingsActions.setSavingsTradeResponseLoading(false),
+                                navigateToRouteName('wallet-invity-bank-account', account),
                             );
-                        });
+                        }
+                        next(action);
+                        return action;
+                    }
                 }
             }
         }
@@ -200,7 +202,7 @@ const coinmarketSavingsMiddleware =
                     pollingActions.startPolling(
                         pollingKey,
                         () =>
-                            invityAPI.watchKYCStatus(selectedProvider.name).then(result => {
+                            invityAPI.watchKYCStatus(selectedProvider.name, '').then(result => {
                                 if (
                                     result?.kycStatus &&
                                     ['Failed', 'Verified'].includes(result.kycStatus)

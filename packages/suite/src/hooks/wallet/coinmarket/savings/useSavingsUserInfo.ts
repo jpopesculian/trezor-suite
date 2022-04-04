@@ -7,6 +7,7 @@ import type {
 } from '@wallet-types/coinmarket/savings/userInfo';
 import invityAPI from '@suite-services/invityAPI';
 import * as coinmarketCommonActions from '@wallet-actions/coinmarket/coinmarketCommonActions';
+import * as coinmarketSavingsActions from '@wallet-actions/coinmarketSavingsActions';
 import { useActions, useSelector } from '@suite-hooks';
 import { useInvityNavigation } from '@wallet-hooks/useInvityNavigation';
 import { useFormDraft } from '@wallet-hooks/useFormDraft';
@@ -20,16 +21,20 @@ SavingsUserInfoContext.displayName = 'SavingsUserInfoContext';
 export const useSavingsUserInfo = ({
     selectedAccount,
 }: UseSavingsUserInfoProps): SavingsUserInfoContextValues => {
-    const { accountSettings, country } = useSelector(state => ({
+    const { accountSettings, country, selectedProvider } = useSelector(state => ({
         accountSettings: state.wallet.coinmarket.invityAuthentication?.accountInfo?.settings,
         country: state.wallet.coinmarket.savings.savingsInfo?.country,
+        selectedProvider: state.wallet.coinmarket.savings.selectedProvider,
     }));
-    const { navigateToInvityPhoneNumberVerification } = useInvityNavigation(
-        selectedAccount.account,
-    );
+    const {
+        navigateToInvityPhoneNumberVerification,
+        navigateToInvityKYCStart,
+        navigateToInvityBankAccount,
+    } = useInvityNavigation(selectedAccount.account);
 
-    const { loadInvityData } = useActions({
+    const { loadInvityData, startWatchingKYCStatus } = useActions({
         loadInvityData: coinmarketCommonActions.loadInvityData,
+        startWatchingKYCStatus: coinmarketSavingsActions.startWatchingKYCStatus,
     });
     useEffect(() => {
         loadInvityData();
@@ -60,7 +65,7 @@ export const useSavingsUserInfo = ({
         },
     });
 
-    const { register, control, trigger, formState } = methods;
+    const { register, control, trigger, formState, setError } = methods;
     const { dirtyFields } = formState;
     const isPhoneNumberPrefixCounryDirty = !!dirtyFields.phoneNumberPrefixCountryOption;
 
@@ -95,13 +100,44 @@ export const useSavingsUserInfo = ({
                 // trim all white spaces
                 phoneNumber: phoneNumber.replace(/\s+/g, ''),
             });
-            if (!response?.error) {
-                const sendVerificationSmsResponse = await invityAPI.sendVerificationSms();
-                if (sendVerificationSmsResponse?.status === 'SmsQueued') {
-                    navigateToInvityPhoneNumberVerification();
-                } else {
-                    // TODO: stay and show error
+            if (response && !response.error && selectedProvider) {
+                const { flow } = selectedProvider;
+                if (flow?.phoneVerification?.isEnabled) {
+                    const sendVerificationSmsResponse = await invityAPI.sendVerificationSms();
+                    if (sendVerificationSmsResponse?.status === 'SmsQueued') {
+                        navigateToInvityPhoneNumberVerification();
+                    } else {
+                        setError('phoneNumber', {
+                            message: 'TR_SAVINGS_GENERAL_ERROR_MESSAGE',
+                            types: {},
+                        });
+                    }
+                } else if (flow?.kyc.isEnabled) {
+                    if (flow.kyc.documentUploadType === 'External') {
+                        await invityAPI.doSavingsTrade(
+                            {
+                                trade: {
+                                    country: selectedCountryCode,
+                                    exchange: selectedProvider.name,
+                                    cryptoCurrency: selectedAccount.account.symbol,
+                                    fiatCurrency: selectedProvider.tradedFiatCurrencies[0],
+                                    status: 'KYC',
+                                    kycStatus: 'Open',
+                                },
+                            },
+                            '',
+                        );
+                        startWatchingKYCStatus(selectedProvider.name);
+                        navigateToInvityBankAccount();
+                    } else {
+                        navigateToInvityKYCStart();
+                    }
                 }
+            } else {
+                setError('phoneNumber', {
+                    message: 'TR_SAVINGS_GENERAL_ERROR_MESSAGE',
+                    types: {},
+                });
             }
         }
     };

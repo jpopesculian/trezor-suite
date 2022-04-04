@@ -990,6 +990,10 @@ export default defineMessages({
         defaultMessage: 'Log in.',
         id: 'TR_INVITY_REGISTRATION_FOOTER_ALREADY_HAVE_AN_ACCOUNT_LOGIN',
     },
+    TR_SAVINGS_GENERAL_ERROR_MESSAGE: {
+        defaultMessage: 'Our apologies. We were unable to handle this request.',
+        id: 'TR_SAVINGS_GENERAL_ERROR_MESSAGE',
+    },
     TR_SAVINGS_INTRODUCTION_HEADER: {
         defaultMessage: 'Start investing periodically',
         id: 'TR_SAVINGS_INTRODUCTION_HEADER',
@@ -1203,6 +1207,10 @@ export default defineMessages({
         defaultMessage: 'AML',
         id: 'TR_SAVINGS_GUIDE_STEP_AML',
     },
+    TR_SAVINGS_GUIDE_STEP_BANK_ACCOUNT: {
+        defaultMessage: 'Bank account',
+        id: 'TR_SAVINGS_GUIDE_STEP_BANK_ACCOUNT',
+    },
     TR_SAVINGS_GUIDE_STEP_DCA_SETUP: {
         defaultMessage: 'DCA setup',
         id: 'TR_SAVINGS_GUIDE_STEP_DCA_SETUP',
@@ -1368,6 +1376,26 @@ export default defineMessages({
     TR_SAVINGS_TRANS_ID: {
         defaultMessage: 'Trans. ID:',
         id: 'TR_SAVINGS_TRANS_ID',
+    },
+    TR_SAVINGS_BANK_ACCOUNT_HEADER: {
+        defaultMessage: 'Bank account',
+        id: 'TR_SAVINGS_BANK_ACCOUNT_HEADER',
+    },
+    TR_SAVINGS_BANK_ACCOUNT_ROUTING_NUMBER_LABEL: {
+        defaultMessage: 'Routing number',
+        id: 'TR_SAVINGS_BANK_ACCOUNT_ROUTING_NUMBER',
+    },
+    TR_SAVINGS_BANK_ACCOUNT_ROUTING_NUMBER_REQUIRED: {
+        defaultMessage: 'Routing number is required.',
+        id: 'TR_SAVINGS_BANK_ACCOUNT_ROUTING_NUMBER_REQUIRED',
+    },
+    TR_SAVINGS_BANK_ACCOUNT_ACCOUNT_NUMBER_LABEL: {
+        defaultMessage: 'Account number',
+        id: 'TR_SAVINGS_BANK_ACCOUNT_ACCOUNT_NUMBER',
+    },
+    TR_SAVINGS_BANK_ACCOUNT_ACCOUNT_NUMBER_REQUIRED: {
+        defaultMessage: 'Account number is required.',
+        id: 'TR_SAVINGS_BANK_ACCOUNT_ACCOUNT_NUMBER_REQUIRED',
     },
     TR_BUY_FOOTER_TEXT_1: {
         defaultMessage:

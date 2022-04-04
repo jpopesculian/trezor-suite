@@ -647,6 +647,7 @@ class InvityAPI {
         body: BodyType = {},
         method = 'POST',
         options: RequestInit = {},
+        query: Record<string, string> = {},
     ): Promise<any> {
         let prefix: string;
         if (!this.protectedAPI || this.getApiServerUrl() === this.servers.localhost.api) {
@@ -654,9 +655,15 @@ class InvityAPI {
         } else {
             prefix = '/auth/api';
         }
-        const finalUrl = `${this.getApiServerUrl()}${prefix}${url}`;
+        const finalUrl = new URL(`${this.getApiServerUrl()}${prefix}${url}`);
+        const queryEntities = Object.entries(query);
+        if (queryEntities.length > 0) {
+            queryEntities.forEach(([key, value]) => {
+                finalUrl.searchParams.append(key, value);
+            });
+        }
         const opts = this.options(body, method, options);
-        return fetch(finalUrl, opts).then(response => {
+        return fetch(finalUrl.toString(), opts).then(response => {
             if (response.ok) {
                 return response.json();
             }
@@ -966,13 +973,18 @@ class InvityAPI {
         }
     };
 
-    getSavingsTrade = async (exchangeName: string): Promise<SavingsTradeResponse | undefined> => {
+    getSavingsTrade = async (
+        exchangeName: string,
+        returnUrl: string,
+    ): Promise<SavingsTradeResponse | undefined> => {
         this.setProtectedAPI(true);
         try {
             const response: SavingsTradeResponse = await this.requestApiServer(
                 `${this.SAVINGS_TRADE}/${exchangeName}`,
                 {},
                 'GET',
+                {},
+                { returnUrl },
             );
             return response;
         } catch (error) {
@@ -984,6 +996,7 @@ class InvityAPI {
 
     doSavingsTrade = async (
         requestBody: SavingsTradeRequest,
+        returnUrl: string,
     ): Promise<SavingsTradeResponse | undefined> => {
         this.setProtectedAPI(true);
         try {
@@ -991,6 +1004,8 @@ class InvityAPI {
                 `${this.SAVINGS_TRADE}/${requestBody.trade.exchange}`,
                 requestBody,
                 'POST',
+                {},
+                { returnUrl },
             );
             return response;
         } catch (error) {
@@ -1041,10 +1056,17 @@ class InvityAPI {
 
     watchKYCStatus = async (
         exchange: string,
+        returnUrl: string,
     ): Promise<SavingsTradeKYCStatusResponse | undefined> => {
         this.setProtectedAPI(true);
         try {
-            return await this.requestApiServer(`${this.SAVINGS_WATCH_KYC}/${exchange}`, {}, 'GET');
+            return await this.requestApiServer(
+                `${this.SAVINGS_WATCH_KYC}/${exchange}`,
+                {},
+                'GET',
+                {},
+                { returnUrl },
+            );
         } catch (error) {
             console.log('[watchKYCStatus]', error);
         } finally {
@@ -1152,15 +1174,18 @@ class InvityAPI {
         }
     };
 
-    getAfterLogin = async (exchangeName: string): Promise<AfterLoginResponse> => {
+    getAfterLogin = async (
+        exchangeName: string,
+        returnUrl: string,
+    ): Promise<AfterLoginResponse> => {
         this.setProtectedAPI(true);
         try {
             return await this.requestApiServer(
-                `${this.SAVINGS_AFTER_LOGIN}/${exchangeName}?returnUrl=${encodeURIComponent(
-                    'https://TODO:8000',
-                )}`,
+                `${this.SAVINGS_AFTER_LOGIN}/${exchangeName}`,
                 {},
                 'GET',
+                {},
+                { returnUrl },
             );
         } catch (error) {
             console.log('[getAfterLogin]', error);

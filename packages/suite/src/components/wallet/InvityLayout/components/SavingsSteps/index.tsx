@@ -7,6 +7,7 @@ import { ExtendedMessageDescriptor } from '@suite-types';
 import { Translation } from '@suite-components';
 
 interface SavingsSetupGuideListItemProps {
+    isEnabled: boolean;
     isBulletPointHidden: boolean;
 }
 
@@ -70,8 +71,9 @@ const StyledLoader = styled(Loader)`
 `;
 
 const SavingsSteps = () => {
-    const { isWatchingKYCStatus, currentRouteName } = useSelector(state => ({
+    const { isWatchingKYCStatus, selectedProvider, currentRouteName } = useSelector(state => ({
         isWatchingKYCStatus: state.wallet.coinmarket.savings.isWatchingKYCStatus,
+        selectedProvider: state.wallet.coinmarket.savings.selectedProvider,
         currentRouteName: state.router.route?.name,
     }));
 
@@ -81,6 +83,7 @@ const SavingsSteps = () => {
 
     const steps = {
         TR_SAVINGS_GUIDE_STEP_YOUR_CREDENTIALS: {
+            isEnabled: selectedProvider?.flow.credentials.isEnabled,
             isBulletPointHidden: false,
             className: [
                 'wallet-invity-registration',
@@ -91,11 +94,13 @@ const SavingsSteps = () => {
                 : '',
         },
         TR_SAVINGS_GUIDE_STEP_YOUR_PHONE_NUMBER: {
+            isEnabled: selectedProvider?.flow.phoneVerification.isEnabled,
             isBulletPointHidden: false,
             className:
                 currentRouteName === 'wallet-invity-phone-number-verification' ? 'isSelected' : '',
         },
         TR_SAVINGS_GUIDE_STEP_KYC_VERIFICATION: {
+            isEnabled: selectedProvider?.flow.kyc.isEnabled,
             isBulletPointHidden: isWatchingKYCStatus,
             className: ['wallet-invity-kyc-start', 'wallet-invity-kyc-failed'].includes(
                 currentRouteName,
@@ -104,10 +109,17 @@ const SavingsSteps = () => {
                 : '',
         },
         TR_SAVINGS_GUIDE_STEP_AML: {
+            isEnabled: selectedProvider?.flow.aml.isEnabled,
             isBulletPointHidden: false,
             className: currentRouteName === 'wallet-invity-aml' ? 'isSelected' : '',
         },
+        TR_SAVINGS_GUIDE_STEP_BANK_ACCOUNT: {
+            isEnabled: selectedProvider?.flow.bankAccount.isEnabled,
+            isBulletPointHidden: false,
+            className: currentRouteName === 'wallet-invity-bank-account' ? 'isSelected' : '',
+        },
         TR_SAVINGS_GUIDE_STEP_DCA_SETUP: {
+            isEnabled: selectedProvider?.flow.parameters.isEnabled,
             isBulletPointHidden: false,
             className: [
                 'wallet-coinmarket-savings-setup',
@@ -121,12 +133,14 @@ const SavingsSteps = () => {
     return (
         <Wrapper>
             <SavingsSetupGuideList>
-                {Object.entries(steps).map(([key, value]) => (
-                    <SavingsSetupGuideListItem key={key} {...value}>
-                        {value.isBulletPointHidden && <StyledLoader size={16} />}
-                        <Translation id={key as ExtendedMessageDescriptor['id']} />
-                    </SavingsSetupGuideListItem>
-                ))}
+                {Object.entries(steps)
+                    .filter(([, value]) => value.isEnabled)
+                    .map(([key, value]) => (
+                        <SavingsSetupGuideListItem key={key} {...value}>
+                            {value.isBulletPointHidden && <StyledLoader size={16} />}
+                            <Translation id={key as ExtendedMessageDescriptor['id']} />
+                        </SavingsSetupGuideListItem>
+                    ))}
             </SavingsSetupGuideList>
         </Wrapper>
     );
