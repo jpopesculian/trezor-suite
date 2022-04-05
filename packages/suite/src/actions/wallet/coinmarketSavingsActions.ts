@@ -55,6 +55,13 @@ export type CoinmarketSavingsAction =
               accountIndex: Account['index'];
               accountType: Account['accountType'];
           };
+      }
+    | {
+          type: typeof COINMARKET_SAVINGS.SET_VERIFICATION_CODE_EXPIRATION;
+          verificationCodeExpiration: {
+              expiresInSeconds: number;
+              timeoutId: number;
+          };
       };
 
 export const loadSavingsInfo = async (): Promise<SavingsInfo> => {
@@ -143,5 +150,16 @@ export const saveTrade = (
         symbol: account.symbol,
         accountType: account.accountType,
         accountIndex: account.index,
+    },
+});
+
+export const setVerificationCodeExpiration = (
+    expiresInSeconds: number,
+    timeoutId = 0,
+): CoinmarketSavingsAction => ({
+    type: COINMARKET_SAVINGS.SET_VERIFICATION_CODE_EXPIRATION,
+    verificationCodeExpiration: {
+        expiresInSeconds,
+        timeoutId,
     },
 });

@@ -453,6 +453,7 @@ export interface SendVerificationSmsErrorResponse {
 
 export interface SendVerificationSmsSuccessResponse {
     status: 'SmsQueued';
+    verificationCodeExpirationInSeconds: number;
 }
 
 export type SendVerificationSmsResponse =

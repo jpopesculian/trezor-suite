@@ -91,6 +91,10 @@ interface Savings {
         intervalId: number;
         timeoutId: number;
     };
+    verificationCodeExpiration: {
+        expiresInSeconds: number;
+        timeoutId: number;
+    };
 }
 
 export interface State {
@@ -151,6 +155,10 @@ export const initialState = {
         isWatchingKYCStatus: false,
         watchingKYCMetadata: {
             intervalId: 0,
+            timeoutId: 0,
+        },
+        verificationCodeExpiration: {
+            expiresInSeconds: 0,
             timeoutId: 0,
         },
     },
@@ -297,6 +305,9 @@ const coinmarketReducer = (
             case COINMARKET_SAVINGS.STOP_WATCHING_KYC_STATUS:
                 draft.savings.kycFinalStatus = action.kycFinalStatus;
                 draft.savings.isWatchingKYCStatus = false;
+                break;
+            case COINMARKET_SAVINGS.SET_VERIFICATION_CODE_EXPIRATION:
+                draft.savings.verificationCodeExpiration = action.verificationCodeExpiration;
                 break;
             // no default
         }

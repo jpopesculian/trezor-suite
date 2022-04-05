@@ -1030,6 +1030,11 @@ export default defineMessages({
         defaultMessage: 'Given name is required.',
         id: 'TR_SAVINGS_USERINFO_GIVEN_NAME_IS_REQUIRED',
     },
+    TR_SAVINGS_USERINFO_CONFIRM_ERROR: {
+        defaultMessage:
+            "Your credentials can't be confirmed at this moment, try later again or contact our support.",
+        id: 'TR_SAVINGS_USERINFO_CONFIRM_ERROR',
+    },
     TR_SAVINGS_PHONE_NUMBER_VERIFICATION_CODE_IS_REQUIRED: {
         defaultMessage: 'Verification code is required',
         id: 'TR_SAVINGS_PHONE_NUMBER_VERIFICATION_CODE_IS_REQUIRED',
@@ -1059,8 +1064,13 @@ export default defineMessages({
         id: 'TR_SAVINGS_PHONE_NUMBER_VERIFICATION_CODE_IS_INVALID',
     },
     TR_SAVINGS_PHONE_NUMBER_VERIFICATION_CODE_ERROR: {
-        defaultMessage: 'Verification code cannot be verified, please contact our support',
+        defaultMessage:
+            'Verification code cannot be verified at this moment, try again later or contact our support.',
         id: 'TR_SAVINGS_PHONE_NUMBER_VERIFICATION_CODE_ERROR',
+    },
+    TR_SAVINGS_PHONE_NUMBER_VERIFICATION_CODE_EXPIRES_IN: {
+        defaultMessage: 'Verification code expires in {formattedSeconds}.',
+        id: 'TR_SAVINGS_PHONE_NUMBER_VERIFICATION_CODE_EXPIRES_IN',
     },
     TR_SAVINGS_USERINFO_FAMILY_NAME_IS_REQUIRED: {
         defaultMessage: 'Family name is required.',
@@ -1966,6 +1976,10 @@ export default defineMessages({
     TR_CONFIRMED_TX: {
         defaultMessage: 'Confirmed',
         id: 'TR_CONFIRMED_TX',
+    },
+    TR_RESEND: {
+        defaultMessage: 'Resend',
+        id: 'TR_RESEND',
     },
     TR_CONNECT_YOUR_DEVICE: {
         defaultMessage: 'Connect your Trezor',

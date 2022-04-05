@@ -9,6 +9,7 @@ import { InputError, withInvityLayout, WithInvityLayoutProps } from '@wallet-com
 import { Translation } from '@suite-components';
 import VerificationCodeDigitInput from './components/VerificationCodeDigitInput';
 import type { CodeDigitIndex } from '@wallet-types/coinmarket/savings/phoneNumberVerification';
+import formatDuration from 'date-fns/formatDuration';
 
 const Header = styled.div`
     font-size: 24px;
@@ -28,8 +29,18 @@ const Description = styled.div`
     }
 `;
 
+const VerificationCodeExpiration = styled.div`
+    display: flex;
+    font-size: 14px;
+    line-height: 22px;
+    color: ${props => props.theme.TYPE_LIGHT_GREY};
+    align-items: center;
+    font-variant: tabular-nums;
+`;
+
 const PhoneNumber = styled(Description)`
     color: initial;
+    font-variant: tabular-nums;
 `;
 
 const VerificationCodeDigitInputsWrapper = styled.div`
@@ -65,6 +76,13 @@ const StyledIcon = styled(Icon)`
     }
 `;
 
+const ButtonsWrapper = styled.div`
+    display: flex;
+    * + * {
+        margin: 0 15px;
+    }
+`;
+
 const PhoneNumberVerification = (props: WithInvityLayoutProps) => {
     const contextValues = useSavingsPhoneNumberVerification(props);
     const {
@@ -75,6 +93,10 @@ const PhoneNumberVerification = (props: WithInvityLayoutProps) => {
         phoneNumber,
         handlePhoneNumberChange,
         setValue,
+        hasVerificationCodeExpired,
+        verificationCodeExpirationCountdownSeconds,
+        handleResendVerificationSmsButtonClick,
+        isResending,
     } = contextValues;
     const { isSubmitting } = formState;
 
@@ -116,9 +138,34 @@ const PhoneNumberVerification = (props: WithInvityLayoutProps) => {
                 <InputErrorWrapper>
                     <InputError error={error} />
                 </InputErrorWrapper>
-                <Button isDisabled={isSubmitting} isLoading={isSubmitting}>
-                    <Translation id="TR_CONFIRM" />
-                </Button>
+                <ButtonsWrapper>
+                    <Button
+                        isDisabled={isSubmitting || hasVerificationCodeExpired}
+                        isLoading={isSubmitting}
+                    >
+                        <Translation id="TR_CONFIRM" />
+                    </Button>
+                    {hasVerificationCodeExpired ? (
+                        <Button
+                            type="button"
+                            isLoading={isResending}
+                            onClick={handleResendVerificationSmsButtonClick}
+                        >
+                            <Translation id="TR_RESEND" />
+                        </Button>
+                    ) : (
+                        <VerificationCodeExpiration>
+                            <Translation
+                                id="TR_SAVINGS_PHONE_NUMBER_VERIFICATION_CODE_EXPIRES_IN"
+                                values={{
+                                    formattedSeconds: formatDuration({
+                                        seconds: verificationCodeExpirationCountdownSeconds,
+                                    }),
+                                }}
+                            />
+                        </VerificationCodeExpiration>
+                    )}
+                </ButtonsWrapper>
             </form>
         </SavingsPhoneNumberVerificationContext.Provider>
     );

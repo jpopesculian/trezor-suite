@@ -20,4 +20,8 @@ export type SavingsPhoneNumberVerificationContextValues = Omit<
     phoneNumber?: string;
     error?: FieldError | undefined;
     handlePhoneNumberChange: () => void;
+    verificationCodeExpirationCountdownSeconds: number;
+    hasVerificationCodeExpired: boolean;
+    handleResendVerificationSmsButtonClick: () => Promise<void>;
+    isResending: boolean;
 };
