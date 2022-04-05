@@ -41,7 +41,7 @@ export const useSavingsPhoneNumberVerification = ({
     const onSubmit = async (fieldValues: SavingsPhoneNumberVerificationFieldValues) => {
         clearErrors();
         const code = Object.values(fieldValues).join('');
-        const response = await invityAPI.verifySmsCode(code);
+        const response = await invityAPI.verifySmsCode(code, `${phoneNumberPrefix}${phoneNumber}`);
         if (response) {
             if (response.status === 'Verified') {
                 navigateToInvityKYCStart();

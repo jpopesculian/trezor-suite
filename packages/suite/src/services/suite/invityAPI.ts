@@ -423,6 +423,7 @@ export interface AfterLoginResponse extends AfterLoginErrorResponse {
 
 export interface VerifySmsCodeRequest {
     code: string;
+    phoneNumber: string;
 }
 
 export interface VerifySmsCodeSuccessResponse {
@@ -435,8 +436,7 @@ export interface VerifySmsCodeInvalidResponse {
 
 export interface VerifySmsCodeErrorResponse {
     status: 'Error';
-    // InternalError masks the real error.
-    errorCode: 'VerificationCodeRequired' | 'InternalError';
+    errorCode: 'VerificationCodeRequired' | 'PhoneNumberRequired' | 'InternalError';
     errorMessage: string;
 }
 
@@ -447,7 +447,7 @@ export type VerifySmsCodeResponse =
 
 export interface SendVerificationSmsErrorResponse {
     status: 'Error';
-    errorCode: 'InternalError';
+    errorCode: 'InternalError' | 'SmsRequestLimitExceeded';
     errorMessage: string;
 }
 
@@ -1039,12 +1039,15 @@ class InvityAPI {
         }
     };
 
-    verifySmsCode = async (code: string): Promise<VerifySmsCodeResponse | undefined> => {
+    verifySmsCode = async (
+        code: string,
+        phoneNumber: string,
+    ): Promise<VerifySmsCodeResponse | undefined> => {
         this.setProtectedAPI(true);
         try {
             return await this.requestApiServer(
                 this.PHONE_VERIFY_SMS_CODE,
-                { code } as VerifySmsCodeRequest,
+                { code, phoneNumber } as VerifySmsCodeRequest,
                 'POST',
             );
         } catch (error) {
