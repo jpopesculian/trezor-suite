@@ -103,15 +103,7 @@ export const useSavingsUserInfo = ({
             if (response && !response.error && selectedProvider) {
                 const { flow } = selectedProvider;
                 if (flow?.phoneVerification?.isEnabled) {
-                    const sendVerificationSmsResponse = await invityAPI.sendVerificationSms();
-                    if (sendVerificationSmsResponse?.status === 'SmsQueued') {
-                        navigateToInvityPhoneNumberVerification();
-                    } else {
-                        setError('phoneNumber', {
-                            message: 'TR_SAVINGS_GENERAL_ERROR_MESSAGE',
-                            types: {},
-                        });
-                    }
+                    navigateToInvityPhoneNumberVerification();
                 } else if (flow?.kyc.isEnabled) {
                     if (flow.kyc.documentUploadType === 'External') {
                         await invityAPI.doSavingsTrade(
