@@ -98,5 +98,4 @@ const UnsupportedCountry = (props: WithSelectedAccountLoadedProps) => {
 export default withCoinmarketSavingsLoaded(UnsupportedCountry, {
     redirectUnauthorizedUserToLogin: false,
     title: 'TR_NAV_SAVINGS',
-    checkInvityAuthenticationImmediately: false,
 });

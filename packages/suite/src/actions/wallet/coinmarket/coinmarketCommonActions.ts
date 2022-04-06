@@ -204,7 +204,7 @@ export const loadInvityData = (): CoinmarketCommonAction => ({
 });
 
 export const loadInvityAuthentication = (
-    redirectUnauthorizedUserToLogin: boolean,
+    redirectUnauthorizedUserToLogin = true,
 ): CoinmarketCommonAction => ({
     type: COINMARKET_COMMON.LOAD_INVITY_AUTHENTICATION,
     redirectUnauthorizedUserToLogin,

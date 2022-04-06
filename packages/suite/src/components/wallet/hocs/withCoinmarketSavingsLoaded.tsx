@@ -16,8 +16,6 @@ export interface WithCoinmarketSavingsLoadedProps {
 interface WithCoinmarketSavingsLoadedOptions {
     title: ExtendedMessageDescriptor['id'];
     redirectUnauthorizedUserToLogin: boolean;
-    // TODO: Do we really need this?
-    checkInvityAuthenticationImmediately?: boolean;
 }
 
 export const withCoinmarketSavingsLoaded = (

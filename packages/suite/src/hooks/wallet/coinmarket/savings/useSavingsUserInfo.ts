@@ -32,8 +32,9 @@ export const useSavingsUserInfo = ({
         navigateToInvityBankAccount,
     } = useInvityNavigation(selectedAccount.account);
 
-    const { loadInvityData, startWatchingKYCStatus } = useActions({
+    const { loadInvityData, loadInvityAuthentication, startWatchingKYCStatus } = useActions({
         loadInvityData: coinmarketCommonActions.loadInvityData,
+        loadInvityAuthentication: coinmarketCommonActions.loadInvityAuthentication,
         startWatchingKYCStatus: coinmarketSavingsActions.startWatchingKYCStatus,
     });
     useEffect(() => {
@@ -100,6 +101,9 @@ export const useSavingsUserInfo = ({
                 // trim all white spaces
                 phoneNumber: phoneNumber.replace(/\s+/g, ''),
             });
+
+            loadInvityAuthentication();
+
             if (response && !response.error && selectedProvider) {
                 const { flow } = selectedProvider;
                 if (flow?.phoneVerification?.isEnabled) {

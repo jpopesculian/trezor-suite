@@ -44,15 +44,12 @@ interface IframeMessage {
 
 export interface InvityAuthenticationProps {
     selectedAccount: Extract<AppState['wallet']['selectedAccount'], { status: 'loaded' }>;
-    // TODO: Do we really need this?
-    checkInvityAuthenticationImmediately?: boolean;
     redirectUnauthorizedUserToLogin?: boolean;
 }
 
 const InvityAuthentication: React.FC<InvityAuthenticationProps> = ({
     children,
     selectedAccount,
-    checkInvityAuthenticationImmediately = true,
     redirectUnauthorizedUserToLogin = false,
 }) => {
     const [iframeMessage, setIframeMessage] = useState<IframeMessage>();
@@ -162,19 +159,10 @@ const InvityAuthentication: React.FC<InvityAuthenticationProps> = ({
     ]);
 
     useEffect(() => {
-        if (
-            typeof window !== 'undefined' &&
-            !inIframe() &&
-            (!invityAuthentication || checkInvityAuthenticationImmediately)
-        ) {
+        if (typeof window !== 'undefined' && !inIframe() && !invityAuthentication) {
             loadInvityAuthentication(redirectUnauthorizedUserToLogin);
         }
-    }, [
-        checkInvityAuthenticationImmediately,
-        invityAuthentication,
-        loadInvityAuthentication,
-        redirectUnauthorizedUserToLogin,
-    ]);
+    }, [invityAuthentication, loadInvityAuthentication, redirectUnauthorizedUserToLogin]);
 
     return (
         <InvityAuthenticationContext.Provider value={{ iframeMessage }}>

@@ -6,8 +6,6 @@ import {
 } from '@wallet-components';
 
 export interface WithInvityAuthenticationOptions {
-    // TODO: Do we really need this?
-    checkInvityAuthenticationImmediately?: boolean;
     navigate?: () => void;
     redirectUnauthorizedUserToLogin: boolean;
 }
@@ -17,7 +15,6 @@ export type WithInvityAuthenticationProps = WithInvityLayoutProps;
 export const withInvityAuthentication = (
     WrappedComponent: React.ComponentType<WithInvityAuthenticationProps>,
     options: WithInvityAuthenticationOptions = {
-        checkInvityAuthenticationImmediately: true,
         redirectUnauthorizedUserToLogin: true,
     },
 ) => {
