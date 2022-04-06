@@ -26,8 +26,9 @@ export const useSavingsPhoneNumberVerification = ({
             state.wallet.coinmarket.invityAuthentication?.accountInfo?.settings?.phoneNumber,
         verificationCodeExpiration: state.wallet.coinmarket.savings.verificationCodeExpiration,
     }));
-    const { loadInvityData, setVerificationCodeExpiration } = useActions({
+    const { loadInvityData, loadInvityAuthentication, setVerificationCodeExpiration } = useActions({
         loadInvityData: coinmarketCommonActions.loadInvityData,
+        loadInvityAuthentication: coinmarketCommonActions.loadInvityAuthentication,
         setVerificationCodeExpiration: coinmarketSavingsActions.setVerificationCodeExpiration,
     });
     useEffect(() => {
@@ -47,6 +48,7 @@ export const useSavingsPhoneNumberVerification = ({
         const code = Object.values(fieldValues).join('');
         const response = await invityAPI.verifySmsCode(code, `${phoneNumberPrefix}${phoneNumber}`);
         if (response) {
+            loadInvityAuthentication();
             if (response.status === 'Verified') {
                 navigateToInvityKYCStart();
                 return;

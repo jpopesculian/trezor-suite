@@ -68,6 +68,7 @@ const coinmarketSavingsMiddleware =
                     flow.phoneVerification.isEnabled &&
                     !!invityAuthentication.accountInfo?.settings &&
                     !invityAuthentication.accountInfo.settings.phoneNumberVerified;
+
                 if (phoneNumberVerificationRequired) {
                     api.dispatch(
                         navigateToRouteName('wallet-invity-phone-number-verification', account),
