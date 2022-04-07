@@ -1225,6 +1225,10 @@ export default defineMessages({
         defaultMessage: 'DCA setup',
         id: 'TR_SAVINGS_GUIDE_STEP_DCA_SETUP',
     },
+    TR_SAVINGS_GUIDE_PROVIDED_BY: {
+        defaultMessage: 'Provided by {providerName}',
+        id: 'TR_SAVINGS_GUIDE_PROVIDED_BY',
+    },
     TR_SAVINGS_SETUP_CUSTOM_FIAT_AMOUNT_REQUIRED: {
         defaultMessage: 'Amount is required.',
         id: 'TR_SAVINGS_SETUP_CUSTOM_FIAT_AMOUNT_REQUIRED',

@@ -16,6 +16,9 @@ const Wrapper = styled.div`
     background: rgba(196, 196, 196, 0.1);
     height: 100%;
     border-radius: 12px 0 0 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 `;
 
 const SavingsSetupGuideList = styled.ol`
@@ -68,6 +71,19 @@ const StyledLoader = styled(Loader)`
     margin-left: -4px;
     margin-right: 8px;
     width: 20px;
+`;
+
+const ProvidedBy = styled.div`
+    margin-left: 24px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    line-height: 24px;
+    color: ${props => props.theme.TYPE_LIGHT_GREY};
+    font-weight: 400;
+`;
+
+const ProviderName = styled.span`
+    font-weight: 600;
 `;
 
 const SavingsSteps = () => {
@@ -130,6 +146,17 @@ const SavingsSteps = () => {
         },
     } as Record<string, SavingsSetupGuideListItemProps>;
 
+    const showProviderName =
+        !!selectedProvider?.companyName &&
+        [
+            'wallet-invity-kyc-start',
+            'wallet-invity-kyc-failed',
+            'wallet-invity-aml',
+            'wallet-invity-bank-account',
+            'wallet-coinmarket-savings-setup',
+            'wallet-coinmarket-savings-payment-info',
+        ].includes(currentRouteName);
+
     return (
         <Wrapper>
             <SavingsSetupGuideList>
@@ -142,6 +169,18 @@ const SavingsSteps = () => {
                         </SavingsSetupGuideListItem>
                     ))}
             </SavingsSetupGuideList>
+            {showProviderName && (
+                <ProvidedBy>
+                    <Translation
+                        id="TR_SAVINGS_GUIDE_PROVIDED_BY"
+                        values={{
+                            providerName: (
+                                <ProviderName>{selectedProvider.companyName}</ProviderName>
+                            ),
+                        }}
+                    />
+                </ProvidedBy>
+            )}
         </Wrapper>
     );
 };
