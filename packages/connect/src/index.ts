@@ -1,7 +1,6 @@
 import EventEmitter from 'events';
 import { createDeferred, Deferred } from '@trezor/utils/lib/createDeferred';
-// @ts-ignore REF-TODO
-import { Core, init as initCore, initTransport } from 'trezor-connect/lib/core/Core';
+import { Core, init as initCore, initTransport } from './core';
 import { factory } from './factory';
 import { parse as parseSettings } from './data/ConnectSettings';
 import { initLog } from './utils/debug';
@@ -20,10 +19,10 @@ import {
     UI,
     UiResponseEvent,
     Call,
-    _CallMessage,
+    AnyResponse,
 } from './events';
 import { ERRORS } from './constants';
-import type { TrezorConnect, ConnectSettings, Manifest, Response } from './types';
+import type { ConnectSettings, Manifest } from './types';
 
 export const eventEmitter = new EventEmitter();
 const _log = initLog('[trezor-connect.js]');
@@ -109,7 +108,7 @@ const handleMessage = (message: CoreMessage) => {
 };
 
 type PostMessage = Omit<CoreMessage, 'event' | 'id'>;
-function postMessage<R>(message: PostMessage, usePromise?: true): R;
+function postMessage(message: PostMessage, usePromise?: true): AnyResponse;
 function postMessage(message: PostMessage, usePromise: false): Promise<void>;
 function postMessage(message: PostMessage, usePromise = true) {
     if (!_core) {
@@ -154,9 +153,11 @@ const init = async (settings: Partial<ConnectSettings> = {}) => {
     await initTransport(_settings);
 };
 
-const call = async <M extends keyof TrezorConnect, R extends Response<any>>(
-    params: _CallMessage<M>,
-) => {
+// export type Call = <R extends AnyResponse>(params: CallMessage) => R;
+
+// export type Call = (params: CallMessage) => R;
+// const call = async <R extends AnyResponse>(params: CallMessage): R => {
+const call: Call = async params => {
     // const call: Call = async params => {
     if (!_core) {
         try {
@@ -167,7 +168,10 @@ const call = async <M extends keyof TrezorConnect, R extends Response<any>>(
     }
 
     try {
-        const response = await postMessage<R>({ type: IFRAME.CALL, payload: params });
+        const response = await postMessage({
+            type: IFRAME.CALL,
+            payload: params,
+        });
         if (response) {
             return response;
         }
@@ -310,7 +314,7 @@ const TrezorConnect = factory({
     eventEmitter,
     manifest,
     init,
-    call: call as Call,
+    call,
     getSettings,
     customMessage,
     requestLogin,
