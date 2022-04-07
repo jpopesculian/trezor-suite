@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import EventEmitter from 'events';
 import * as TrezorConnectBrowser from '@trezor/connect';
 
