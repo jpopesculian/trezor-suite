@@ -11,17 +11,16 @@ import type {
     Params,
     BundledParams,
     Response,
-    BundledResponse,
 } from '../params';
 
-export interface GetAddress extends GetAddressShared {
+interface GetAddress extends GetAddressShared {
     coin?: string;
     crossChain?: boolean;
     multisig?: Messages.MultisigRedeemScriptType;
     scriptType?: Messages.InternalInputScriptType;
 }
 
-export type Address = AddressShared & Messages.Address;
+type Address = AddressShared & Messages.Address;
 
 export declare function getAddress(params: Params<GetAddress>): Response<Address>;
-export declare function getAddress(params: BundledParams<GetAddress>): BundledResponse<Address>;
+export declare function getAddress(params: BundledParams<GetAddress>): Response<Address[]>;

@@ -1,17 +1,8 @@
-import type {
-    GetAddress,
-    Address,
-    Params,
-    BundledParams,
-    Response,
-    BundledResponse,
-} from '../params';
+import type { GetAddress, Address, Params, BundledParams, Response } from '../params';
 
 export interface NEMGetAddress extends GetAddress {
     network: number;
 }
 
 export declare function nemGetAddress(params: Params<NEMGetAddress>): Response<Address>;
-export declare function nemGetAddress(
-    params: BundledParams<NEMGetAddress>,
-): BundledResponse<Address>;
+export declare function nemGetAddress(params: BundledParams<NEMGetAddress>): Response<Address[]>;

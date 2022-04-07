@@ -1,5 +1,5 @@
 import type { Messages } from '@trezor/transport';
-import type { Params, BundledParams, Response, BundledResponse } from '../params';
+import type { Params, BundledParams, Response } from '../params';
 
 export interface CardanoCertificatePointer {
     blockIndex: number;
@@ -41,4 +41,4 @@ export declare function cardanoGetAddress(
 ): Response<CardanoAddress>;
 export declare function cardanoGetAddress(
     params: BundledParams<CardanoGetAddress>,
-): BundledResponse<CardanoAddress>;
+): Response<CardanoAddress[]>;

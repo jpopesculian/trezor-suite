@@ -11,4 +11,6 @@ export interface CustomMessage {
     callback: (request: any) => Promise<{ message: string; params?: object }>;
 }
 
-export declare function customMessage<R = any>(params: Params<CustomMessage>): Response<R>;
+export declare function customMessage<R extends Record<string, any>>(
+    params: Params<CustomMessage>,
+): Response<R>;

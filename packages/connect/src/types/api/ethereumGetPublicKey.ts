@@ -1,4 +1,4 @@
-import type { GetPublicKey, Params, BundledParams, Response, BundledResponse } from '../params';
+import type { GetPublicKey, Params, BundledParams, Response } from '../params';
 import type { HDNodeResponse } from './getPublicKey';
 
 export declare function ethereumGetPublicKey(
@@ -6,4 +6,4 @@ export declare function ethereumGetPublicKey(
 ): Response<HDNodeResponse>;
 export declare function ethereumGetPublicKey(
     params: BundledParams<GetPublicKey>,
-): BundledResponse<HDNodeResponse>;
+): Response<HDNodeResponse[]>;

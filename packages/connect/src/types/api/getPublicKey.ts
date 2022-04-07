@@ -10,7 +10,6 @@ import type {
     Params,
     BundledParams,
     Response,
-    BundledResponse,
 } from '../params';
 
 export interface GetPublicKey extends GetPublicKeyShared {
@@ -34,4 +33,4 @@ export interface HDNodeResponse {
 export declare function getPublicKey(params: Params<GetPublicKey>): Response<HDNodeResponse>;
 export declare function getPublicKey(
     params: BundledParams<GetPublicKey>,
-): BundledResponse<HDNodeResponse>;
+): Response<HDNodeResponse[]>;

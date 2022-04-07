@@ -1,5 +1,5 @@
 import type { Messages } from '@trezor/transport';
-import type { Params, BundledParams, Response, BundledResponse } from '../params';
+import type { Params, BundledParams, Response } from '../params';
 
 export interface CardanoGetPublicKey {
     path: string | number[];
@@ -19,4 +19,4 @@ export declare function cardanoGetPublicKey(
 ): Response<CardanoPublicKey>;
 export declare function cardanoGetPublicKey(
     params: BundledParams<CardanoGetPublicKey>,
-): BundledResponse<CardanoPublicKey>;
+): Response<CardanoPublicKey[]>;

@@ -3,7 +3,7 @@
  * path and the given key. IV is always computed automatically.
  */
 
-import type { Params, BundledParams, Response, BundledResponse } from '../params';
+import type { Params, BundledParams, Response } from '../params';
 
 export interface CipherKeyValue {
     path: string | number[];
@@ -22,4 +22,4 @@ export interface CipheredValue {
 export declare function cipherKeyValue(params: Params<CipherKeyValue>): Response<CipheredValue>;
 export declare function cipherKeyValue(
     params: BundledParams<CipherKeyValue>,
-): BundledResponse<CipheredValue>;
+): Response<CipheredValue[]>;

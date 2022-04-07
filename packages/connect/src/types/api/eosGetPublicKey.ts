@@ -1,4 +1,4 @@
-import type { Params, BundledParams, Response, BundledResponse } from '../params';
+import type { Params, BundledParams, Response } from '../params';
 
 export interface EosGetPublicKey {
     path: string | number[];
@@ -15,4 +15,4 @@ export interface EosPublicKey {
 export declare function eosGetPublicKey(params: Params<EosGetPublicKey>): Response<EosPublicKey>;
 export declare function eosGetPublicKey(
     params: BundledParams<EosGetPublicKey>,
-): BundledResponse<EosPublicKey>;
+): Response<EosPublicKey[]>;

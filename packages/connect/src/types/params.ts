@@ -37,7 +37,6 @@ export interface Success<T> {
 }
 
 export type Response<T> = Promise<Success<T> | Unsuccessful>;
-export type BundledResponse<T> = Promise<Success<T[]> | Unsuccessful>;
 
 // Common fields for all *.getAddress methods
 export interface GetAddress {
