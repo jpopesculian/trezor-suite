@@ -55,14 +55,13 @@ export const parseMessage = (messageData: any): CoreMessage => {
 };
 
 // common response used straight from npm index (not from Core)
-export const ErrorMessage = (error: Error & { code?: any }) =>
-    ({
-        success: false,
-        payload: {
-            error: error.message,
-            code: error.code,
-        },
-    } as Unsuccessful);
+export const ErrorMessage = (error: Error & { code?: any }): Unsuccessful => ({
+    success: false,
+    payload: {
+        error: error.message,
+        code: error.code,
+    },
+});
 
 export const ResponseMessage = (
     id: number,

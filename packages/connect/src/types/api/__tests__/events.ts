@@ -13,8 +13,15 @@ import {
 
 export const events = (api: TrezorConnect) => {
     api.on(DEVICE_EVENT, event => {
-        const { payload } = event;
         event.type.toLowerCase();
+        if (event.type === 'button') {
+            const { payload } = event;
+            payload.device.type.toLowerCase();
+            payload.code?.toLowerCase();
+            payload.pages?.toFixed();
+            return;
+        }
+        const { payload } = event;
         payload.path.toLowerCase();
         if (payload.type === 'acquired') {
             payload.mode.toLowerCase();

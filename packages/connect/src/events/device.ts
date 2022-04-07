@@ -35,14 +35,16 @@ export interface DeviceButtonRequest {
     payload: Messages.ButtonRequest & { device: Device };
 }
 
-export type DeviceEvent = {
-    type:
-        | typeof DEVICE.CONNECT
-        | typeof DEVICE.CONNECT_UNACQUIRED
-        | typeof DEVICE.CHANGED
-        | typeof DEVICE.DISCONNECT;
-    payload: Device;
-};
+export type DeviceEvent =
+    | {
+          type:
+              | typeof DEVICE.CONNECT
+              | typeof DEVICE.CONNECT_UNACQUIRED
+              | typeof DEVICE.CHANGED
+              | typeof DEVICE.DISCONNECT;
+          payload: Device;
+      }
+    | DeviceButtonRequest;
 
 export type DeviceEventMessage = DeviceEvent & { event: typeof DEVICE_EVENT };
 

@@ -58,6 +58,11 @@ export type TransportEvent =
           };
       };
 
+export interface TransportDisableWebUSB {
+    type: typeof TRANSPORT.DISABLE_WEBUSB;
+    payload?: undefined;
+}
+
 export type TransportEventMessage = TransportEvent & { event: typeof TRANSPORT_EVENT };
 
 export type TransportEventListenerFn = (

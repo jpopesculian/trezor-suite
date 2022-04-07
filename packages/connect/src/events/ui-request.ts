@@ -3,6 +3,7 @@
  */
 
 import type { Messages } from '@trezor/transport';
+import type { TransportDisableWebUSB } from './transport';
 import type { Device, CoinInfo, BitcoinNetworkInfo } from '../types';
 import type { DiscoveryAccountType, DiscoveryAccount, SelectFeeLevel } from '../types/account';
 import type { MessageFactoryFn } from '../types/utils';
@@ -240,7 +241,8 @@ export type UiEvent =
     | FirmwareException
     | UiRequestAddressValidation
     | UiRequestCustomMessage
-    | UiRequestSetOperation;
+    | UiRequestSetOperation
+    | TransportDisableWebUSB; // REF-TODO: called as UI_EVENT from index (connect-web)
 
 export type UiEventMessage = UiEvent & { event: typeof UI_EVENT };
 
