@@ -1,26 +1,26 @@
 import AbstractMethod from './abstractMethod';
-import { validateParams } from './common/paramsValidator';
+import { getFirmwareRange } from './common/paramsValidator';
+
 import { UI, UiMessage } from '../events';
 
-import type { MessageType } from '@trezor/transport/lib/types/messages';
-
-export default class ApplyFlags extends AbstractMethod<'applyFlags'> {
-    params: MessageType['ApplyFlags'];
+export default class RebootToBootloader extends AbstractMethod<'rebootToBootloader'> {
+    confirmed?: boolean;
 
     init() {
+        this.allowDeviceMode = [UI.INITIALIZE, UI.SEEDLESS];
+        this.skipFinalReload = true;
+        this.keepSession = false;
         this.requiredPermissions = ['management'];
+        this.info = 'Reboot to bootloader';
         this.useDeviceState = false;
-
-        const { payload } = this;
-
-        validateParams(payload, [{ name: 'flags', type: 'number', required: true }]);
-
-        this.params = {
-            flags: payload.flags,
-        };
+        this.firmwareRange = getFirmwareRange(this.name, null, {
+            1: { min: '1.10.0', max: '0' },
+            2: { min: '0', max: '0' },
+        });
     }
 
     async confirmation() {
+        if (this.confirmed) return true;
         // wait for popup window
         await this.getPopupPromise().promise;
         // initialize user response promise
@@ -32,20 +32,22 @@ export default class ApplyFlags extends AbstractMethod<'applyFlags'> {
                 view: 'device-management',
                 customConfirmButton: {
                     className: 'confirm',
-                    label: 'Proceed',
+                    label: `Reboot`,
                 },
-                label: 'Do you really want to apply flags?',
+                label: 'Are you sure you want to reboot to bootloader?',
             }),
         );
 
         // wait for user action
         const uiResp = await uiPromise.promise;
-        return uiResp.payload;
+
+        this.confirmed = uiResp.payload;
+        return this.confirmed;
     }
 
     async run() {
         const cmd = this.device.getCommands();
-        const response = await cmd.typedCall('ApplyFlags', 'Success', this.params);
+        const response = await cmd.typedCall('RebootToBootloader', 'Success');
         return response.message;
     }
 }

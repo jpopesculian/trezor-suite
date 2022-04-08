@@ -1,23 +1,10 @@
 import AbstractMethod from './abstractMethod';
-import { validateParams } from './common/paramsValidator';
 import { UI, UiMessage } from '../events';
 
-import type { MessageType } from '@trezor/transport/lib/types/messages';
-
-export default class ApplyFlags extends AbstractMethod<'applyFlags'> {
-    params: MessageType['ApplyFlags'];
-
+export default class BackupDevice extends AbstractMethod<'backupDevice'> {
     init() {
         this.requiredPermissions = ['management'];
         this.useDeviceState = false;
-
-        const { payload } = this;
-
-        validateParams(payload, [{ name: 'flags', type: 'number', required: true }]);
-
-        this.params = {
-            flags: payload.flags,
-        };
     }
 
     async confirmation() {
@@ -34,7 +21,7 @@ export default class ApplyFlags extends AbstractMethod<'applyFlags'> {
                     className: 'confirm',
                     label: 'Proceed',
                 },
-                label: 'Do you really want to apply flags?',
+                label: 'Do you want to initiate backup procedure?',
             }),
         );
 
@@ -45,7 +32,7 @@ export default class ApplyFlags extends AbstractMethod<'applyFlags'> {
 
     async run() {
         const cmd = this.device.getCommands();
-        const response = await cmd.typedCall('ApplyFlags', 'Success', this.params);
+        const response = await cmd.typedCall('BackupDevice', 'Success');
         return response.message;
     }
 }
