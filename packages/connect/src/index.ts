@@ -18,8 +18,8 @@ import {
     PostMessageEvent,
     UI,
     UiResponseEvent,
-    Call,
-    AnyResponse,
+    CallMethod,
+    CallMethodAnyResponse,
 } from './events';
 import { ERRORS } from './constants';
 import type { ConnectSettings, Manifest } from './types';
@@ -108,7 +108,7 @@ const handleMessage = (message: CoreMessage) => {
 };
 
 type PostMessage = Omit<CoreMessage, 'event' | 'id'>;
-function postMessage(message: PostMessage, usePromise?: true): AnyResponse;
+function postMessage(message: PostMessage, usePromise?: true): CallMethodAnyResponse;
 function postMessage(message: PostMessage, usePromise: false): Promise<void>;
 function postMessage(message: PostMessage, usePromise = true) {
     if (!_core) {
@@ -153,12 +153,7 @@ const init = async (settings: Partial<ConnectSettings> = {}) => {
     await initTransport(_settings);
 };
 
-// export type Call = <R extends AnyResponse>(params: CallMessage) => R;
-
-// export type Call = (params: CallMessage) => R;
-// const call = async <R extends AnyResponse>(params: CallMessage): R => {
-const call: Call = async params => {
-    // const call: Call = async params => {
+const call: CallMethod = async params => {
     if (!_core) {
         try {
             await init(_settings);
