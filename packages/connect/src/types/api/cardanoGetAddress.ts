@@ -22,7 +22,6 @@ export interface CardanoGetAddress {
     protocolMagic: number;
     networkId: number;
     address?: string;
-    useEventListener?: boolean; // this param is set automatically in factory
     showOnTrezor?: boolean;
     derivationType?: Messages.CardanoDerivationType;
 }

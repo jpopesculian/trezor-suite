@@ -3,7 +3,7 @@
  */
 
 import type { Messages } from '@trezor/transport';
-import type { Response } from '../params';
+import type { CommonParams, Response } from '../params';
 import type { Proxy } from '../settings';
 
 export type SetProxy = {
@@ -11,4 +11,4 @@ export type SetProxy = {
     useOnionLinks?: boolean;
 };
 
-export declare function setProxy(params: SetProxy): Response<Messages.Success>;
+export declare function setProxy(params: CommonParams & SetProxy): Response<Messages.Success>;

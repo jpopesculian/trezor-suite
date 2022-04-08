@@ -1,22 +1,14 @@
 import type { BlockchainEventMessage } from './blockchain';
+import type { MethodCallMessage, MethodResponseMessage } from './call';
 import type { DeviceEventMessage } from './device';
-import type { IframeEventMessage } from './iframe';
+import type { IFrameEventMessage } from './iframe';
 import type { PopupEventMessage } from './popup';
 import type { TransportEventMessage } from './transport';
 import type { UiEventMessage } from './ui-request';
 import type { UiResponseMessage } from './ui-response';
-import type { Unsuccessful, Response } from '../types/params';
+import type { Unsuccessful } from '../types/params';
 
 export const CORE_EVENT = 'CORE_EVENT';
-export const RESPONSE_EVENT = 'RESPONSE_EVENT';
-
-export type ResponseMessageType = {
-    event: typeof RESPONSE_EVENT;
-    type: typeof RESPONSE_EVENT;
-    id: number;
-    success: boolean;
-    payload: Response<any>;
-};
 
 export type CoreMessage = {
     id?: number; // response id in ResponseMessage
@@ -27,8 +19,9 @@ export type CoreMessage = {
     | TransportEventMessage
     | UiEventMessage
     | UiResponseMessage
-    | ResponseMessageType
-    | IframeEventMessage
+    | MethodCallMessage
+    | MethodResponseMessage
+    | IFrameEventMessage
     | PopupEventMessage
 );
 // REF-TODO: add IFRAME.CALL + UiResponse
@@ -55,23 +48,10 @@ export const parseMessage = (messageData: any): CoreMessage => {
 };
 
 // common response used straight from npm index (not from Core)
-export const ErrorMessage = (error: Error & { code?: any }): Unsuccessful => ({
+export const ErrorMessage = (error: Error & { code?: string }): Unsuccessful => ({
     success: false,
     payload: {
         error: error.message,
         code: error.code,
     },
-});
-
-export const ResponseMessage = (
-    id: number,
-    success: boolean,
-    payload: any = null,
-): CoreMessage => ({
-    event: RESPONSE_EVENT,
-    type: RESPONSE_EVENT,
-    id,
-    success,
-    // convert Error/TypeError object into payload error type (Error object/class is converted to string while sent via postMessage)
-    payload: success ? payload : { error: payload.error.message, code: payload.error.code },
 });

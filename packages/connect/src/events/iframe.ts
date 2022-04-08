@@ -1,5 +1,4 @@
 import { UI_EVENT } from './ui-request';
-import type { CallMessage } from './call';
 import type { ConnectSettings } from '../types';
 import type { MessageFactoryFn } from '../types/utils';
 
@@ -39,19 +38,13 @@ export interface IFrameInit {
     };
 }
 
-export interface IFrameCall {
-    event: typeof IFRAME.CALL;
-    type: typeof IFRAME.CALL;
-    payload: CallMessage;
-}
-
 export type IFrameEvent =
     | { type: typeof IFRAME.BOOTSTRAP; payload?: typeof undefined }
     | IFrameLoaded
     | IFrameInit
     | IFrameError;
 
-export type IframeEventMessage = (IFrameEvent & { event: typeof UI_EVENT }) | IFrameCall;
+export type IFrameEventMessage = IFrameEvent & { event: typeof UI_EVENT };
 
 export const IFrameMessage: MessageFactoryFn<typeof UI_EVENT, IFrameEvent> = (type, payload) =>
     ({

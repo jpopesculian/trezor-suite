@@ -7,23 +7,24 @@ export interface CommonParams {
         instance?: number;
     };
     useEmptyPassphrase?: boolean;
+    useEventListener?: boolean; // this param is set automatically in factory
     allowSeedlessDevice?: boolean;
     keepSession?: boolean;
     skipFinalReload?: boolean;
     useCardanoDerivation?: boolean;
 }
 
-export type Params<T> = CommonParams & T;
+export type Params<T> = CommonParams & T & { bundle?: undefined };
 
 interface Bundle<T> {
     bundle: T[];
 }
 
-export type BundledParams<T> = Params<Bundle<T>>;
+export type BundledParams<T> = CommonParams & Bundle<T>;
 
-export type BlockchainParams = {
+export interface BlockchainParams extends CommonParams {
     coin: string;
-};
+}
 
 export interface Unsuccessful {
     success: false;
@@ -43,7 +44,6 @@ export interface GetAddress {
     path: string | number[];
     address?: string;
     showOnTrezor?: boolean;
-    useEventListener?: boolean; // this param is set automatically in factory
 }
 
 export interface Address {

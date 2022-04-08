@@ -1,5 +1,3 @@
-// ref-todo: is it used? especially 'Tezors' ?
-
 export const TYPES = {
     bitcoin: 'Bitcoin',
     ethereum: 'Ethereum',
@@ -8,6 +6,6 @@ export const TYPES = {
     stellar: 'Stellar',
     cardano: 'Cardano',
     ripple: 'Ripple',
-    tezos: 'Tezors',
+    tezos: 'Tezos',
     binance: 'Binance',
 } as const;
