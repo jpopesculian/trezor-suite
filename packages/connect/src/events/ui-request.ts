@@ -112,7 +112,7 @@ export interface UiRequestButton {
 
 export interface UiRequestAddressValidation {
     type: typeof UI_REQUEST.ADDRESS_VALIDATION;
-    payload?: UiRequestButtonData;
+    payload: UiRequestButtonData | undefined;
 }
 
 export interface UiRequestSetOperation {
