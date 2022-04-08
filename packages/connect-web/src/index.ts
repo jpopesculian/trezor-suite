@@ -5,7 +5,13 @@ import * as TrezorConnectBrowser from '@trezor/connect';
 import { factory } from '@trezor/connect/lib/factory';
 import { parse as parseSettings } from '@trezor/connect/lib/data/ConnectSettings';
 import { initLog } from '@trezor/connect/lib/utils/debug';
-import type { ConnectSettings, Manifest, PostMessageEvent, UiResponseEvent } from '@trezor/connect';
+import type {
+    ConnectSettings,
+    Manifest,
+    PostMessageEvent,
+    UiResponseEvent,
+    CallMethod,
+} from '@trezor/connect';
 import * as iframe from './iframe';
 import * as popup from './popup';
 
@@ -159,7 +165,7 @@ const init = async (settings: Partial<ConnectSettings> = {}): Promise<void> => {
     await iframe.init(_settings);
 };
 
-const call = async (params: any) => {
+const call: CallMethod = async params => {
     if (!iframe.instance && !iframe.timeout) {
         // init popup with lazy loading before iframe initialization
         _settings = parseSettings(_settings);
