@@ -2,14 +2,21 @@
 
 export const BROWSER_KEY = 'trezorconnect_browser';
 export const PERMISSIONS_KEY = 'trezorconnect_permissions';
-export const CONFIRMATION_KEY = 'trezorconnect_confirmations';
 
-// eslint-disable-next-line no-underscore-dangle
-const _storage: { [k: string]: string } = {};
+type Key = typeof BROWSER_KEY | typeof PERMISSIONS_KEY;
+interface Permission {
+    type: string;
+    origin?: string;
+    device?: string;
+}
 
-export const save = (storageKey: string, value: any, temporary = false) => {
+const memoryStorage: Partial<Record<Key, string>> = {};
+
+export function save(key: typeof BROWSER_KEY, value: boolean, temporary?: boolean): void;
+export function save(key: typeof PERMISSIONS_KEY, value: Permission[], temporary?: boolean): void;
+export function save(storageKey: Key, value: any, temporary = false) {
     if (temporary) {
-        _storage[storageKey] = JSON.stringify(value);
+        memoryStorage[storageKey] = JSON.stringify(value);
         return;
     }
     try {
@@ -25,36 +32,49 @@ export const save = (storageKey: string, value: any, temporary = false) => {
     } catch (ignore) {
         // empty
     }
-};
+}
 
-export const load = (storageKey: string, temporary = false): JSON | undefined => {
+export function load(key: typeof BROWSER_KEY, temporary?: boolean): boolean | void;
+export function load(key: typeof PERMISSIONS_KEY, temporary?: boolean): Permission[] | void;
+export function load(storageKey: Key, temporary = false): any {
     let value: string | undefined;
 
     if (temporary) {
-        value = _storage[storageKey];
-        return value ? JSON.parse(value) : null;
-    }
-
-    try {
-        value = window.localStorage[storageKey];
-    } catch (ignore) {
-        // empty
-    }
-
-    // Fallback cookie if local storage gives us nothing
-    if (typeof value === 'undefined') {
+        value = memoryStorage[storageKey];
+    } else {
         try {
-            const { cookie } = window.document;
-            const location = cookie.indexOf(`${encodeURIComponent(storageKey)}=`);
-            if (location !== -1) {
-                const matches = /^([^;]+)/.exec(cookie.slice(location));
-                if (matches) {
-                    [value] = matches;
-                }
-            }
+            value = window.localStorage[storageKey];
         } catch (ignore) {
             // empty
         }
+
+        // Fallback cookie if local storage gives us nothing
+        if (typeof value === 'undefined') {
+            try {
+                const { cookie } = window.document;
+                const prefix = `${encodeURIComponent(storageKey)}=`;
+                const location = cookie.indexOf(prefix);
+                if (location !== -1) {
+                    const matches = /^([^;]+)/.exec(cookie.slice(location));
+                    if (matches) {
+                        value = matches[0].replace(prefix, '');
+                    }
+                }
+            } catch (ignore) {
+                // empty
+            }
+        }
     }
-    return value ? JSON.parse(value) : null;
-};
+
+    if (typeof value === 'string') {
+        try {
+            const json = JSON.parse(value);
+            if (storageKey === PERMISSIONS_KEY) {
+                return Array.isArray(json) ? json : undefined;
+            }
+            return typeof json === 'boolean' ? json : false;
+        } catch (error) {
+            // empty
+        }
+    }
+}
