@@ -71,11 +71,13 @@ export abstract class AbstractMethod<P extends CallMethodPayload['method']> {
 
     useCardanoDerivation: boolean;
 
-    confirmation?: () => Promise<boolean>;
+    // REF-TODO: should only return Promise<boolean>
+    confirmation?(): Promise<boolean | undefined>;
 
-    noBackupConfirmation?: () => Promise<boolean>;
+    noBackupConfirmation?(): Promise<boolean>;
 
-    getButtonRequestData?: (code: string) => UiRequestButtonData | undefined;
+    // REF-TODO: should not return one of undefined | null
+    getButtonRequestData?(code: string): UiRequestButtonData | undefined | null;
 
     // callbacks
     // @ts-ignore REF-TODO

@@ -2,8 +2,11 @@
     "extends": "../../tsconfig.lib.json",
     "compilerOptions": {
         "outDir": "lib",
-        "target": "es2019",
-        "importHelpers": true
+        // REF-TODO: target? es2020 has bigint. previously we had es2019
+        "target": "es2020",
+        "importHelpers": true,
+        // REF-TODO: we need this to avoid runtime changes. could be refactored.
+        "strictPropertyInitialization": false
     },
     "include": ["./src"]
 }

@@ -5,10 +5,10 @@
 import type { Params, Response } from '../params';
 
 export interface CustomMessage {
-    messages?: JSON | object;
+    messages?: JSON | Record<string, any>;
     message: string;
-    params: JSON | object;
-    callback: (request: any) => Promise<{ message: string; params?: object }>;
+    params: JSON | Record<string, any>;
+    callback: (request: any) => Promise<{ message: string; params?: Record<string, any> }>;
 }
 
 export declare function customMessage<R extends Record<string, any>>(
