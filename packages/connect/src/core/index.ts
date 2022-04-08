@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-/* eslint-disable no-underscore-dangle */
 import EventEmitter from 'events';
 import { DataManager } from '../data/DataManager';
 import DeviceList from '../device/DeviceList';
@@ -23,8 +22,7 @@ import {
     CoreMessage,
     UiResponseEvent,
 } from '../events';
-// @ts-ignore REF-TODO
-import { find as findMethod } from 'trezor-connect/lib/core/methods';
+import { getMethod } from './method';
 
 import { create as createDeferred, Deferred } from '../utils/deferred';
 import { resolveAfter } from '../utils/promiseUtils';
@@ -37,7 +35,7 @@ import type { ConnectSettings, Device as DeviceTyped, CommonParams } from '../ty
 import type { Messages } from '@trezor/transport';
 
 // REF-TODO:
-type AbstractMethod<T = any> = T;
+type AbstractMethod = ReturnType<typeof getMethod>;
 type UiPromise = UiResponseEvent | { type: typeof DEVICE.DISCONNECT; payload?: undefined };
 
 // Public variables
@@ -46,7 +44,7 @@ let _core: Core; // Class with event emitter
 let _deviceList: DeviceList | undefined; // Instance of DeviceList
 let _popupPromise: Deferred<void> | undefined; // Waiting for popup handshake
 let _uiPromises: Deferred<UiPromise['payload']>[] = []; // Waiting for ui response
-const _callMethods: AbstractMethod<any>[] = []; // generic type is irrelevant. only common functions are called at this level
+const _callMethods: AbstractMethod[] = []; // generic type is irrelevant. only common functions are called at this level
 let _preferredDevice: CommonParams['device'];
 let _interactionTimeout: InteractionTimeout;
 
@@ -210,7 +208,7 @@ export const handleMessage = (message: CoreMessage, isTrustedOrigin = false) => 
  * @returns {Promise<IDevice>}
  * @memberof Core
  */
-const initDevice = async (method: AbstractMethod<any>) => {
+const initDevice = async (method: AbstractMethod) => {
     if (!_deviceList) {
         throw ERRORS.TypedError('Transport_Missing');
     }
@@ -296,22 +294,19 @@ export const onCall = async (message: CoreMessage) => {
     const trustedHost = DataManager.getSettings('trustedHost');
     const isUsingPopup = DataManager.getSettings('popup');
 
-    // @ts-ignore REF-TODO
     if (_preferredDevice && !message.payload.device) {
-        // @ts-ignore REF-TODO
         message.payload.device = _preferredDevice;
     }
 
     // find method and parse incoming params
-    let method: AbstractMethod<any>;
+    let method: AbstractMethod;
     let messageResponse: CoreMessage;
     try {
-        method = findMethod(message);
+        method = getMethod(message);
         // bind callbacks
         method.postMessage = postMessage;
         method.getPopupPromise = getPopupPromise;
         method.createUiPromise = createUiPromise;
-        method.removeUiPromise = removeUiPromise;
         // start validation process
         method.init();
     } catch (error) {
@@ -647,6 +642,7 @@ export const onCall = async (message: CoreMessage) => {
         _log.log('onCall::finally', response);
 
         if (response) {
+            // @ts-ignore REF-TODO
             if (method.name === 'rebootToBootloader' && response.success) {
                 // Wait for device to switch to bootloader
                 // This delay is crucial see https://github.com/trezor/trezor-firmware/issues/1983
@@ -713,7 +709,7 @@ const closePopup = () => {
 const onDeviceButtonHandler = async (
     device: IDevice,
     request: Messages.ButtonRequest,
-    method: AbstractMethod<any>,
+    method: AbstractMethod,
 ) => {
     // wait for popup handshake
     const addressRequest = request.code === 'ButtonRequest_Address';
@@ -723,7 +719,7 @@ const onDeviceButtonHandler = async (
     const data =
         typeof method.getButtonRequestData === 'function' && request.code
             ? method.getButtonRequestData(request.code)
-            : null;
+            : undefined;
     // interaction timeout
     interactionTimeout();
     // request view
