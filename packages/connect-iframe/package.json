@@ -12,7 +12,8 @@
     "description": "Bundle and build of trezor-connect iframe",
     "scripts": {
         "lint": "eslint '**/*.{ts,tsx,js}'",
-        "build:lib": "rimraf build && webpack --config ./webpack/prod.webpack.config.js",
+        "build": "rimraf build && webpack --config ./webpack/prod.webpack.config.js",
+        "build:lib": "yarn build",
         "type-check": "tsc --build tsconfig.json"
     },
     "dependencies": {},

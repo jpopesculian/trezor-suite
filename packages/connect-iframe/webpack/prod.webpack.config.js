@@ -17,7 +17,7 @@ module.exports = {
     target: 'web',
     mode: 'production',
     entry: {
-        iframe: `./src/iframe.ts`,
+        iframe: `./src/index.ts`,
     },
     output: {
         filename: 'js/[name].[contenthash].js',
@@ -96,10 +96,9 @@ module.exports = {
         }),
         // resolve trezor-connect modules as "browser"
         new webpack.NormalModuleReplacementPlugin(/env\/node$/, './env/browser'),
-        new webpack.NormalModuleReplacementPlugin(/env\/node\/workers$/, '../env/browser/workers'),
         new webpack.NormalModuleReplacementPlugin(
-            /env\/node\/networkUtils$/,
-            '../env/browser/networkUtils',
+            /\/workers\/workers$/,
+            '../workers/workers-browser',
         ),
         // copy public files
         new CopyWebpackPlugin({
