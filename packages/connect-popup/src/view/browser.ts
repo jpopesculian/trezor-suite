@@ -1,17 +1,13 @@
 import { POPUP, UiResponse } from '@trezor/connect';
 import { DataManager } from '@trezor/connect/src/data/DataManager';
 import { getBrowserState } from '@trezor/connect/src/utils/browserUtils';
-import {
-    load as loadStorage,
-    save as saveStorage,
-    BROWSER_KEY,
-} from '@trezor/connect-common/src/storage';
+import * as storage from '@trezor/connect-common/src/storage';
 import { container, showView, postMessage } from './common';
 
 const validateBrowser = () => {
     const state = getBrowserState(DataManager.getConfig().supportedBrowsers);
     if (!state.supported) {
-        const permitted = loadStorage(BROWSER_KEY);
+        const permitted = storage.load(storage.BROWSER_KEY);
         return !permitted ? state : null;
     }
 };
@@ -49,7 +45,7 @@ export const initBrowserView = (validation = true) => {
 
     ackButton.onclick = () => {
         if (rememberCheckbox && rememberCheckbox.checked) {
-            saveStorage(BROWSER_KEY, true);
+            storage.save(storage.BROWSER_KEY, true);
         }
 
         postMessage(UiResponse(POPUP.HANDSHAKE));
