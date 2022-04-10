@@ -1,4 +1,4 @@
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 import { validateParams, getFirmwareRange } from './common/paramsValidator';
 import { validatePath } from '../utils/pathUtils';
 import { getNetworkLabel } from '../utils/ethereumUtils';
@@ -44,7 +44,7 @@ export default class EthereumGetPublicKey extends AbstractMethod<'ethereumGetPub
             const network = getEthereumNetwork(path);
             this.firmwareRange = getFirmwareRange(this.name, network, this.firmwareRange);
 
-            let showOnTrezor = false;
+            let showOnTrezor: boolean | undefined = false;
             if (Object.prototype.hasOwnProperty.call(batch, 'showOnTrezor')) {
                 showOnTrezor = batch.showOnTrezor;
             }

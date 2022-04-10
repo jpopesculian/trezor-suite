@@ -72,7 +72,7 @@ export const createTx = (
     branch: string,
     operation: TezosOperation,
 ): TezosSignTx => {
-    let message = {
+    let message: Partial<TezosSignTx> = {
         address_n,
         branch: bs58checkDecode(PREFIX.B, branch),
     };

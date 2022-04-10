@@ -1,4 +1,4 @@
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 import { validateParams, getFirmwareRange } from './common/paramsValidator';
 import { getMiscNetwork } from '../data/CoinInfo';
 import { validatePath, fromHardened, getSerializedPath } from '../utils/pathUtils';
@@ -43,7 +43,7 @@ export default class CardanoGetPublicKey extends AbstractMethod<'cardanoGetPubli
             ]);
 
             const path = validatePath(batch.path, 3);
-            let showOnTrezor = false;
+            let showOnTrezor: boolean | undefined = false;
             if (Object.prototype.hasOwnProperty.call(batch, 'showOnTrezor')) {
                 showOnTrezor = batch.showOnTrezor;
             }

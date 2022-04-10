@@ -151,6 +151,7 @@ export const getIndexFromPath = (path: number[]) => {
     return fromHardened(path[2]);
 };
 
+// REF-TODO: this should be overloaded to make it always return either TxInputType or TxOutputType
 export const fixPath = <T extends TxInputType | TxOutputType>(utxo: T): T => {
     // make sure bip32 indices are unsigned
     if (utxo.address_n && Array.isArray(utxo.address_n)) {

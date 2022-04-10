@@ -1,4 +1,4 @@
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 import { validateParams, getFirmwareRange } from './common/paramsValidator';
 import { getMiscNetwork } from '../data/CoinInfo';
 import { validatePath } from '../utils/pathUtils';
@@ -46,11 +46,11 @@ export default class StellarSignTransaction extends AbstractMethod<'stellarSignT
         };
     }
 
-    _isFeatureSupported(feature: $Keys<typeof StellarSignTransactionFeatures>) {
+    _isFeatureSupported(feature: keyof typeof StellarSignTransactionFeatures) {
         return this.device.atLeast(StellarSignTransactionFeatures[feature]);
     }
 
-    _ensureFeatureIsSupported(feature: $Keys<typeof StellarSignTransactionFeatures>) {
+    _ensureFeatureIsSupported(feature: keyof typeof StellarSignTransactionFeatures) {
         if (!this._isFeatureSupported(feature)) {
             throw ERRORS.TypedError(
                 'Method_InvalidParameter',

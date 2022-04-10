@@ -1,5 +1,5 @@
 import { getBinary, modifyFirmware } from '@trezor/rollout';
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 import { ERRORS } from '../constants';
 import { UI, UiMessage } from '../events';
 import { uploadFirmware } from './management/uploadFirmware';
@@ -77,6 +77,8 @@ export default class FirmwareUpdate extends AbstractMethod<'firmwareUpdate'> {
             if (params.binary) {
                 binary = modifyFirmware({
                     fw: params.binary,
+                    // REF-TODO: rollout has different types for features. remove rollout
+                    // @ts-ignore
                     features: device.features,
                 });
             } else {

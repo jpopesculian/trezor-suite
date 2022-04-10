@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax */
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 import { validateParams, getFirmwareRange } from './common/paramsValidator';
 import { getMiscNetwork } from '../data/CoinInfo';
 import { validatePath } from '../utils/pathUtils';
@@ -97,6 +97,7 @@ export default class CardanoSignTransaction extends AbstractMethod<'cardanoSignT
         const { payload } = this;
 
         // payload.metadata is a legacy param
+        // @ts-expect-error
         if (payload.metadata) {
             throw ERRORS.TypedError(
                 'Method_InvalidParameter',
@@ -105,6 +106,7 @@ export default class CardanoSignTransaction extends AbstractMethod<'cardanoSignT
         }
 
         // payload.auxiliaryData.blob is a legacy param
+        // @ts-expect-error
         if (payload.auxiliaryData && payload.auxiliaryData.blob) {
             throw ERRORS.TypedError(
                 'Method_InvalidParameter',
@@ -228,13 +230,11 @@ export default class CardanoSignTransaction extends AbstractMethod<'cardanoSignT
         };
     }
 
-    // REF-TODO: keyof CardanoSignTransactionFeatures
-    _isFeatureSupported(feature: CardanoSignTransactionFeatures) {
+    _isFeatureSupported(feature: keyof typeof CardanoSignTransactionFeatures) {
         return this.device.atLeast(CardanoSignTransactionFeatures[feature]);
     }
 
-    // REF-TODO: keyof CardanoSignTransactionFeatures
-    _ensureFeatureIsSupported(feature: CardanoSignTransactionFeatures) {
+    _ensureFeatureIsSupported(feature: keyof typeof CardanoSignTransactionFeatures) {
         if (!this._isFeatureSupported(feature)) {
             throw ERRORS.TypedError(
                 'Method_InvalidParameter',
@@ -474,10 +474,13 @@ export default class CardanoSignTransaction extends AbstractMethod<'cardanoSignT
         }
 
         // this is required for backwards compatibility for FW <= 2.3.6 when the tx was not sent in chunks yet
+        // @ts-expect-error
         if (message.serialized_tx) {
+            // @ts-expect-error
             serializedTx += message.serialized_tx;
         }
 
+        // @ts-expect-error
         return legacySerializedTxToResult(message.tx_hash, serializedTx);
     }
 

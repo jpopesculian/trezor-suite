@@ -2,6 +2,21 @@
 // https://github.com/stellar/js-stellar-base
 
 import type { Messages } from '@trezor/transport';
+import {
+    StellarAccountMergeOp,
+    StellarAllowTrustOp,
+    StellarBumpSequenceOp,
+    StellarChangeTrustOp,
+    StellarCreateAccountOp,
+    StellarCreatePassiveSellOfferOp,
+    StellarManageBuyOfferOp,
+    StellarManageDataOp,
+    StellarManageSellOfferOp,
+    StellarPathPaymentStrictReceiveOp,
+    StellarPathPaymentStrictSendOp,
+    StellarPaymentOp,
+    StellarSetOptionsOp,
+} from '@trezor/transport/lib/types/messages';
 import type { Params, Response } from '../params';
 
 export interface StellarAsset {
@@ -183,3 +198,45 @@ export interface StellarSignedTx {
 export declare function stellarSignTransaction(
     params: Params<StellarSignTransaction>,
 ): Response<StellarSignedTx>;
+
+// REF-TODO: does it make sense?
+export type StellarOperationMessage =
+    | ({
+          type: 'StellarCreateAccountOp';
+      } & StellarCreateAccountOp)
+    | ({
+          type: 'StellarPaymentOp';
+      } & StellarPaymentOp)
+    | ({
+          type: 'StellarPathPaymentStrictReceiveOp';
+      } & StellarPathPaymentStrictReceiveOp)
+    | ({
+          type: 'StellarPathPaymentStrictSendOp';
+      } & StellarPathPaymentStrictSendOp)
+    | ({
+          type: 'StellarManageSellOfferOp';
+      } & StellarManageSellOfferOp)
+    | ({
+          type: 'StellarManageBuyOfferOp';
+      } & StellarManageBuyOfferOp)
+    | ({
+          type: 'StellarCreatePassiveSellOfferOp';
+      } & StellarCreatePassiveSellOfferOp)
+    | ({
+          type: 'StellarSetOptionsOp';
+      } & StellarSetOptionsOp)
+    | ({
+          type: 'StellarChangeTrustOp';
+      } & StellarChangeTrustOp)
+    | ({
+          type: 'StellarAllowTrustOp';
+      } & StellarAllowTrustOp)
+    | ({
+          type: 'StellarAccountMergeOp';
+      } & StellarAccountMergeOp)
+    | ({
+          type: 'StellarManageDataOp';
+      } & StellarManageDataOp)
+    | ({
+          type: 'StellarBumpSequenceOp';
+      } & StellarBumpSequenceOp);

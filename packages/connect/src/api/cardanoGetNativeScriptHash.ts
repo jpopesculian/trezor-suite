@@ -1,4 +1,4 @@
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 import { getFirmwareRange, validateParams } from './common/paramsValidator';
 import { getMiscNetwork } from '../data/CoinInfo';
 import { validatePath } from '../utils/pathUtils';
@@ -65,11 +65,11 @@ export default class CardanoGetNativeScriptHash extends AbstractMethod<'cardanoG
     }
 
     scriptToProto(script: CardanoNativeScript): CardanoNativeScriptProto {
-        let scripts = [];
+        let scripts: CardanoNativeScriptProto[] = [];
         if (script.scripts) {
             scripts = script.scripts.map(nestedScript => this.scriptToProto(nestedScript));
         }
-        let keyPath = [];
+        let keyPath: number[] = [];
         if (script.keyPath) {
             keyPath = validatePath(script.keyPath, 3);
         }

@@ -1,4 +1,4 @@
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 import { UI } from '../events';
 
 export default class GetFeatures extends AbstractMethod<'getFeatures'> {

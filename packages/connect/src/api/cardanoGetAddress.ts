@@ -1,4 +1,4 @@
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 import { validateParams, getFirmwareRange } from './common/paramsValidator';
 import { getMiscNetwork } from '../data/CoinInfo';
 import { fromHardened, getSerializedPath } from '../utils/pathUtils';
@@ -18,7 +18,6 @@ import {
     CardanoAddressType,
     CardanoDerivationType,
 } from '@trezor/transport/lib/types/messages';
-// import { Enum_CardanoDerivationType as CardanoDerivationType } from '../../types/trezor/protobuf';
 
 type Params = MessageType['CardanoGetAddress'] & {
     address?: string;
@@ -66,7 +65,7 @@ export default class CardanoGetAddress extends AbstractMethod<'cardanoGetAddress
 
             validateAddressParameters(batch.addressParameters);
 
-            let showOnTrezor = true;
+            let showOnTrezor: boolean | undefined = true;
             if (Object.prototype.hasOwnProperty.call(batch, 'showOnTrezor')) {
                 showOnTrezor = batch.showOnTrezor;
             }
@@ -105,7 +104,7 @@ export default class CardanoGetAddress extends AbstractMethod<'cardanoGetAddress
     getButtonRequestData(code: string) {
         if (code === 'ButtonRequest_Address') {
             const data = {
-                type: 'address',
+                type: 'address' as const,
                 serializedPath: getSerializedPath(
                     this.params[this.progress].address_parameters.address_n,
                 ),

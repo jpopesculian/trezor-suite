@@ -166,7 +166,7 @@ const supplyChangeMessage = (tx: $T.NEMSupplyChangeTransaction): NEMMosaicSupply
 
 export const createTx = (tx: $T.NEMTransaction, address_n: number[]) => {
     let transaction = tx;
-    const message: $Exact<NEMSignTx> = {
+    const message: NEMSignTx = {
         transaction: getCommon(tx, address_n),
         transfer: undefined,
         importance_transfer: undefined,

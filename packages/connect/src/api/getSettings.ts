@@ -1,4 +1,4 @@
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 import { DataManager } from '../data/DataManager';
 
 export default class GetSettings extends AbstractMethod<'getSettings'> {

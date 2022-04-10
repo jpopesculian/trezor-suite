@@ -1,5 +1,5 @@
 import { UI, UiMessage } from '../events';
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 import { validateParams, getFirmwareRange } from './common/paramsValidator';
 import { validatePath } from '../utils/pathUtils';
 import type { MessageType, CipheredKeyValue } from '@trezor/transport/lib/types/messages';

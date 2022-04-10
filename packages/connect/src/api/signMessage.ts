@@ -1,4 +1,4 @@
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 import { validateParams, validateCoinPath, getFirmwareRange } from './common/paramsValidator';
 import { validatePath, getLabel, getScriptType } from '../utils/pathUtils';
 import { getBitcoinNetwork } from '../data/CoinInfo';

@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 import { validateParams, getFirmwareRange } from './common/paramsValidator';
 import { getBitcoinNetwork } from '../data/CoinInfo';
 import { getLabel } from '../utils/pathUtils';

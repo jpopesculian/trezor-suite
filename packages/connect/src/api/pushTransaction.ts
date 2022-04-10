@@ -1,4 +1,4 @@
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 import { validateParams } from './common/paramsValidator';
 import { getCoinInfo } from '../data/CoinInfo';
 import { ERRORS } from '../constants';

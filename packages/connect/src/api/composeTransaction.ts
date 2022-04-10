@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import type { ComposeOutput, ComposeResult } from '@trezor/utxo-lib';
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 import Discovery from './common/Discovery';
 import { validateParams, getFirmwareRange } from './common/paramsValidator';
 import * as pathUtils from '../utils/pathUtils';

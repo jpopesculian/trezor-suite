@@ -1,4 +1,4 @@
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 import { UI, UiMessage } from '../events';
 
 export default class BackupDevice extends AbstractMethod<'backupDevice'> {

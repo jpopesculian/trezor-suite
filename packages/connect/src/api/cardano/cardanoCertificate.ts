@@ -42,7 +42,9 @@ const validatePoolRelay = (relay: CardanoPoolRelay) => {
     validateParams(relay, [{ name: 'type', type: 'number', required: true }]);
 
     if (relay.type === CardanoPoolRelayType.SINGLE_HOST_IP) {
-        const paramsToValidate = [{ name: 'port', type: 'number', required: true }];
+        const paramsToValidate: Parameters<typeof validateParams>[1] = [
+            { name: 'port', type: 'number', required: true },
+        ];
         if (relay.ipv4Address) {
             paramsToValidate.push({ name: 'ipv4Address', type: 'string', required: false });
         }
@@ -175,7 +177,9 @@ const transformPoolParameters = (
 export const transformCertificate = (
     certificate: CardanoCertificate,
 ): CertificateWithPoolOwnersAndRelays => {
-    const paramsToValidate = [{ name: 'type', type: 'number', required: true }];
+    const paramsToValidate: Parameters<typeof validateParams>[1] = [
+        { name: 'type', type: 'number', required: true },
+    ];
 
     if (certificate.type !== CardanoCertificateType.STAKE_POOL_REGISTRATION) {
         paramsToValidate.push({ name: 'scriptHash', type: 'string' });

@@ -1,4 +1,4 @@
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 import { validateParams, getFirmwareRange } from './common/paramsValidator';
 import { validatePath } from '../utils/pathUtils';
 import { getEthereumNetwork } from '../data/CoinInfo';
@@ -68,7 +68,7 @@ export default class EthereumSignTx extends AbstractMethod<'ethereumSignTransact
             this.firmwareRange,
         );
 
-        const schema = isEIP1559
+        const schema: Parameters<typeof validateParams>[1] = isEIP1559
             ? [
                   { name: 'to', type: 'string', required: true },
                   { name: 'value', type: 'string', required: true },

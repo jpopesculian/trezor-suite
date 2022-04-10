@@ -1,4 +1,4 @@
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 
 // Empty placeholder for all Lisk methods
 // FirmwareRange is set to "0" for both T1 and TT
@@ -13,6 +13,7 @@ export default class LiskDeprecated extends AbstractMethod<any> {
         this.info = 'Lisk not supported';
     }
 
+    // @ts-expect-error
     run() {
         throw new Error(this.info);
     }

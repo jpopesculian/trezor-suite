@@ -1,4 +1,4 @@
-import AbstractMethod from './abstractMethod';
+import { AbstractMethod } from '../core/AbstractMethod';
 import { validateParams, validateCoinPath, getFirmwareRange } from './common/paramsValidator';
 import { validatePath, getLabel, getSerializedPath } from '../utils/pathUtils';
 import { getBitcoinNetwork, fixCoinInfoNetwork, getUniqueNetworks } from '../data/CoinInfo';
@@ -61,7 +61,7 @@ export default class GetAddress extends AbstractMethod<'getAddress'> {
                 coinInfo = getBitcoinNetwork(path);
             }
 
-            let showOnTrezor = true;
+            let showOnTrezor: boolean | undefined = true;
             if (Object.prototype.hasOwnProperty.call(batch, 'showOnTrezor')) {
                 showOnTrezor = batch.showOnTrezor;
             }

@@ -122,6 +122,8 @@ class Device extends EventEmitter {
         // === immutable properties
         this.transport = transport;
         this.originalDescriptor = descriptor;
+
+        // REF-TODO: descriptor can be undefined in the runtime (bug in sentry)
         this.hasDebugLink = descriptor.debug;
 
         // this will be released after first run
