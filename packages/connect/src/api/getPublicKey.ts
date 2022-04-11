@@ -7,6 +7,7 @@ import { UI, UiMessage } from '../events';
 import { getBitcoinNetwork } from '../data/CoinInfo';
 import { getPublicKeyLabel } from '../utils/accountUtils';
 import type { BitcoinNetworkInfo } from '../types';
+// REF-TODO: HDNodeResponse vs PublicKey ??
 import type { HDNodeResponse } from '../types/api/getPublicKey';
 import type { MessageType } from '@trezor/transport/lib/types/messages';
 

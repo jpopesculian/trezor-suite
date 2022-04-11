@@ -4,8 +4,8 @@ import { getMiscNetwork } from '../data/CoinInfo';
 import { validatePath, fromHardened, getSerializedPath } from '../utils/pathUtils';
 
 import { UI, UiMessage } from '../events';
-
-import type { MessageType, BinancePublicKey } from '@trezor/transport/lib/types/messages';
+import type { PublicKey } from '../types';
+import type { MessageType } from '@trezor/transport/lib/types/messages';
 
 export default class BinanceGetPublicKey extends AbstractMethod<'binanceGetPublicKey'> {
     params: MessageType['BinanceGetPublicKey'][] = [];
@@ -80,7 +80,7 @@ export default class BinanceGetPublicKey extends AbstractMethod<'binanceGetPubli
     }
 
     async run() {
-        const responses: BinancePublicKey[] = [];
+        const responses: PublicKey[] = [];
         const cmd = this.device.getCommands();
         for (let i = 0; i < this.params.length; i++) {
             const batch = this.params[i];

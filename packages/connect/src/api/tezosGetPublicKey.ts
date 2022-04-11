@@ -4,9 +4,8 @@ import { getMiscNetwork } from '../data/CoinInfo';
 import { validatePath, fromHardened, getSerializedPath } from '../utils/pathUtils';
 
 import { UI, UiMessage } from '../events';
-
-// REF-TODO: correct import?
-import type { MessageType, TezosPublicKey } from '@trezor/transport/lib/types/messages';
+import type { PublicKey } from '../types';
+import type { MessageType } from '@trezor/transport/lib/types/messages';
 
 export default class TezosGetPublicKey extends AbstractMethod<'tezosGetPublicKey'> {
     params: MessageType['TezosGetPublicKey'][] = [];
@@ -85,7 +84,7 @@ export default class TezosGetPublicKey extends AbstractMethod<'tezosGetPublicKey
     }
 
     async run() {
-        const responses: TezosPublicKey[] = [];
+        const responses: PublicKey[] = [];
         const cmd = this.device.getCommands();
         for (let i = 0; i < this.params.length; i++) {
             const batch = this.params[i];

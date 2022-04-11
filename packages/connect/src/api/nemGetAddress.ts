@@ -5,8 +5,8 @@ import { validatePath, fromHardened, getSerializedPath } from '../utils/pathUtil
 
 import { ERRORS } from '../constants';
 import { UI, UiMessage } from '../events';
-
-import type { MessageType, NEMAddress } from '@trezor/transport/lib/types/messages';
+import type { Address } from '../types/params';
+import type { MessageType } from '@trezor/transport/lib/types/messages';
 
 type Params = MessageType['NEMGetAddress'] & {
     address?: string;
@@ -158,7 +158,7 @@ export default class NEMGetAddress extends AbstractMethod<'nemGetAddress'> {
     }
 
     async run() {
-        const responses: NEMAddress[] = [];
+        const responses: Address[] = [];
 
         for (let i = 0; i < this.params.length; i++) {
             const batch = this.params[i];

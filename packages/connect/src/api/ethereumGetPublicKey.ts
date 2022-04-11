@@ -6,8 +6,7 @@ import { getEthereumNetwork, getUniqueNetworks } from '../data/CoinInfo';
 
 import { UI, UiMessage } from '../events';
 
-import type { EthereumNetworkInfo } from '../types';
-import type { HDNodeResponse } from '../types/api/getPublicKey';
+import type { EthereumNetworkInfo, PublicKey } from '../types';
 import type { MessageType } from '@trezor/transport/lib/types/messages';
 
 type Params = MessageType['EthereumGetPublicKey'] & {
@@ -96,7 +95,7 @@ export default class EthereumGetPublicKey extends AbstractMethod<'ethereumGetPub
     }
 
     async run() {
-        const responses: HDNodeResponse[] = [];
+        const responses: PublicKey[] = [];
         const cmd = this.device.getCommands();
         for (let i = 0; i < this.params.length; i++) {
             const batch = this.params[i];

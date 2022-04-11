@@ -35,7 +35,7 @@ export function validateParams<P extends Record<string, any>>(params: P, schema:
         // schema type is a union
         if (Array.isArray(type)) {
             // create single field object
-            const p = {};
+            const p: Record<string, any> = {};
             p[name] = value;
             // validate case for each type in union
             const success = type.reduce((count, t) => {
@@ -140,11 +140,15 @@ export const getFirmwareRange = (
             return true;
         })
         .filter(c => {
+            // REF_TODO: there is no coinType in config. possibly obsolete code?
+            // probably still useful, we just need to define type for config and not infer it.
+            // @ts-ignore
             if (c.coinType) {
                 // rule for coin type
+                // @ts-ignore
                 return c.coinType === coinType;
             }
-            if (c.coin) {
+            if (c.coin && shortcut) {
                 // rule for coin shortcut
                 return (typeof c.coin === 'string' ? [c.coin] : c.coin).includes(shortcut);
             }
@@ -153,6 +157,8 @@ export const getFirmwareRange = (
         });
 
     for (const range of ranges) {
+        // REF_TODO: define type for config and do not infer it
+        // @ts-ignore
         const { min, max } = range;
         // override defaults
         // NOTE:

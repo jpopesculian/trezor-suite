@@ -5,8 +5,8 @@ import { validatePath, fromHardened, getSerializedPath } from '../utils/pathUtil
 
 import { ERRORS } from '../constants';
 import { UI, UiMessage } from '../events';
-
-import type { MessageType, BinanceAddress } from '@trezor/transport/lib/types/messages';
+import type { Address } from '../types';
+import type { MessageType } from '@trezor/transport/lib/types/messages';
 
 type Params = MessageType['BinanceGetAddress'] & {
     address?: string;
@@ -138,7 +138,7 @@ export default class BinanceGetAddress extends AbstractMethod<'binanceGetAddress
     }
 
     async run() {
-        const responses: BinanceAddress[] = [];
+        const responses: Address[] = [];
         for (let i = 0; i < this.params.length; i++) {
             const batch = this.params[i];
             // silently get address and compare with requested address

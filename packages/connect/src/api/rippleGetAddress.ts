@@ -5,8 +5,8 @@ import { validatePath, fromHardened, getSerializedPath } from '../utils/pathUtil
 
 import { ERRORS } from '../constants';
 import { UI, UiMessage } from '../events';
-
-import type { MessageType, RippleAddress } from '@trezor/transport/lib/types/messages';
+import type { Address } from '../types';
+import type { MessageType } from '@trezor/transport/lib/types/messages';
 
 type Params = MessageType['RippleGetAddress'] & {
     address?: string;
@@ -141,7 +141,7 @@ export default class RippleGetAddress extends AbstractMethod<'rippleGetAddress'>
     }
 
     async run() {
-        const responses: RippleAddress[] = [];
+        const responses: Address[] = [];
 
         for (let i = 0; i < this.params.length; i++) {
             const batch = this.params[i];

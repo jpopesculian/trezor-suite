@@ -6,7 +6,8 @@ import { validatePath, fromHardened, getSerializedPath } from '../utils/pathUtil
 import { ERRORS } from '../constants';
 import { UI, UiMessage } from '../events';
 
-import type { MessageType, StellarAddress } from '@trezor/transport/lib/types/messages';
+import type { Address } from '../types';
+import type { MessageType } from '@trezor/transport/lib/types/messages';
 
 type Params = MessageType['StellarGetAddress'] & {
     address?: string;
@@ -142,7 +143,7 @@ export default class StellarGetAddress extends AbstractMethod<'stellarGetAddress
     }
 
     async run() {
-        const responses: StellarAddress[] = [];
+        const responses: Address[] = [];
 
         for (let i = 0; i < this.params.length; i++) {
             const batch = this.params[i];

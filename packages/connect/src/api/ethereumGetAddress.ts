@@ -7,9 +7,8 @@ import { stripHexPrefix } from '../utils/formatUtils';
 
 import { ERRORS } from '../constants';
 import { UI, UiMessage } from '../events';
-
-import type { EthereumNetworkInfo } from '../types';
-import type { MessageType, EthereumAddress } from '@trezor/transport/lib/types/messages';
+import type { EthereumNetworkInfo, Address } from '../types';
+import type { MessageType } from '@trezor/transport/lib/types/messages';
 
 type Params = MessageType['EthereumGetAddress'] & {
     address?: string;
@@ -90,7 +89,7 @@ export default class EthereumGetAddress extends AbstractMethod<'ethereumGetAddre
     getButtonRequestData(code: string) {
         if (code === 'ButtonRequest_Address') {
             const data = {
-                type: 'address',
+                type: 'address' as const,
                 serializedPath: getSerializedPath(this.params[this.progress].address_n),
                 address: this.params[this.progress].address || 'not-set',
             };
@@ -148,7 +147,7 @@ export default class EthereumGetAddress extends AbstractMethod<'ethereumGetAddre
     }
 
     async run() {
-        const responses: EthereumAddress[] = [];
+        const responses: Address[] = [];
 
         for (let i = 0; i < this.params.length; i++) {
             const batch = this.params[i];

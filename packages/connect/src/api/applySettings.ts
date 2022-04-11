@@ -35,7 +35,7 @@ export default class ApplySettings extends AbstractMethod<'applySettings'> {
             display_rotation: payload.display_rotation,
             safety_checks: payload.safety_checks,
             experimental_features: payload.experimental_features,
-            // $FlowIssue passphrase_source is a legacy param
+            // @ts-expect-error passphrase_source is a legacy param
             _passphrase_source: payload.passphrase_source,
         };
     }

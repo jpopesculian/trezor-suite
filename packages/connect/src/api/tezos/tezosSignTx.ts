@@ -72,7 +72,7 @@ export const createTx = (
     branch: string,
     operation: TezosOperation,
 ): TezosSignTx => {
-    let message: Partial<TezosSignTx> = {
+    let message: TezosSignTx = {
         address_n,
         branch: bs58checkDecode(PREFIX.B, branch),
     };
@@ -140,7 +140,7 @@ export const createTx = (
             message = {
                 ...message,
                 transaction: {
-                    ...message.transaction,
+                    ...message.transaction!, // we know message.transaction is not undefined anymore
                     parameters: transaction.parameters,
                 },
             };
@@ -159,7 +159,7 @@ export const createTx = (
                 message = {
                     ...message,
                     transaction: {
-                        ...message.transaction,
+                        ...message.transaction!,
                         parameters_manager: {
                             set_delegate: publicKeyHash2buffer(parameters_manager.set_delegate)
                                 .hash,
@@ -172,7 +172,7 @@ export const createTx = (
                 message = {
                     ...message,
                     transaction: {
-                        ...message.transaction,
+                        ...message.transaction!,
                         parameters_manager: {
                             cancel_delegate: true,
                         },
@@ -191,7 +191,7 @@ export const createTx = (
                 message = {
                     ...message,
                     transaction: {
-                        ...message.transaction,
+                        ...message.transaction!,
                         parameters_manager: {
                             transfer: {
                                 destination: {
@@ -239,7 +239,7 @@ export const createTx = (
             message = {
                 ...message,
                 origination: {
-                    ...message.origination,
+                    ...message.origination!,
                     delegate: publicKeyHash2buffer(origination.delegate).hash,
                 },
             };

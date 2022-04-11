@@ -4,7 +4,8 @@ import { getMiscNetwork } from '../data/CoinInfo';
 import { validatePath, fromHardened, getSerializedPath } from '../utils/pathUtils';
 
 import { UI, UiMessage } from '../events';
-import type { MessageType, EosPublicKey } from '@trezor/transport/lib/types/messages';
+import type { EosPublicKey } from '../types/api/eosGetPublicKey';
+import type { MessageType } from '@trezor/transport/lib/types/messages';
 
 export default class EosGetPublicKey extends AbstractMethod<'eosGetPublicKey'> {
     params: MessageType['EosGetPublicKey'] = [];
