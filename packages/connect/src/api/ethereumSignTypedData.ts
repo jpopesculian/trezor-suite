@@ -26,7 +26,10 @@ type Params = (
 };
 
 // REF-TODO: temporarily here, if we decide to use this, move somewhere else
-function isExactMessageResponseType<T extends MessageResponse<any>>(x: any, type: string): x is T {
+function isExactMessageResponseType<T extends MessageResponse<any>>(
+    x: any,
+    type: string,
+): x is T['message'] {
     return (x as T).type === type;
 }
 
@@ -158,7 +161,7 @@ export default class EthereumSignTypedData extends AbstractMethod<'ethereumSignT
         while (
             // REF-TODO: check if correct, maybe we could find a better approach
             isExactMessageResponseType<MessageResponse<'EthereumTypedDataStructRequest'>>(
-                response,
+                response.message,
                 'EthereumTypedDataStructRequest',
             )
         ) {
@@ -194,14 +197,14 @@ export default class EthereumSignTypedData extends AbstractMethod<'ethereumSignT
         while (
             // REF-TODO: check if correct, maybe we could find a better approach
             isExactMessageResponseType<MessageResponse<'EthereumTypedDataValueRequest'>>(
-                response,
+                response.message,
                 'EthereumTypedDataValueRequest',
             )
         ) {
             const { member_path } = response.message;
 
             let memberData;
-            let memberTypeName;
+            let memberTypeName: any;
 
             const [rootIndex, ...nestedMemberPath] = member_path;
             switch (rootIndex) {

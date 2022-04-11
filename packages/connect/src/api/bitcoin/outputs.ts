@@ -16,8 +16,9 @@ export const validateTrezorOutputs = (
     coinInfo: BitcoinNetworkInfo,
 ): TxOutputType[] => {
     const trezorOutputs = outputs
-        .map(fixPath)
-        .map(convertMultisigPubKey.bind(null, coinInfo.network));
+        .map(o => fixPath(o))
+        .map(o => convertMultisigPubKey(coinInfo.network, o));
+
     trezorOutputs.forEach(output => {
         validateParams(output, [
             { name: 'address_n', type: 'array' },
@@ -110,9 +111,13 @@ export const validateHDOutput = (
                 { name: 'amount', type: 'uint', required: true },
                 { name: 'address', type: 'string', required: true },
             ]);
+            // REF-TODO:
+            // @ts-ignore
             validateAddress(output.address);
             return {
                 type: 'complete',
+                // REF-TODO:
+                // @ts-ignore
                 address: output.address,
                 amount: output.amount,
             };

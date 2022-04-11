@@ -13,10 +13,10 @@ import { TypedError } from '../../constants/errors';
 import type { CoinInfo, AccountAddresses } from '../../types';
 import type { RefTransaction } from '../../types/api/signTransaction';
 import type { TxInputType, TxOutputType } from '@trezor/transport/lib/types/messages';
-// REF-TODO: these types are not available from @trezor/utxo-lib (they are outdated flowtypes from connect);
-// import type { TxInput as BitcoinJsInput, TxOutput as BitcoinJsOutput } from '@trezor/utxo-lib';
-type BitcoinJsInput = any;
-type BitcoinJsOutput = any;
+import type {
+    TxInput as BitcoinJsInput,
+    TxOutput as BitcoinJsOutput,
+} from '@trezor/utxo-lib/lib/transaction/base';
 
 // Get array of unique referenced transactions ids
 export const getReferencedTransactions = (inputs: TxInputType[]) => {
@@ -105,7 +105,8 @@ export const transformOrigTransactions = (
         // inputs, required by TXORIGINPUT (TxAckInput) request from Trezor
         const inputsMap = (input: BitcoinJsInput, i: number) => {
             // TODO: is vin[i] a correct way? order in Bitcoinjs
-            const address = vin[i].addresses.join(''); // controversial: is there a possibility to have more than 1 address in this tx? multisig?
+            // REF-TODO: rm non-null assertion operator
+            const address = vin[i].addresses!.join(''); // controversial: is there a possibility to have more than 1 address in this tx? multisig?
             const inputAddress = inputAddresses.find(addr => addr.address === address);
             const address_n = inputAddress ? getHDPath(inputAddress.path) : []; // TODO: is fallback necessary?
 
@@ -117,7 +118,8 @@ export const transformOrigTransactions = (
                 sequence: input.sequence,
                 script_type: getScriptType(address_n),
                 multisig: undefined, // TODO
-                amount: vin[i].value,
+                // REF-TODO: should not be undefined?
+                amount: vin[i].value!,
                 decred_tree: undefined, // TODO
                 witness: tx.hasWitnesses() ? getWitness(input.witness) : undefined,
                 ownership_proof: undefined, // TODO
@@ -126,20 +128,27 @@ export const transformOrigTransactions = (
         };
 
         // outputs, required by TXORIGOUTPUT (TxAckOutput) request from Trezor
-        const outputsMap = (output: BitcoinJsOutput, i: number) => {
+        const outputsMap = (
+            output: BitcoinJsOutput,
+            i: number,
+        ): Required<RefTransaction>['outputs'][number] => {
             if (!vout[i].isAddress) {
                 const { data } = BitcoinJsPayments.embed({ output: output.script });
                 return {
                     script_type: 'PAYTOOPRETURN',
                     amount: '0',
-                    op_return_data: data ? data.shift().toString('hex') : '', // shift OP code
+                    // REF-TODO: non-null assertion operator after shift()!
+                    op_return_data: data ? data.shift()!.toString('hex') : '', // shift OP code
                 };
             }
             // TODO: is vout[i] a correct way? order in Bitcoinjs
-            const address = vout[i].addresses.join(''); // controversial: is there a possibility to have more than 1 address in this tx? multisig?
+            // REF-TODO: maybe addresses? instead of addresses! but no refactoring at the moment
+            const address = vout[i].addresses!.join(''); // controversial: is there a possibility to have more than 1 address in this tx? multisig?
             const changeAddress = addresses.change.find(addr => addr.address === address);
             const address_n = changeAddress && getHDPath(changeAddress.path);
             const amount =
+                // REF-TODO: at the moment output.value can be only string
+                // @ts-ignore
                 typeof output.value === 'number' ? output.value.toString() : output.value;
             // console.warn('OUT ADDR', BitcoinJSAddress.fromOutputScript(output.script, coinInfo.network), address);
             return address_n
@@ -188,6 +197,8 @@ export const transformReferencedTransactions = (
 
         // map bin_outputs, required by TXOUTPUT (TxAckPrevOutput) request from Trezor
         const binOutputsMap = (output: BitcoinJsOutput) => ({
+            // REF-TODO: at the moment output.value can be only string
+            // @ts-ignore
             amount: typeof output.value === 'number' ? output.value.toString() : output.value,
             script_pubkey: output.script.toString('hex'),
         });
@@ -265,14 +276,17 @@ export const validateReferencedTransactions = (
                 prev_hash: input.prev_hash,
                 prev_index: input.prev_index,
                 // $FlowIssue: PrevInput/TxInput union, validated above, TODO: will be addressed in #782
-                script_sig: input.script_sig,
+                // REF-TODO: should not be undefined
+                script_sig: input.script_sig!,
                 // $FlowIssue: PrevInput/TxInput union, validated above, TODO: will be addressed #782
-                sequence: input.sequence,
+                // REF-TODO: should not be undefined
+                sequence: input.sequence!,
                 decred_tree: input.decred_tree,
             })),
             // make exact protobuf.TxOutputBinType
             // $FlowIssue, bin_inputs presence validated above, TODO: will be addressed in #782
-            bin_outputs: tx.bin_outputs.map(output => ({
+            // REF-TODO: should not be undefined
+            bin_outputs: tx.bin_outputs!.map(output => ({
                 amount: output.amount,
                 script_pubkey: output.script_pubkey,
                 decred_script_version: output.decred_script_version,

@@ -148,9 +148,9 @@ export const getFirmwareRange = (
                 // @ts-ignore
                 return c.coinType === coinType;
             }
-            if (c.coin && shortcut) {
+            if (c.coin) {
                 // rule for coin shortcut
-                return (typeof c.coin === 'string' ? [c.coin] : c.coin).includes(shortcut);
+                return (typeof c.coin === 'string' ? [c.coin] : c.coin).includes(shortcut!);
             }
             // rule for method
             return c.methods || c.capabilities;

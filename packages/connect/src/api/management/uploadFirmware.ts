@@ -53,8 +53,6 @@ export const uploadFirmware = async (
         // REF-TODO: first response is never success. but this should be refactored anyway, typedCall unions
         // @ts-ignore
         while (response.type !== 'Success') {
-            console.log(response);
-
             const start: number = response.message.offset!;
             const end = response.message.offset! + response.message.length!;
             const chunk = payload.slice(start, end);

@@ -12,7 +12,7 @@ import type { MessageType } from '@trezor/transport/lib/types/messages';
 
 type Params = MessageType['EthereumGetAddress'] & {
     address?: string;
-    network?: EthereumNetworkInfo;
+    network: EthereumNetworkInfo;
 };
 
 export default class EthereumGetAddress extends AbstractMethod<'ethereumGetAddress'> {
@@ -49,6 +49,11 @@ export default class EthereumGetAddress extends AbstractMethod<'ethereumGetAddre
 
             const path = validatePath(batch.path, 3);
             const network = getEthereumNetwork(path);
+            // REF-TODO: something like this should be added probably
+            // if (!network) {
+            //     throw ERRORS.TypedError('Method_UnknownCoin');
+            // }
+
             this.firmwareRange = getFirmwareRange(this.name, network, this.firmwareRange);
 
             let showOnTrezor: boolean | undefined = true;
@@ -60,6 +65,7 @@ export default class EthereumGetAddress extends AbstractMethod<'ethereumGetAddre
                 address_n: path,
                 show_display: showOnTrezor,
                 address: batch.address,
+                // @ts-ignore see todo above
                 network,
             });
         });

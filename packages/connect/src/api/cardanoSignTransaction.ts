@@ -18,19 +18,15 @@ import { ERRORS } from '../constants';
 import {
     CardanoCertificateType,
     CardanoTxAuxiliaryDataSupplementType,
-    //  REF-TODO: rename
-    CardanoTxSigningMode as CardanoTxSigningModeEnum,
-    CardanoTxWitnessType,
-    //  REF-TODO: rename
-    CardanoDerivationType as Enum_CardanoDerivationType,
+    CardanoTxSigningMode,
+    CardanoDerivationType,
+    MessageResponse,
 } from '@trezor/transport/lib/types/messages';
 import type {
     UintType,
     CardanoTxWithdrawal,
     CardanoTxAuxiliaryData,
     CardanoTxRequiredSigner,
-    CardanoTxSigningMode,
-    CardanoDerivationType,
 } from '@trezor/transport/lib/types/messages';
 import type {
     CardanoAuxiliaryDataSupplement,
@@ -81,6 +77,14 @@ export type CardanoSignTransactionParams = {
     derivationType: CardanoDerivationType;
     includeNetworkId?: boolean;
 };
+
+// REF-TODO: temporarily here, if we decide to use this, move somewhere else
+function isExactMessageResponseType<T extends MessageResponse<any>>(
+    x: any,
+    type: string,
+): x is T['message'] {
+    return (x as T).type === type;
+}
 
 export default class CardanoSignTransaction extends AbstractMethod<'cardanoSignTransaction'> {
     params: CardanoSignTransactionParams;
@@ -225,7 +229,7 @@ export default class CardanoSignTransaction extends AbstractMethod<'cardanoSignT
             derivationType:
                 typeof payload.derivationType !== 'undefined'
                     ? payload.derivationType
-                    : Enum_CardanoDerivationType.ICARUS_TREZOR,
+                    : CardanoDerivationType.ICARUS_TREZOR,
             includeNetworkId: payload.includeNetworkId,
         };
     }
@@ -298,7 +302,7 @@ export default class CardanoSignTransaction extends AbstractMethod<'cardanoSignT
 
         if (
             params.additionalWitnessRequests.length > 0 ||
-            params.signingMode === CardanoTxSigningModeEnum.MULTISIG_TRANSACTION
+            params.signingMode === CardanoTxSigningMode.MULTISIG_TRANSACTION
         ) {
             this._ensureFeatureIsSupported('Multisig');
         }
@@ -311,7 +315,7 @@ export default class CardanoSignTransaction extends AbstractMethod<'cardanoSignT
             this._ensureFeatureIsSupported('ScriptDataHash');
         }
 
-        if (params.signingMode === CardanoTxSigningModeEnum.PLUTUS_TRANSACTION) {
+        if (params.signingMode === CardanoTxSigningMode.PLUTUS_TRANSACTION) {
             this._ensureFeatureIsSupported('Plutus');
         }
     }
@@ -379,7 +383,7 @@ export default class CardanoSignTransaction extends AbstractMethod<'cardanoSignT
             await typedCall('CardanoTxWithdrawal', 'CardanoTxItemAck', withdrawal);
         }
         // auxiliary data
-        let auxiliaryDataSupplement: CardanoAuxiliaryDataSupplement;
+        let auxiliaryDataSupplement: CardanoAuxiliaryDataSupplement | undefined;
         if (this.params.auxiliaryData) {
             const { catalyst_registration_parameters } = this.params.auxiliaryData;
             if (catalyst_registration_parameters) {
@@ -394,11 +398,12 @@ export default class CardanoSignTransaction extends AbstractMethod<'cardanoSignT
                 'CardanoTxAuxiliaryDataSupplement',
                 this.params.auxiliaryData,
             );
-            const auxiliaryDataType = CardanoTxAuxiliaryDataSupplementType[message.type];
-            if (auxiliaryDataType !== CardanoTxAuxiliaryDataSupplementType.NONE) {
+
+            if (message.type !== CardanoTxAuxiliaryDataSupplementType.NONE) {
                 auxiliaryDataSupplement = {
-                    type: auxiliaryDataType,
-                    auxiliaryDataHash: message.auxiliary_data_hash,
+                    type: message.type,
+                    // REF-TODO: undefined ?
+                    auxiliaryDataHash: message.auxiliary_data_hash!,
                     catalystSignature: message.catalyst_signature,
                 };
             }
@@ -436,7 +441,7 @@ export default class CardanoSignTransaction extends AbstractMethod<'cardanoSignT
                 { path },
             );
             witnesses.push({
-                type: CardanoTxWitnessType[message.type],
+                type: message.type,
                 pubKey: message.pub_key,
                 signature: message.signature,
                 chainCode: message.chain_code,
@@ -460,16 +465,21 @@ export default class CardanoSignTransaction extends AbstractMethod<'cardanoSignT
 
         let serializedTx = '';
 
-        let { type, message } = await typedCall(
+        let { message } = await typedCall(
             'CardanoSignTx',
             // REF-TODO: typedCall unions
             // @ts-expect-error
             'CardanoSignedTx|CardanoSignedTxChunk',
             legacyParams,
         );
-        while (type === 'CardanoSignedTxChunk') {
+        while (
+            isExactMessageResponseType<MessageResponse<'CardanoSignedTxChunk'>>(
+                message,
+                'CardanoSignedTxChunk',
+            )
+        ) {
             serializedTx += message.signed_tx_chunk;
-            ({ type, message } = await typedCall(
+            ({ message } = await typedCall(
                 'CardanoSignedTxChunkAck',
                 // REF-TODO: typedCall unions
                 // @ts-expect-error
@@ -488,7 +498,7 @@ export default class CardanoSignTransaction extends AbstractMethod<'cardanoSignT
         return legacySerializedTxToResult(message.tx_hash, serializedTx);
     }
 
-    run(): Promise<CardanoSignedTxData> {
+    run() {
         this._ensureFirmwareSupportsParams();
 
         if (!this._isFeatureSupported('TransactionStreaming')) {

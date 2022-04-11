@@ -1,4 +1,7 @@
-import { parseArrayType, encodeData, getFieldType } from '../../helpers/ethereumSignTypedData';
+// @ts-nocheck
+// REF-TODO: ts
+
+import { parseArrayType, encodeData, getFieldType } from '../ethereumSignTypedData';
 import * as fixtures from '../__fixtures__/ethereumSignTypedData';
 
 describe('helpers/ethereumSignTypeData', () => {

@@ -2,7 +2,6 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "outDir": "libDev",
-        // REF-TODO: we need this to avoid runtime changes. could be refactored.
         "strictPropertyInitialization": false
     },
     "references": [

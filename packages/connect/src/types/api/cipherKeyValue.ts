@@ -12,7 +12,7 @@ export interface CipherKeyValue {
     encrypt?: boolean;
     askOnEncrypt?: boolean;
     askOnDecrypt?: boolean;
-    iv?: string;
+    iv?: string | Buffer;
 }
 
 export interface CipheredValue {

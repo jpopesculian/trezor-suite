@@ -1,6 +1,9 @@
+// @ts-nocheck
+// REF-TODO: ts
+
 import { networks } from '@trezor/utxo-lib';
 import { validateTrezorInputs } from '../inputs';
-import * as fixtures from '../../tx/__fixtures__/inputs';
+import * as fixtures from '../__fixtures__/inputs';
 
 describe('core/methods/tx/inputs', () => {
     describe('validateTrezorInputs', () => {

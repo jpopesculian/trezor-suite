@@ -5,12 +5,10 @@ import { ERRORS } from '../constants';
 import { isBackendSupported, initBlockchain } from '../backend/BlockchainLink';
 import { getCoinInfo } from '../data/CoinInfo';
 import type { CoinInfo } from '../types';
-
-// REF-TODO:
-import type { BlockchainSubscribeAccount } from 'trezor-connect';
+import type { BlockchainSubscribe as BlockchainSubscribeParams } from '../types/api/blockchainSubscribe';
 
 type Params = {
-    accounts?: BlockchainSubscribeAccount[];
+    accounts: BlockchainSubscribeParams['accounts'];
     coinInfo: CoinInfo;
 };
 

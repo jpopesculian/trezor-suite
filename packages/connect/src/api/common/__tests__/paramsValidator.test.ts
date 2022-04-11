@@ -1,5 +1,8 @@
-import DataManager from '../../../../data/DataManager';
-import configJSON from '../../../../../data/config.json';
+// @ts-nocheck
+// REF-TODO: ts
+
+import { DataManager } from '../../../data/DataManager';
+import { config } from '../../../data/config';
 import { validateParams, getFirmwareRange } from '../paramsValidator';
 import * as fixtures from '../__fixtures__/paramsValidator';
 
@@ -26,9 +29,7 @@ describe('helpers/paramsValidator', () => {
         });
         fixtures.getFirmwareRange.forEach(f => {
             it(f.description, () => {
-                jest.spyOn(DataManager, 'getConfig').mockImplementation(
-                    () => f.config || configJSON,
-                );
+                jest.spyOn(DataManager, 'getConfig').mockImplementation(() => f.config || config);
                 expect(getFirmwareRange(...f.params)).toEqual(f.result);
             });
         });

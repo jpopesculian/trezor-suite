@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
-import { TrezorError } from '../../../../constants/errors';
-import { Enum_EthereumDataType } from '../../../../types/trezor/protobuf';
+import { TrezorError } from '../../../constants/errors';
+import { EthereumDataType } from '@trezor/transport/lib/types/messages';
 
 export const parseArrayType = [
     {
@@ -45,7 +45,7 @@ export const getFieldType = [
             types: {},
         },
         output: {
-            data_type: Enum_EthereumDataType.UINT,
+            data_type: EthereumDataType.UINT,
             size: 32,
         },
     },
@@ -56,7 +56,7 @@ export const getFieldType = [
             types: {},
         },
         output: {
-            data_type: Enum_EthereumDataType.INT,
+            data_type: EthereumDataType.INT,
             size: 1,
         },
     },
@@ -67,7 +67,7 @@ export const getFieldType = [
             types: {},
         },
         output: {
-            data_type: Enum_EthereumDataType.BOOL,
+            data_type: EthereumDataType.BOOL,
         },
     },
     {
@@ -77,7 +77,7 @@ export const getFieldType = [
             types: {},
         },
         output: {
-            data_type: Enum_EthereumDataType.ADDRESS,
+            data_type: EthereumDataType.ADDRESS,
         },
     },
     {
@@ -87,7 +87,7 @@ export const getFieldType = [
             types: {},
         },
         output: {
-            data_type: Enum_EthereumDataType.BYTES,
+            data_type: EthereumDataType.BYTES,
             size: undefined,
         },
     },
@@ -98,7 +98,7 @@ export const getFieldType = [
             types: {},
         },
         output: {
-            data_type: Enum_EthereumDataType.BYTES,
+            data_type: EthereumDataType.BYTES,
             size: 18,
         },
     },
@@ -109,10 +109,10 @@ export const getFieldType = [
             types: {},
         },
         output: {
-            data_type: Enum_EthereumDataType.ARRAY,
+            data_type: EthereumDataType.ARRAY,
             size: 57,
             entry_type: {
-                data_type: Enum_EthereumDataType.UINT,
+                data_type: EthereumDataType.UINT,
                 size: 32,
             },
         },
@@ -124,10 +124,10 @@ export const getFieldType = [
             types: {},
         },
         output: {
-            data_type: Enum_EthereumDataType.ARRAY,
+            data_type: EthereumDataType.ARRAY,
             size: undefined,
             entry_type: {
-                data_type: Enum_EthereumDataType.UINT,
+                data_type: EthereumDataType.UINT,
                 size: 32,
             },
         },
@@ -140,13 +140,13 @@ export const getFieldType = [
             types: {},
         },
         output: {
-            data_type: Enum_EthereumDataType.ARRAY,
+            data_type: EthereumDataType.ARRAY,
             size: 12,
             entry_type: {
-                data_type: Enum_EthereumDataType.ARRAY,
+                data_type: EthereumDataType.ARRAY,
                 size: 5,
                 entry_type: {
-                    data_type: Enum_EthereumDataType.INT,
+                    data_type: EthereumDataType.INT,
                     size: 4,
                 },
             },
@@ -164,7 +164,7 @@ export const getFieldType = [
             },
         },
         output: {
-            data_type: Enum_EthereumDataType.STRUCT,
+            data_type: EthereumDataType.STRUCT,
             size: 2,
             struct_name: 'ExampleStruct',
         },

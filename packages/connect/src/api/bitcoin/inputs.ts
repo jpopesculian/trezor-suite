@@ -15,9 +15,8 @@ export const validateTrezorInputs = (
     coinInfo: BitcoinNetworkInfo,
 ): TxInputType[] =>
     inputs
-        // REF-TODO: probably need to overload fixPath
-        .map(fixPath)
-        .map(convertMultisigPubKey.bind(null, coinInfo.network))
+        .map(i => fixPath(i))
+        .map(i => convertMultisigPubKey(coinInfo.network, i))
         .map(input => {
             const useAmount = input.script_type === 'EXTERNAL' || isSegwitPath(input.address_n);
             // since 2.3.5 amount is required for all inputs.
@@ -53,7 +52,7 @@ export const enhanceTrezorInputs = (inputs: TxInputType[], rawTxs: TypedRawTrans
         if (!input.amount) {
             // eslint-disable-next-line no-console
             console.warn('TrezorConnect.singTransaction deprecation: missing input amount.');
-            const refTx = rawTxs.find(t => t.tx.txid === input.prev_hash);
+            const refTx = rawTxs.find(t => 'txid' in t.tx && t.tx.txid === input.prev_hash);
             if (refTx && refTx.type === 'blockbook') {
                 // REF-TODO: undefined
                 // @ts-ignore

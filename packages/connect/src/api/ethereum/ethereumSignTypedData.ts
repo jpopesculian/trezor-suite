@@ -127,7 +127,7 @@ export function encodeData(typeName: string, data: any): string {
 }
 
 // these are simple types, so we can just do a string-match
-const paramTypesMap = {
+const paramTypesMap: Record<string, Enum_EthereumDataType> = {
     string: Enum_EthereumDataType.STRING,
     bool: Enum_EthereumDataType.BOOL,
     address: Enum_EthereumDataType.ADDRESS,

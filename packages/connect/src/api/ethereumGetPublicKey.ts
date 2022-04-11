@@ -10,7 +10,7 @@ import type { EthereumNetworkInfo, PublicKey } from '../types';
 import type { MessageType } from '@trezor/transport/lib/types/messages';
 
 type Params = MessageType['EthereumGetPublicKey'] & {
-    network?: EthereumNetworkInfo;
+    network: EthereumNetworkInfo;
 };
 
 export default class EthereumGetPublicKey extends AbstractMethod<'ethereumGetPublicKey'> {
@@ -41,6 +41,10 @@ export default class EthereumGetPublicKey extends AbstractMethod<'ethereumGetPub
 
             const path = validatePath(batch.path, 3);
             const network = getEthereumNetwork(path);
+            // REF-TODO: something like this should be added probably
+            // if (!network) {
+            //     throw ERRORS.TypedError('Method_UnknownCoin');
+            // }
             this.firmwareRange = getFirmwareRange(this.name, network, this.firmwareRange);
 
             let showOnTrezor: boolean | undefined = false;
@@ -51,6 +55,7 @@ export default class EthereumGetPublicKey extends AbstractMethod<'ethereumGetPub
             this.params.push({
                 address_n: path,
                 show_display: showOnTrezor,
+                // @ts-ignore see todo above
                 network,
             });
         });
