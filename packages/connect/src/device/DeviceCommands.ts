@@ -620,7 +620,6 @@ export default class DeviceCommands {
 
             const { message } = await this.typedCall('CardanoGetPublicKey', 'CardanoPublicKey', {
                 address_n,
-                // $FlowIssue - is specified
                 derivation_type: derivationType,
             });
             return {

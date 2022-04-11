@@ -164,6 +164,8 @@ const requestTxAck = (props: Props) => {
 
 const saveTxSignatures = (
     txRequest?: TxRequestSerializedType,
+    // REF-TODO: required after optional, but no refactoring now.
+    // @ts-ignore
     serializedTx: string[],
     signatures: string[],
 ) => {
@@ -183,7 +185,12 @@ const saveTxSignatures = (
     }
 };
 
-const processTxRequest = async (props: Props) => {
+const processTxRequest = async (
+    props: Props,
+): Promise<{
+    signatures: string[];
+    serializedTx: string;
+}> => {
     const { typedCall, txRequest, refTxs, inputs, outputs, serializedTx, signatures } = props;
     saveTxSignatures(txRequest.serialized, serializedTx, signatures);
     if (txRequest.request_type === 'TXFINISHED') {

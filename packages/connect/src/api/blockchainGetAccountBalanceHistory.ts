@@ -6,14 +6,12 @@ import { isBackendSupported, initBlockchain } from '../backend/BlockchainLink';
 import { getCoinInfo } from '../data/CoinInfo';
 import type { CoinInfo } from '../types';
 
+// REF-TODO: direct import here? It safes few duplicated lines of code
+import type { AccountBalanceHistoryParams } from '@trezor/blockchain-link/lib/types/params'; // TODO: export from B-L
+
 type Params = {
     coinInfo: CoinInfo;
-    request: {
-        descriptor: string;
-        from?: number;
-        to?: number;
-        groupBy?: number;
-    };
+    request: AccountBalanceHistoryParams;
 };
 
 export default class BlockchainGetAccountBalanceHistory extends AbstractMethod<'blockchainGetAccountBalanceHistory'> {

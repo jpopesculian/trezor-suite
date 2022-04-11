@@ -56,6 +56,8 @@ export default class TransactionComposer {
                   .map(a => a.address);
         this.utxos = options.utxo.flatMap(u => {
             // exclude amounts lower than dust limit if they are NOT required
+            // REF-TODO: required not part of blockchain-link AccountUtxoType
+            // @ts-expect-error
             if (!u.required && new BigNumber(u.amount).lte(this.coinInfo.dustLimit)) return [];
             const addressPath = getHDPath(u.path);
 
@@ -69,6 +71,8 @@ export default class TransactionComposer {
                 vsize: 0, // doesn't matter
                 coinbase: typeof u.coinbase === 'boolean' ? u.coinbase : false, // decide it it can be spent immediately (false) or after 100 conf (true)
                 own: allAddresses.indexOf(u.address) >= 0, // decide if it can be spent immediately (own) or after 6 conf (not own)
+                // REF-TODO: required not part of blockchain-link AccountUtxoType
+                // @ts-expect-error
                 required: u.required,
             };
         });
@@ -152,7 +156,7 @@ export default class TransactionComposer {
         return list;
     }
 
-    compose(feeRate: string) {
+    compose(feeRate: string): ComposeResult {
         const { account, coinInfo, baseFee } = this;
         const { addresses } = account;
         if (!addresses) return { type: 'error', error: 'ADDRESSES-NOT-SET' };

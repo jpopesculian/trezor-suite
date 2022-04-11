@@ -1,7 +1,10 @@
 import { ERRORS } from '../../constants';
 import { validateParams } from '../common/paramsValidator';
 // REF-TODO: remove as
-import { StellarMemoType as Enum_StellarMemoType } from '@trezor/transport/lib/types/messages';
+import {
+    MessageResponse,
+    StellarMemoType as Enum_StellarMemoType,
+} from '@trezor/transport/lib/types/messages';
 import type {
     StellarTransaction,
     StellarOperation,
@@ -13,7 +16,7 @@ const processTxRequest = async (
     typedCall: TypedCall,
     operations: StellarOperationMessage[],
     index: number,
-) => {
+): Promise<MessageResponse<'StellarSignedTx'>['message']> => {
     const lastOp = index + 1 >= operations.length;
     const { type, ...op } = operations[index];
 

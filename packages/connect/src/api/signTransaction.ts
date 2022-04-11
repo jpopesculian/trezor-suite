@@ -152,6 +152,8 @@ export default class SignTransaction extends AbstractMethod<'signTransaction'> {
                             .getHDNode(accountPath.address_n.slice(0, 3), params.coinInfo);
                         const account = await blockchain.getAccountInfo({
                             descriptor: node.xpubSegwit || node.xpub,
+                            // REF-TODO: coin seems to be redundant
+                            // @ts-ignore
                             coin: params.coinInfo.name,
                             details: 'tokens',
                         });
@@ -160,7 +162,8 @@ export default class SignTransaction extends AbstractMethod<'signTransaction'> {
                     const origRefTxs = transformOrigTransactions(
                         rawOrigTxs,
                         params.coinInfo,
-                        addresses,
+                        // REF-TODO: addresses might be undefined, maybe blockbook should return at least empty []?
+                        addresses!,
                     );
                     refTxs = refTxs.concat(origRefTxs);
                 }

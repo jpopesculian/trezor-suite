@@ -26,3 +26,9 @@ import { find } from 'trezor-connect/lib/core/methods';
 // };
 
 export const getMethod = find;
+
+// REF-TODO:
+// narrowing MessageResponseType guard.
+// function isType<T extends MessageResponse<any>>(x: any, type: string): x is T {
+//     return (x as T).type === type;
+// }

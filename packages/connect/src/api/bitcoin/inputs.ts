@@ -66,7 +66,7 @@ export const enhanceTrezorInputs = (inputs: TxInputType[], rawTxs: TypedRawTrans
 /** *****
  * Transform from Trezor format to @trezor/utxo-lib/compose, called from SignTx to get refTxs from bitcore
  ****** */
-export const inputToHD = (input: TxInputType): ComposedTxInput => ({
+export const inputToHD = (input: TxInputType) => ({
     hash: reverseBuffer(Buffer.from(input.prev_hash, 'hex')),
     index: input.prev_index,
     path: input.address_n || [],

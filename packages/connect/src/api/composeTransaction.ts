@@ -32,6 +32,7 @@ import type {
 // REF-TODO
 import type { TransactionOptions } from 'trezor-connect';
 import type { DiscoveryAccount, AccountUtxo } from '../types/account';
+import { RefTransaction } from '../types/api/signTransaction';
 
 type Params = {
     outputs: ComposeOutput[];
@@ -82,7 +83,7 @@ export default class ComposeTransaction extends AbstractMethod<'composeTransacti
         let total = new BigNumber(0);
         payload.outputs.forEach(out => {
             const output = validateHDOutput(out, coinInfo);
-            if (typeof output.amount === 'string') {
+            if ('amount' in output && output.amount === 'string') {
                 total = total.plus(output.amount);
             }
             outputs.push(output);
@@ -107,19 +108,22 @@ export default class ComposeTransaction extends AbstractMethod<'composeTransacti
             this.info = `Send ${formatAmount(total.toString(), coinInfo)}`;
         }
 
-        this.useDevice = !payload.account && !payload.feeLevels;
+        // REF-TODO: commenting out original line for review
+        // this.useDevice = !payload.account && !payload.feeLevels;
+        this.useDevice = !('account' in payload) && !('feeLevels' in payload);
+
         this.useUi = this.useDevice;
 
         this.params = {
             outputs,
             coinInfo,
-            account: payload.account,
-            feeLevels: payload.feeLevels,
+            account: 'account' in payload ? payload.account : undefined,
+            feeLevels: 'feeLevels' in payload ? payload.feeLevels : undefined,
             baseFee: payload.baseFee,
             floorBaseFee: payload.floorBaseFee,
             sequence: payload.sequence,
             skipPermutation: payload.skipPermutation,
-            push: typeof payload.push === 'boolean' ? payload.push : false,
+            push: 'push' in payload && typeof payload.push === 'boolean' ? payload.push : false,
         };
     }
 
@@ -325,7 +329,9 @@ export default class ComposeTransaction extends AbstractMethod<'composeTransacti
         return this._selectFeeUiResponse(composer);
     }
 
-    async _selectFeeUiResponse(composer: TransactionComposer) {
+    async _selectFeeUiResponse(
+        composer: TransactionComposer,
+    ): Promise<SignedTransaction | 'change-account'> {
         const resp = await this.createUiPromise(UI.RECEIVE_FEE, this.device).promise;
         switch (resp.payload.type) {
             case 'compose-custom':
@@ -372,7 +378,7 @@ export default class ComposeTransaction extends AbstractMethod<'composeTransacti
         );
         const outputs = tx.transaction.outputs.sorted.map(out => outputToTrezor(out, coinInfo));
 
-        let refTxs = [];
+        let refTxs: RefTransaction[] = [];
         const refTxsIds = getReferencedTransactions(inputs);
         if (refTxsIds.length > 0) {
             const blockchain = await initBlockchain(coinInfo, this.postMessage);

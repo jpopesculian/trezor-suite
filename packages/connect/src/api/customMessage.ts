@@ -4,7 +4,7 @@ import { ERRORS } from '../constants';
 import { UI, UiMessage } from '../events';
 
 type Params = {
-    customMessages?: JSON;
+    customMessages?: JSON | Record<string, any>;
     message: string;
     params: any;
 };
@@ -46,7 +46,7 @@ export default class CustomMessage extends AbstractMethod<'customMessage'> {
         return this.params.customMessages;
     }
 
-    async run() {
+    async run(): Promise<any> {
         if (
             this.device.features.vendor === 'trezor.io' ||
             this.device.features.vendor === 'bitcointrezor.com'
@@ -59,7 +59,7 @@ export default class CustomMessage extends AbstractMethod<'customMessage'> {
         // call message
         const response = await this.device
             .getCommands()
-            // $FlowIssue message could be anything, unknown type
+            // @ts-expect-error string is allowed here
             ._commonCall(this.params.message, this.params.params);
         // create ui promise
         const uiPromise = this.createUiPromise(UI.CUSTOM_MESSAGE_RESPONSE, this.device);

@@ -11,16 +11,33 @@ import { UI, UiMessage } from '../events';
 
 import { isBackendSupported, initBlockchain } from '../backend/BlockchainLink';
 
-import type { CoinInfo } from '../types';
-import type {
-    // REF-TODO: missing type
-    AccountInfoParams as GetAccountInfoParams,
-    AccountInfo,
-    AccountUtxo,
-} from '../types/account';
+import type { CardanoDerivationType } from '@trezor/transport/lib/types/messages';
+
+import type { CoinInfo, DiscoveryAccountType, AccountInfo, AccountUtxo } from '../types';
 
 // REF-TODO: rename
 import { CardanoDerivationType as Enum_CardanoDerivationType } from '@trezor/transport/lib/types/messages';
+
+// REF-TODO: where does this belong?
+type GetAccountInfoParams = {
+    coin: string;
+    path?: string;
+    descriptor?: string;
+    details?: 'basic' | 'tokens' | 'tokenBalances' | 'txids' | 'txs';
+    tokens?: 'nonzero' | 'used' | 'derived';
+    page?: number;
+    pageSize?: number;
+    from?: number;
+    to?: number;
+    contractFilter?: string;
+    gap?: number;
+    marker?: {
+        ledger: number;
+        seq: number;
+    };
+    defaultAccountType?: DiscoveryAccountType;
+    derivationType?: CardanoDerivationType;
+};
 
 type Request = GetAccountInfoParams & { address_n: number[]; coinInfo: CoinInfo };
 type Params = Request[];
@@ -80,7 +97,7 @@ export default class GetAccountInfo extends AbstractMethod<'getAccountInfo'> {
             // validate backend
             isBackendSupported(coinInfo);
             // validate path if exists
-            let address_n = [];
+            let address_n: number[] = [];
             if (batch.path) {
                 address_n = validatePath(batch.path, 3);
                 // since there is no descriptor device will be used
@@ -247,7 +264,7 @@ export default class GetAccountInfo extends AbstractMethod<'getAccountInfo'> {
             const request = this.params[i];
             const { address_n } = request;
             let { descriptor } = request;
-            let legacyXpub: ?string;
+            let legacyXpub: string | undefined;
 
             if (this.disposed) break;
 
@@ -307,7 +324,10 @@ export default class GetAccountInfo extends AbstractMethod<'getAccountInfo'> {
 
                 if (this.disposed) break;
 
-                let utxo: AccountUtxo;
+                // REF-TODO: assign default value []
+                // let utxo: AccountUtxo[] = [];
+                let utxo: AccountUtxo[];
+
                 if (
                     isUtxoBased(request.coinInfo) &&
                     typeof request.details === 'string' &&
@@ -320,10 +340,13 @@ export default class GetAccountInfo extends AbstractMethod<'getAccountInfo'> {
 
                 // add account to responses
                 const account: AccountInfo = {
+                    // REF-TODO: request.path might be undefined
+                    // @ts-ignore
                     path: request.path,
                     ...info,
                     descriptor, // override descriptor (otherwise eth checksum is lost)
                     legacyXpub,
+                    // @ts-ignore see ref todo above with assigning default value
                     utxo,
                 };
                 responses.push(account);
@@ -414,7 +437,9 @@ export default class GetAccountInfo extends AbstractMethod<'getAccountInfo'> {
             marker: request.marker,
         });
 
-        let utxo: AccountUtxo;
+        // REF-TODO: assign default value []
+        // let utxo: AccountUtxo[] = [];
+        let utxo: AccountUtxo[];
 
         if (
             isUtxoBased(coinInfo) &&
@@ -427,6 +452,7 @@ export default class GetAccountInfo extends AbstractMethod<'getAccountInfo'> {
         return {
             path: getSerializedPath(account.address_n),
             ...info,
+            // @ts-ignore see ref todo above with assigning default value
             utxo,
         };
     }

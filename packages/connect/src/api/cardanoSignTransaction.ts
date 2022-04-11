@@ -462,6 +462,8 @@ export default class CardanoSignTransaction extends AbstractMethod<'cardanoSignT
 
         let { type, message } = await typedCall(
             'CardanoSignTx',
+            // REF-TODO: typedCall unions
+            // @ts-expect-error
             'CardanoSignedTx|CardanoSignedTxChunk',
             legacyParams,
         );
@@ -469,18 +471,20 @@ export default class CardanoSignTransaction extends AbstractMethod<'cardanoSignT
             serializedTx += message.signed_tx_chunk;
             ({ type, message } = await typedCall(
                 'CardanoSignedTxChunkAck',
+                // REF-TODO: typedCall unions
+                // @ts-expect-error
                 'CardanoSignedTx|CardanoSignedTxChunk',
             ));
         }
 
         // this is required for backwards compatibility for FW <= 2.3.6 when the tx was not sent in chunks yet
-        // @ts-expect-error
+        // @ts-expect-error legacy params
         if (message.serialized_tx) {
-            // @ts-expect-error
+            // @ts-expect-error legacy params
             serializedTx += message.serialized_tx;
         }
 
-        // @ts-expect-error
+        // @ts-expect-error legacy params
         return legacySerializedTxToResult(message.tx_hash, serializedTx);
     }
 

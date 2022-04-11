@@ -8,7 +8,7 @@ import type { EosPublicKey } from '../types/api/eosGetPublicKey';
 import type { MessageType } from '@trezor/transport/lib/types/messages';
 
 export default class EosGetPublicKey extends AbstractMethod<'eosGetPublicKey'> {
-    params: MessageType['EosGetPublicKey'] = [];
+    params: MessageType['EosGetPublicKey'][] = [];
 
     hasBundle: boolean;
 

@@ -1,3 +1,5 @@
+import BigNumber from 'bignumber.js';
+
 import type { EthereumSignTypedDataTypes } from '../../types/api/ethereumSignTypedData';
 import type { EthereumFieldType } from '@trezor/transport/lib/types/messages';
 // REF-TODO: remove as
@@ -66,11 +68,12 @@ function twosComplement(number: BigNumber, bytes: number): BigNumber {
 }
 
 function intToHex(
-    // $FlowIssue bigint-unsupported, TODO: Update flow when bigint is supported
     number: number | bigint | BigNumber | string,
     bytes: number,
     signed: boolean,
 ): string {
+    // REF-TODO bigint-unsupported, supported maybe in some future version of Bignumber.js?
+    // @ts-expect-error
     let bigNumber = new BigNumber(number);
     if (signed) {
         bigNumber = twosComplement(bigNumber, bytes);

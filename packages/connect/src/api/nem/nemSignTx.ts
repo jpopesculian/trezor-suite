@@ -81,6 +81,8 @@ const transferMessage = (tx: $T.NEMTransferTransaction): NEMTransfer => {
 };
 
 const importanceTransferMessage = (tx: $T.NEMImportanceTransaction): NEMImportanceTransfer => ({
+    // REF-TODO: refine with enums
+    // @ts-ignore
     mode: NEM_IMPORTANCE_TRANSFER_MODES[tx.importanceTransfer.mode],
     public_key: tx.importanceTransfer.publicKey,
 });
@@ -90,6 +92,8 @@ const aggregateModificationMessage = (
 ): NEMAggregateModification => {
     const modifications = tx.modifications
         ? tx.modifications.map(modification => ({
+              // REF-TODO: refine with enums
+              // @ts-ignore
               type: NEM_AGGREGATE_MODIFICATION_TYPES[modification.modificationType],
               public_key: modification.cosignatoryAccount,
           }))
@@ -116,6 +120,8 @@ const mosaicCreationMessage = (tx: $T.NEMMosaicCreationTransaction): NEMMosaicCr
     const definition: NEMMosaicDefinition = {
         namespace: tx.mosaicDefinition.id.namespaceId,
         mosaic: tx.mosaicDefinition.id.name,
+        // REF-TODO: refine with enums
+        // @ts-ignore
         levy: levy && levy.type ? NEM_MOSAIC_LEVY_TYPES[levy.type] : undefined,
         fee: levy && levy.fee,
         levy_address: levy && levy.recipient,
@@ -160,6 +166,8 @@ const mosaicCreationMessage = (tx: $T.NEMMosaicCreationTransaction): NEMMosaicCr
 const supplyChangeMessage = (tx: $T.NEMSupplyChangeTransaction): NEMMosaicSupplyChange => ({
     namespace: tx.mosaicId.namespaceId,
     mosaic: tx.mosaicId.name,
+    // REF-TODO: refine with enums
+    // @ts-ignore
     type: NEM_SUPPLY_CHANGE_TYPES[tx.supplyType],
     delta: tx.delta,
 });

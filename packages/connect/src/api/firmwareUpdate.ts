@@ -35,15 +35,20 @@ export default class FirmwareUpdate extends AbstractMethod<'firmwareUpdate'> {
             { name: 'intermediary', type: 'boolean' },
         ]);
 
-        this.params = {
-            // either receive version and btcOnly
-            version: payload.version,
-            btcOnly: payload.btcOnly,
-            baseUrl: payload.baseUrl || 'https://data.trezor.io',
+        if ('version' in payload) {
+            this.params = {
+                // either receive version and btcOnly
+                version: payload.version,
+                btcOnly: payload.btcOnly,
+                baseUrl: payload.baseUrl || 'https://data.trezor.io',
+                intermediary: payload.intermediary,
+            };
+        }
+
+        if ('binary' in payload) {
             // or binary
-            binary: payload.binary,
-            intermediary: payload.intermediary,
-        };
+            this.params.binary = payload.binary;
+        }
     }
 
     async confirmation() {
@@ -78,18 +83,22 @@ export default class FirmwareUpdate extends AbstractMethod<'firmwareUpdate'> {
                 binary = modifyFirmware({
                     fw: params.binary,
                     // REF-TODO: rollout has different types for features. remove rollout
-                    // @ts-ignore
+                    // @ts-expect-error
                     features: device.features,
                 });
             } else {
                 const firmware = await getBinary({
                     // features and releases are used for sanity checking inside @trezor/rollout
                     features: device.features,
+                    // REF-TODO: rollout has different types for releases. remove rollout
+                    // @ts-expect-error
                     releases: getReleases(device.features.major_version),
                     // version argument is used to find and fetch concrete release from releases list
+                    // REF-TODO: rollout has different types for releases. remove rollout
+                    // @ts-expect-error
                     version: params.version,
                     btcOnly: params.btcOnly,
-                    baseUrl: params.baseUrl,
+                    baseUrl: params.baseUrl!,
                     intermediary: params.intermediary,
                 });
                 binary = firmware.binary;
@@ -105,6 +114,8 @@ export default class FirmwareUpdate extends AbstractMethod<'firmwareUpdate'> {
             this.device.getCommands().typedCall.bind(this.device.getCommands()),
             this.postMessage,
             device,
+            // REF-TODO: ArrayBuffer (rollout) vs Buffer (proto), remove rollout and unify
+            // @ts-ignore
             { payload: binary },
         );
     }

@@ -10,21 +10,25 @@ import type {
     EthereumTypedDataStructAck,
 } from '@trezor/transport/lib/types/messages';
 import { ERRORS } from '../constants';
+
 import type {
     EthereumSignTypedData as EthereumSignTypedDataParams,
     EthereumSignTypedHashAndData as EthereumSignTypedHashAndDataParams,
-    // REF-TODO: proper import
-} from 'trezor-connect';
+} from '../types/api/ethereumSignTypedData';
 import { getFieldType, parseArrayType, encodeData } from './ethereum/ethereumSignTypedData';
 import { messageToHex } from '../utils/formatUtils';
 
-type Params = Omit<
-    // REF-TODO: any ?
-    (EthereumSignTypedDataParams<any> | EthereumSignTypedHashAndDataParams<any>) & {
-        address_n: number[];
-    },
-    'path' // removes the "path" variable from this.params
->;
+type Params = (
+    | Omit<EthereumSignTypedDataParams<any>, 'path'>
+    | Omit<EthereumSignTypedHashAndDataParams<any>, 'path'>
+) & {
+    address_n: number[];
+};
+
+// REF-TODO: temporarily here, if we decide to use this, move somewhere else
+function isExactMessageResponseType<T extends MessageResponse<any>>(x: any, type: string): x is T {
+    return (x as T).type === type;
+}
 
 export default class EthereumSignTypedData extends AbstractMethod<'ethereumSignTypedData'> {
     params: Params;
@@ -57,7 +61,7 @@ export default class EthereumSignTypedData extends AbstractMethod<'ethereumSignT
             data: payload.data,
         };
 
-        if (payload.domain_separator_hash) {
+        if ('domain_separator_hash' in payload) {
             this.params = {
                 ...this.params,
                 // leading `0x` in hash-strings causes issues
@@ -87,7 +91,7 @@ export default class EthereumSignTypedData extends AbstractMethod<'ethereumSignT
                 this.firmwareRange,
             );
 
-            if (this.params.message_hash) {
+            if ('message_hash' in this.params) {
                 throw ERRORS.TypedError(
                     'Method_InvalidParameter',
                     'message_hash should be empty when data.primaryType=EIP712Domain',
@@ -132,13 +136,16 @@ export default class EthereumSignTypedData extends AbstractMethod<'ethereumSignT
         const { types, primaryType, domain, message } = data;
 
         // For Model T we use EthereumSignTypedData
+        // REF-TODO: typedCall unions
+        // @ts-expect-error
         let response: MessageResponse<
             | 'EthereumTypedDataStructRequest'
             | 'EthereumTypedDataValueRequest'
             | 'EthereumTypedDataSignature'
         > = await cmd.typedCall(
             'EthereumSignTypedData',
-            // $FlowIssue typedCall problem with unions in response, TODO: accept unions
+            // REF-TODO: typedCall unions
+            // @ts-expect-error
             'EthereumTypedDataStructRequest|EthereumTypedDataValueRequest|EthereumTypedDataSignature',
             {
                 address_n,
@@ -148,8 +155,13 @@ export default class EthereumSignTypedData extends AbstractMethod<'ethereumSignT
         );
 
         // sending all the type data
-        while (response.type === 'EthereumTypedDataStructRequest') {
-            // $FlowIssue disjoint union Refinements not working, TODO: check if new Flow versions fix this
+        while (
+            // REF-TODO: check if correct, maybe we could find a better approach
+            isExactMessageResponseType<MessageResponse<'EthereumTypedDataStructRequest'>>(
+                response,
+                'EthereumTypedDataStructRequest',
+            )
+        ) {
             const { name: typeDefinitionName } = response.message;
             const typeDefinition = types[typeDefinitionName];
             if (typeDefinition === undefined) {
@@ -159,22 +171,33 @@ export default class EthereumSignTypedData extends AbstractMethod<'ethereumSignT
                 );
             }
             const dataStruckAck: EthereumTypedDataStructAck = {
-                members: typeDefinition.map(({ name, type: typeName }) => ({
-                    name,
-                    type: getFieldType(typeName, types),
-                })),
+                // REF-TODO: remove any
+                members: typeDefinition.map(
+                    ({ name, type: typeName }: { name: any; type: any }) => ({
+                        name,
+                        type: getFieldType(typeName, types),
+                    }),
+                ),
             };
+            // REF-TODO: typedCall unions
+            // @ts-expect-error
             response = await cmd.typedCall(
                 'EthereumTypedDataStructAck',
-                // $FlowIssue typedCall problem with unions in response, TODO: accept unions
+                // REF-TODO: typedCall unions
+                // @ts-expect-error
                 'EthereumTypedDataStructRequest|EthereumTypedDataValueRequest|EthereumTypedDataSignature',
                 dataStruckAck,
             );
         }
 
         // sending the whole message to be signed
-        while (response.type === 'EthereumTypedDataValueRequest') {
-            // $FlowIssue disjoint union Refinements not working, TODO: check if new Flow versions fix this
+        while (
+            // REF-TODO: check if correct, maybe we could find a better approach
+            isExactMessageResponseType<MessageResponse<'EthereumTypedDataValueRequest'>>(
+                response,
+                'EthereumTypedDataValueRequest',
+            )
+        ) {
             const { member_path } = response.message;
 
             let memberData;
@@ -218,10 +241,12 @@ export default class EthereumSignTypedData extends AbstractMethod<'ethereumSignT
                 encodedData = encodeData(memberTypeName, memberData);
             }
 
-            // $FlowIssue with `await` and Promises: https://github.com/facebook/flow/issues/5294, TODO: Update flow
+            // REF-TODO: typedCall unions
+            // @ts-expect-error
             response = await cmd.typedCall(
                 'EthereumTypedDataValueAck',
-                // $FlowIssue typedCall problem with unions in response, TODO: accept unions
+                // REF-TODO: typedCall unions
+                // @ts-expect-error
                 'EthereumTypedDataValueRequest|EthereumTypedDataSignature',
                 {
                     value: encodedData,
@@ -229,8 +254,10 @@ export default class EthereumSignTypedData extends AbstractMethod<'ethereumSignT
             );
         }
 
-        // $FlowIssue disjoint union Refinements not working, TODO: check if new Flow versions fix this
-        const { address, signature } = response.message;
+        const { address, signature } =
+            // REF-TODO typecast is safe here, remaining types were handled above
+            // additional isExactMessageResponseType check might be added
+            response.message as MessageResponse<'EthereumTypedDataSignature'>['message'];
         return {
             address,
             signature: `0x${signature}`,

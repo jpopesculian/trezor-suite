@@ -111,7 +111,7 @@ export default class GetAddress extends AbstractMethod<'getAddress'> {
     getButtonRequestData(code: string) {
         if (code === 'ButtonRequest_Address') {
             const data = {
-                type: 'address',
+                type: 'address' as const,
                 serializedPath: getSerializedPath(this.params[this.progress].address_n),
                 address: this.params[this.progress].address || 'not-set',
             };

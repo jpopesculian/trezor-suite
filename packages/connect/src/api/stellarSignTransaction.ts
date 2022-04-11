@@ -4,11 +4,12 @@ import { getMiscNetwork } from '../data/CoinInfo';
 import { validatePath } from '../utils/pathUtils';
 import * as helper from './stellar/stellarSignTx';
 import { ERRORS } from '../constants';
+import { StellarTransaction } from '../types/api/stellarSignTransaction';
 
 type Params = {
     path: number[];
     networkPassphrase: string;
-    transaction: any;
+    transaction: StellarTransaction;
 };
 
 const StellarSignTransactionFeatures = Object.freeze({

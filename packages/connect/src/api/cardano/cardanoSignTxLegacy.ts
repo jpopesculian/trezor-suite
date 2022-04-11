@@ -1,3 +1,5 @@
+// REF-TODO: does not have types available, but is used for cardano legacy stuff and might be removed soon
+// @ts-ignore
 import * as cbor from 'cbor-web';
 import { ERRORS } from '../../constants';
 import type { IDevice } from '../../device/Device';
@@ -129,12 +131,12 @@ export const toLegacyParams = (
     network_id: params.networkId,
 });
 
-const _transformShelleyWitnesses = (deserializedWitnesses): CardanoSignedTxWitness[] => {
+const _transformShelleyWitnesses = (deserializedWitnesses: any): CardanoSignedTxWitness[] => {
     if (!deserializedWitnesses.has(SHELLEY_WITNESSES_KEY)) {
         return [];
     }
 
-    return deserializedWitnesses.get(SHELLEY_WITNESSES_KEY).map(witness => {
+    return deserializedWitnesses.get(SHELLEY_WITNESSES_KEY).map((witness: any[]) => {
         const [pubKeyBytes, signatureBytes] = witness;
         return {
             type: CardanoTxWitnessType.SHELLEY_WITNESS,
@@ -145,12 +147,12 @@ const _transformShelleyWitnesses = (deserializedWitnesses): CardanoSignedTxWitne
     });
 };
 
-const _transformByronWitnesses = (deserializedWitnesses): CardanoSignedTxWitness[] => {
+const _transformByronWitnesses = (deserializedWitnesses: any): CardanoSignedTxWitness[] => {
     if (!deserializedWitnesses.has(BYRON_WITNESSES_KEY)) {
         return [];
     }
 
-    return deserializedWitnesses.get(BYRON_WITNESSES_KEY).map(witness => {
+    return deserializedWitnesses.get(BYRON_WITNESSES_KEY).map((witness: any) => {
         const [pubKeyBytes, signatureBytes, chainCodeBytes] = witness;
         return {
             type: CardanoTxWitnessType.BYRON_WITNESS,
@@ -161,7 +163,10 @@ const _transformByronWitnesses = (deserializedWitnesses): CardanoSignedTxWitness
     });
 };
 
-const _transformAuxiliaryData = (txBody, auxiliaryData): CardanoAuxiliaryDataSupplement | void => {
+const _transformAuxiliaryData = (
+    txBody: any,
+    auxiliaryData: any,
+): CardanoAuxiliaryDataSupplement | void => {
     // Legacy firmware only supported catalyst registration auxiliary data so try to parse it.
     // If it fails, then no supplement is needed.
     try {
@@ -192,5 +197,7 @@ export const legacySerializedTxToResult = (
 
     const auxiliaryDataSupplement = _transformAuxiliaryData(txBody, auxiliaryData);
 
+    // REF-TODO:
+    // @ts-ignore
     return { hash: txHash, witnesses, auxiliaryDataSupplement };
 };

@@ -8,6 +8,7 @@ import { DataManager } from '../data/DataManager';
 import type { ConnectSettings } from '../types';
 import type { MessageType, IdentityType } from '@trezor/transport/lib/types/messages';
 
+// REF-TODO name of this method (RequestLogin) does not match message type (SignIdentity) which breaks types?
 export default class RequestLogin extends AbstractMethod<'requestLogin'> {
     params: MessageType['SignIdentity'];
 
@@ -42,9 +43,15 @@ export default class RequestLogin extends AbstractMethod<'requestLogin'> {
 
         this.params = {
             identity,
+            // REF-TODO see above
+            // @ts-ignore
             challenge_hidden: payload.challengeHidden || '',
+            // REF-TODO see above
+            // @ts-ignore
             challenge_visual: payload.challengeVisual || '',
         };
+        // REF-TODO see above
+        // @ts-ignore
         this.asyncChallenge = !!payload.asyncChallenge;
     }
 

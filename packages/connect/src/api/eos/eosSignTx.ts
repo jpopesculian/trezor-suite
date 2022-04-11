@@ -16,6 +16,7 @@ import type {
     EosTxHeader,
     EosActionCommon,
     EosAuthorization,
+    EosSignedTx,
 } from '@trezor/transport/lib/types/messages';
 
 type Action = $EosTxAction; // | $EosActionCommon & { name: string; data: string };
@@ -151,6 +152,9 @@ const parseAuth = (a: $EosAuthorization): EosAuthorization => {
     };
     return {
         threshold: a.threshold,
+        // REF-TODO: according to types, it should be string here.
+        // interestingly, flow did not complain here. this needs deeper investigation
+        // @ts-ignore
         keys: a.keys.map(k => ({
             weight: k.weight,
             ...keyToBuffer(k.key),
@@ -295,7 +299,7 @@ const parseAck = (action: Action) => {
     }
 };
 
-const parseUnknown = (action: Action) => {
+const parseUnknown = (action: any) => {
     if (typeof action.data !== 'string') return null;
     return {
         unknown: {
@@ -322,7 +326,8 @@ const parseAction = (action: any) => {
     };
 };
 
-// REF-TODO: not used address_n
+// REF-TODO: not used address_n, remove it
+// @ts-ignore
 export const validate = (address_n: number[], tx: EosSDKTransaction) => {
     const header = {
         expiration:
@@ -362,7 +367,7 @@ const processTxRequest = async (
     message: EosTxActionRequest,
     actions: EosTxActionAck[],
     index: number,
-) => {
+): Promise<EosSignedTx> => {
     const action = actions[index];
     const lastOp = index + 1 >= actions.length;
     let ack: MessageResponse<'EosTxActionRequest'>;

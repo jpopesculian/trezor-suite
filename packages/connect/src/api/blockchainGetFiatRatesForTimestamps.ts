@@ -8,7 +8,8 @@ import type { CoinInfo } from '../types';
 
 type Params = {
     coinInfo: CoinInfo;
-    timestamps?: number[];
+    // REF-TODO: import type from @trezor/blockchain-link here?
+    timestamps: number[];
 };
 
 export default class BlockchainGetFiatRatesForTimestamps extends AbstractMethod<'blockchainGetFiatRatesForTimestamps'> {

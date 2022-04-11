@@ -1,11 +1,7 @@
 import { UI, UiMessage, CoreMessage } from '../../events';
 import { DEVICE } from '../../events/device';
 
-import type {
-    TypedCall,
-    MessageResponse,
-    FirmwareUpload,
-} from '@trezor/transport/lib/types/messages';
+import type { TypedCall, FirmwareUpload } from '@trezor/transport/lib/types/messages';
 import type { IDevice } from '../../device/Device';
 
 // firmware does not send button message but user still must press button to continue
@@ -17,7 +13,11 @@ const postConfirmationMessage = (device: IDevice) => {
     }
 };
 
-const postProgressMessage = (device, progress, postMessage) => {
+const postProgressMessage = (
+    device: IDevice,
+    progress: number,
+    postMessage: (message: CoreMessage) => void,
+) => {
     postMessage(
         UiMessage(UI.FIRMWARE_PROGRESS, {
             device: device.toMessageObject(),
@@ -32,7 +32,7 @@ export const uploadFirmware = async (
     device: IDevice,
     { payload }: FirmwareUpload,
 ) => {
-    let response: MessageResponse<'Success' | 'FirmwareRequest'> = {};
+    // let response: MessageResponse<'Success' | 'FirmwareRequest'> = {};
 
     if (device.features.major_version === 1) {
         postConfirmationMessage(device);
@@ -48,17 +48,22 @@ export const uploadFirmware = async (
     if (device.features.major_version === 2) {
         postConfirmationMessage(device);
         const length = payload.byteLength;
-        // $FlowIssue typedCall problem with unions in response, TODO: accept unions
-        response = await typedCall('FirmwareErase', 'FirmwareRequest', { length });
+        let response = await typedCall('FirmwareErase', 'FirmwareRequest', { length });
+
+        // REF-TODO: first response is never success. but this should be refactored anyway, typedCall unions
+        // @ts-ignore
         while (response.type !== 'Success') {
-            const start = response.message.offset;
-            const end = response.message.offset + response.message.length;
+            console.log(response);
+
+            const start: number = response.message.offset!;
+            const end = response.message.offset! + response.message.length!;
             const chunk = payload.slice(start, end);
             // in this moment, device is still displaying 'update firmware dialog', no firmware process is in progress yet
             if (start > 0) {
                 postProgressMessage(device, Math.round((start / length) * 100), postMessage);
             }
-            // $FlowIssue typedCall problem with unions in response, TODO: accept unions
+            // REF-TODO: typedCall accept unions
+            // @ts-ignore
             response = await typedCall('FirmwareUpload', 'FirmwareRequest|Success', {
                 payload: chunk,
             });

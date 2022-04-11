@@ -5,7 +5,10 @@ import Fees from './bitcoin/Fees';
 import { isBackendSupported, initBlockchain } from '../backend/BlockchainLink';
 import { getCoinInfo } from '../data/CoinInfo';
 import type { CoinInfo } from '../types';
-import type { BlockchainEstimateFee as BlockchainEstimateFeeParams } from '../types/api/blockchainEstimateFee';
+import type {
+    BlockchainEstimateFee as BlockchainEstimateFeeParams,
+    BlockchainEstimatedFee as BlockchainEstimatedFeeResponse,
+} from '../types/api/blockchainEstimateFee';
 
 type Request = BlockchainEstimateFeeParams['request'];
 
@@ -63,7 +66,7 @@ export default class BlockchainEstimateFee extends AbstractMethod<'blockchainEst
 
     async run() {
         const { coinInfo, request } = this.params;
-        const feeInfo = {
+        const feeInfo: BlockchainEstimatedFeeResponse = {
             blockTime: coinInfo.blocktime,
             minFee: coinInfo.minFee,
             maxFee: coinInfo.maxFee,
@@ -80,6 +83,8 @@ export default class BlockchainEstimateFee extends AbstractMethod<'blockchainEst
             feeInfo.levels = fees.levels;
         } else {
             const backend = await initBlockchain(coinInfo, this.postMessage);
+            // REF-TODO: 'blocks' and 'label' missing in what should be FeeLevel object
+            // @ts-ignore
             feeInfo.levels = await backend.estimateFee(request || {});
         }
 

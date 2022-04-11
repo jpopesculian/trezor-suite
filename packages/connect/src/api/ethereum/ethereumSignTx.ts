@@ -1,5 +1,9 @@
 import { ERRORS } from '../../constants';
-import type { TypedCall, EthereumTxRequest } from '@trezor/transport/lib/types/messages';
+import type {
+    TypedCall,
+    EthereumTxRequest,
+    EthereumSignTx,
+} from '@trezor/transport/lib/types/messages';
 import type { EthereumAccessList } from '../../types/api/ethereumSignTransaction';
 
 const splitString = (str?: string, len?: number) => {
@@ -16,7 +20,11 @@ const processTxRequest = async (
     request: EthereumTxRequest,
     data?: string,
     chain_id?: number,
-) => {
+): Promise<{
+    v: string;
+    r: string;
+    s: string;
+}> => {
     if (!request.data_length) {
         let v = request.signature_v;
         const r = request.signature_r;
@@ -67,7 +75,7 @@ export const ethereumSignTx = async (
 
     const [first, rest] = splitString(data, 1024 * 2);
 
-    let message = {
+    let message: EthereumSignTx = {
         address_n,
         chain_id,
         nonce: stripLeadingZeroes(nonce),
