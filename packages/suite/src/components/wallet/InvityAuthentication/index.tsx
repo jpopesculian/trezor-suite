@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useActions, useSelector } from '@suite-hooks';
 import { useEffectOnce } from 'react-use';
-import * as notificationActions from '@suite-actions/notificationActions';
 import * as coinmarketCommonActions from '@wallet-actions/coinmarket/coinmarketCommonActions';
 import * as coinmarketSavingsActions from '@wallet-actions/coinmarketSavingsActions';
 import { useInvityNavigation } from '@wallet-hooks/useInvityNavigation';
@@ -69,7 +68,6 @@ const InvityAuthentication: React.FC<InvityAuthenticationProps> = ({
     const {
         loadInvityAuthentication,
         clearInvityAuthentication,
-        addToast,
         loadSavingsTrade,
         loadInvityData,
     } = useActions({
@@ -77,7 +75,6 @@ const InvityAuthentication: React.FC<InvityAuthenticationProps> = ({
         clearInvityAuthentication: coinmarketCommonActions.clearInvityAuthentication,
         loadInvityData: coinmarketCommonActions.loadInvityData,
         loadSavingsTrade: coinmarketSavingsActions.loadSavingsTrade,
-        addToast: notificationActions.addToast,
     });
     const { navigateToInvityRegistrationSuccessful, navigateToInvitySettingsSuccessful } =
         useInvityNavigation(account);
@@ -146,7 +143,6 @@ const InvityAuthentication: React.FC<InvityAuthenticationProps> = ({
             }
         }
     }, [
-        addToast,
         iframeMessage,
         invityAuthentication,
         loadInvityAuthentication,
