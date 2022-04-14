@@ -15,7 +15,8 @@
         "sourceMap": false,
         "declarationMap": false,
         "noUnusedLocals": false,
-        "isolatedModules": false
+        "isolatedModules": false,
+        "strictNullChecks": false
     },
     "files": ["./src/flow.ts"],
     "exclude": [

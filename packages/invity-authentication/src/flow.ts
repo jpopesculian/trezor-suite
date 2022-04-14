@@ -79,6 +79,7 @@ const getUrls = (flowType: string) => {
             break;
         case 'error':
             flowUrl = `${authServerUrl}/self-service/errors`;
+            break;
         // TODO: try remove identity schema json
         default:
             break;
