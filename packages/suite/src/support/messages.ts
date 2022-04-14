@@ -1100,6 +1100,10 @@ export default defineMessages({
         defaultMessage: 'Selfie',
         id: 'TR_SAVINGS_KYC_START_DOCUMENT_TYPE_SELFIE',
     },
+    TR_SAVINGS_KYC_START_DOCUMENT_TYPE_WALLETVERIFICATION: {
+        defaultMessage: 'Wallet verification',
+        id: 'TR_SAVINGS_KYC_START_DOCUMENT_TYPE_WALLETVERIFICATION',
+    },
     TR_SAVINGS_KYC_START_DOCUMENT_NUMBER_REQUIRED: {
         defaultMessage: 'Document number is required.',
         id: 'TR_SAVINGS_KYC_START_DOCUMENT_NUMBER_REQUIRED',

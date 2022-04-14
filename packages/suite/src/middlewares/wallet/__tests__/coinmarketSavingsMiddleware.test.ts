@@ -294,6 +294,7 @@ describe('coinmarketSavingsMiddleware', () => {
                                 ...SELECTED_PROVIDER.flow,
                                 phoneVerification: {
                                     isEnabled: true,
+                                    phoneVerificationType: 'ClientApp',
                                 },
                             },
                         },
