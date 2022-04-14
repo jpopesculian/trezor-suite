@@ -92,13 +92,22 @@ type SavingsStepCredentials = SavingsStepEnabled & {
     isPhoneEnabled: boolean;
 };
 
-type SavingsStepPhoneVerification = SavingsStepEnabled;
+type SavingsStepPhoneVerification = SavingsStepEnabled & {
+    /** Determines way of phone number verification.
+     * - ClientApp - we verify the user's phone number
+     * - External - we provide the phone number to partner to be verified by the partner or externally
+     */
+    phoneVerificationType: 'ClientApp' | 'External';
+};
 
 type SavingsStepKYC = SavingsStepEnabled & {
+    /** Determines way KYC document upload.
+     * - ClientApp - we handover the KYC documents to partner right from the user
+     * - External - upload is managed fully by our partner
+     */
     documentUploadType: 'ClientApp' | 'External';
     isWaitingForKYCResult: boolean;
 };
-
 type SavingsStepAML = SavingsStepEnabled;
 
 type SavingsStepBankAccount = SavingsStepEnabled;
@@ -245,14 +254,16 @@ export type SavingsTradeUserKYCStartDocumentType =
     | 'Passport'
     | 'IdentityCard'
     | 'DrivingLicence'
-    | 'Selfie';
+    | 'Selfie'
+    | 'WalletVerification';
 
 export type SavingsTradeUserKYCStartDocumentImageSide =
     | 'Front'
     | 'Back'
     | 'Selfie'
     | 'SecondSelfie'
-    | 'ProofOfResidency';
+    | 'ProofOfResidency'
+    | 'WalletVerification';
 
 export interface SavingsTradeUserKYCStartDocumentImage {
     documentSide: SavingsTradeUserKYCStartDocumentImageSide;
