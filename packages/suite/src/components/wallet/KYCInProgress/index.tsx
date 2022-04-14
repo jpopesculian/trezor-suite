@@ -1,10 +1,11 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
-import { Translation, Card } from '@suite-components';
+import { Translation } from '@suite-components';
+import { CardWithHeader } from '@suite-components/CardWithHeader';
 import { resolveStaticPath } from '@suite-utils/build';
 
-const StyledCard = styled(Card)`
+const StyledCard = styled(CardWithHeader)`
     background: rgba(239, 201, 65, 0.1);
     color: #ba9924;
     border-radius: 6px;
