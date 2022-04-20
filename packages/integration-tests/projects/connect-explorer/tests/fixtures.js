@@ -293,7 +293,7 @@ const recoverDevice = [
                     name: 'follow-device-select-number-of-words',
                 },
                 nextEmu: {
-                    type: 'select-num-of-words',
+                    type: 'emulator-select-num-of-words',
                     num: 12,
                 },
             },
