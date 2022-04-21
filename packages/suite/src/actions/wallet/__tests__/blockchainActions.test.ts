@@ -10,8 +10,8 @@ import notificationsReducer from '@suite-reducers/notificationReducer';
 import * as blockchainActions from '../blockchainActions';
 import * as fixtures from '../__fixtures__/blockchainActions';
 
-jest.mock('trezor-connect', () => global.JestMocks.getTrezorConnect({}));
-const TrezorConnect = require('trezor-connect').default;
+jest.mock('@trezor/connect', () => global.JestMocks.getTrezorConnect({}));
+const TrezorConnect = require('@trezor/connect').default;
 
 type AccountsState = ReturnType<typeof accountsReducer>;
 type TransactionsState = ReturnType<typeof transactionReducer>;
