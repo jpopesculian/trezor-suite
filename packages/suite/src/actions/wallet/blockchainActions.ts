@@ -4,7 +4,7 @@ import TrezorConnect, {
     BlockchainNotification,
     BlockchainError,
     BlockchainEstimateFee,
-} from 'trezor-connect';
+} from '@trezor/connect';
 import { arrayDistinct } from '@trezor/utils';
 import * as accountActions from '@wallet-actions/accountActions';
 import {

@@ -1,10 +1,4 @@
-import {
-    CARDANO,
-    CardanoAddressType,
-    CardanoCertificate,
-    CardanoCertificateType,
-    CardanoOutput,
-} from 'trezor-connect';
+import { CARDANO, CardanoCertificate, CardanoOutput, ProtobufMessages } from '@trezor/connect';
 import type { types } from '@fivebinaries/coin-selection';
 import {
     amountToSatoshi,
@@ -49,7 +43,8 @@ export const getDerivationType = (accountType: Network['accountType']) => {
     }
 };
 
-export const getAddressType = (_accountType: Account['accountType']) => CardanoAddressType.BASE;
+export const getAddressType = (_accountType: Account['accountType']) =>
+    ProtobufMessages.CardanoAddressType.BASE;
 
 export const getStakingPath = (account: Account) => `m/1852'/1815'/${account.index}'/2/0`;
 
@@ -136,14 +131,14 @@ export const prepareCertificates = (certs: CardanoCertificate[]) => {
     const convertedCerts: types.Certificate[] = [];
     certs.forEach(cert => {
         switch (cert.type) {
-            case CardanoCertificateType.STAKE_DELEGATION:
+            case ProtobufMessages.CardanoCertificateType.STAKE_DELEGATION:
                 convertedCerts.push({
                     type: cert.type,
                     pool: cert.pool!,
                 });
                 break;
-            case CardanoCertificateType.STAKE_REGISTRATION:
-            case CardanoCertificateType.STAKE_DEREGISTRATION:
+            case ProtobufMessages.CardanoCertificateType.STAKE_REGISTRATION:
+            case ProtobufMessages.CardanoCertificateType.STAKE_DEREGISTRATION:
                 convertedCerts.push({
                     type: cert.type,
                 });
@@ -176,7 +171,7 @@ export const getDelegationCertificates = (
 ) => {
     const result: CardanoCertificate[] = [
         {
-            type: CardanoCertificateType.STAKE_DELEGATION,
+            type: ProtobufMessages.CardanoCertificateType.STAKE_DELEGATION,
             path: stakingPath,
             pool: poolHex,
         },
@@ -184,7 +179,7 @@ export const getDelegationCertificates = (
 
     if (shouldRegister) {
         result.unshift({
-            type: CardanoCertificateType.STAKE_REGISTRATION,
+            type: ProtobufMessages.CardanoCertificateType.STAKE_REGISTRATION,
             path: stakingPath,
         });
     }
@@ -214,7 +209,7 @@ export const composeTxPlan = async (
         address: string;
         addressParameters: {
             path: string;
-            addressType: CardanoAddressType;
+            addressType: ProtobufMessages.CardanoAddressType;
             stakingPath: string;
         };
     },
