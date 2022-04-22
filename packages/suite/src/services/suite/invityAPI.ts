@@ -422,9 +422,20 @@ export interface WatchSavingTradeItemResponse extends WatchSavingTradeItemErrorR
 }
 
 export interface AfterLoginErrorResponse extends SavingsErrorResponse {
-    errorCode?: 'ReturnUrlRequiredOnAfterLogin' | 'ExchangeNotFound' | 'AfterLoginFailed';
+    errorCode?: 'ReturnUrlRequired' | 'ExchangeNotFound' | 'AfterLoginFailed';
 }
-export interface AfterLoginResponse extends AfterLoginErrorResponse {
+export interface AfterLoginSuccessResponse {
+    form?: {
+        formMethod: 'GET';
+        formAction: string;
+        fields: Record<string, string>;
+    };
+}
+
+export type AfterLoginResponse = AfterLoginSuccessResponse & AfterLoginErrorResponse;
+
+export interface SubmitPhoneNumberResponse extends SavingsErrorResponse {
+    errorCode?: 'ExchangeNotFound' | 'InternalError';
     form?: {
         formMethod: 'GET';
         formAction: string;
