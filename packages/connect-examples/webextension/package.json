@@ -1,0 +1,12 @@
+{
+    "name": "@trezor/connect-example-webextension",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "quickstart": "node ./node_modules/@trezor/connect-webextension/quickstart.js"
+    },
+    "____REF-TODO____": "list @trezor/connect-web, cant be done now, as its dependencies are not in npm yet",
+    "dependencies": {
+        "@trezor/connect-webextension": "../../connect-webextension"
+    }
+}
