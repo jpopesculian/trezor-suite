@@ -1,4 +1,4 @@
-const TrezorConnect = require('trezor-connect').default;
+const TrezorConnect = require('@trezor/connect').default;
 const {
     TRANSPORT_EVENT,
     UI,
@@ -6,7 +6,7 @@ const {
     DEVICE_EVENT,
     TRANSPORT,
     DEVICE,
-} = require('trezor-connect');
+} = require('@trezor/connect');
 
 let inited = false;
 // SETUP trezor-connect

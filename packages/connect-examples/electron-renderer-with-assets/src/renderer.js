@@ -5,7 +5,7 @@ import TrezorConnect, {
     DEVICE_EVENT,
     TRANSPORT,
     DEVICE,
-} from 'trezor-connect';
+} from '@trezor/connect';
 
 // print log helper
 const printLog = data => {
