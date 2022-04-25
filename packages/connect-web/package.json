@@ -37,7 +37,7 @@
         "tslib": "^2.3.1"
     },
     "devDependencies": {
-        "@types/chrome": "^0.0.180",
+        "@types/chrome": "0.0.181",
         "webpack": "^5.70.0",
         "webpack-cli": "4.9.2"
     }
