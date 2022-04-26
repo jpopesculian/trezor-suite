@@ -14,6 +14,7 @@ import type {
 } from '@trezor/connect/lib/index';
 import * as iframe from './iframe';
 import * as popup from './popup';
+import webUSBButton from './webusb/button';
 
 const {
     POPUP,
@@ -251,9 +252,8 @@ const uiResponse = (response: UiResponseEvent) => {
     iframe.postMessage({ event: UI_EVENT, type, payload });
 };
 
-const renderWebUSBButton = (_className?: string) => {
-    // REF-TODO
-    // webUSBButton(className, _settings.webusbSrc, iframe.origin);
+const renderWebUSBButton = (className?: string) => {
+    webUSBButton(className, _settings.webusbSrc, iframe.origin);
 };
 
 const getSettings = () => {

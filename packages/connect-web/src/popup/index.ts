@@ -1,3 +1,5 @@
+// origin: https://github.com/trezor/connect/blob/develop/src/js/popup/PopupManager.js
+
 /* eslint-disable no-underscore-dangle */
 
 import EventEmitter from 'events';
@@ -133,6 +135,8 @@ export class PopupManager extends EventEmitter {
         if (this.settings.env === 'webextension') {
             // REF-TODO: first argument "null" is gone because of ts?
             // chrome.windows.getCurrent(null, currentWindow => {
+            // => probably ok. according to the docs (https://developer.chrome.com/docs/extensions/reference/windows/#method-getCurrent)
+            // => getCurrent has first optional argument. It is probably clever enough to determine the type of the argument (object vs function) under the hood
             chrome.windows.getCurrent(currentWindow => {
                 // Request coming from extension popup,
                 // create new window above instead of opening new tab

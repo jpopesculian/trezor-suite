@@ -1,3 +1,5 @@
+// origin: https://github.com/trezor/connect/blob/develop/src/js/iframe/builder.js
+
 /* eslint-disable no-underscore-dangle */
 import { createDeferred, Deferred } from '@trezor/utils';
 import { IFRAME, ERRORS, ConnectSettings } from '@trezor/connect/lib/index';

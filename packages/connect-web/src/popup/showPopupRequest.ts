@@ -1,3 +1,5 @@
+// origin: https://github.com/trezor/connect/blob/develop/src/js/popup/showPopupRequest.js
+
 const LAYER_ID = 'TrezorConnectInteractionLayer';
 const HTML = `
     <div class="trezorconnect-container" id="${LAYER_ID}">
@@ -41,7 +43,7 @@ export const showPopupRequest = (open: () => void, cancel: () => void) => {
         document.body.appendChild(div);
     }
 
-    const button: any = div.getElementsByClassName('trezorconnect-open')[0];
+    const button = div.getElementsByClassName('trezorconnect-open')[0] as HTMLButtonElement;
     button.onclick = () => {
         open();
         if (document.body) {
@@ -49,7 +51,7 @@ export const showPopupRequest = (open: () => void, cancel: () => void) => {
         }
     };
 
-    const close: any = div.getElementsByClassName('trezorconnect-close')[0];
+    const close = div.getElementsByClassName('trezorconnect-close')[0] as HTMLDivElement;
     close.onclick = () => {
         cancel();
         if (document.body) {
