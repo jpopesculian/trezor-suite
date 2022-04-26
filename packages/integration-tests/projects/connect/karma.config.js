@@ -9,10 +9,13 @@ const getTestPattern = () => {
     const basename = __filename.split('/').reverse()[0];
     // yarn test:karma:production ...pattern => argv: [node, karma, start, config-file, ...pattern]
     const pos = process.argv.indexOf(`projects/connect/${basename}`);
-    if (process.argv[pos] + 1) {
+
+    // is there some argument (test file name) after the test command?
+    if (process.argv[pos + 1]) {
+        // if yes add full path
         return process.argv.slice(pos + 1).map(f => `${root}/**/${f}.test.ts`);
     }
-
+    // else return all glob patter for all tests
     return [`${root}/**/*.test.ts`];
 };
 

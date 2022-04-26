@@ -14,6 +14,6 @@ services:
     network_mode: service:trezor-user-env-unix
     working_dir: /trezor-suite
     # todo: improve with matrixes or something. also depends if github / gitlab
-    command: bash -c "docker/wait-for-env.sh && yarn workspace @trezor/integration-tests test:connect:karma init && yarn workspace @trezor/integration-tests test:connect:karma methods"
+    command: bash -c "docker/wait-for-env.sh && yarn workspace @trezor/integration-tests test:connect:karma init methods"
     volumes:
       - ../:/trezor-suite
