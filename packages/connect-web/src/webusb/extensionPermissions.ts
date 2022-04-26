@@ -1,4 +1,5 @@
-// REF-TODO: maybe move this util to @trezor/connect-web package
+// REF-TODO: https://github.com/trezor/connect/blob/develop/src/js/webusb/extensionPermissions.js
+
 import { sendMessage } from '@trezor/connect/lib/utils/windowsUtils';
 import { config } from '@trezor/connect/lib/data/config';
 

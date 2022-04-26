@@ -1,3 +1,5 @@
+// origin: https://github.com/trezor/connect/blob/develop/src/js/webusb/button.js
+
 const render = (className = '', url: string, origin = '') => {
     const query = className || '.trezor-webusb-button';
     const buttons = document.querySelectorAll(query);

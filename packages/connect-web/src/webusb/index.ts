@@ -1,3 +1,5 @@
+// origin: https://github.com/trezor/connect/blob/develop/src/js/webusb/index.js
+
 import { config } from '@trezor/connect/lib/data/config';
 
 // handle message received from connect.js
