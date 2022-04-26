@@ -23,10 +23,6 @@ export const DEVICE = {
     PASSPHRASE: 'passphrase',
     PASSPHRASE_ON_DEVICE: 'passphrase_on_device',
     WORD: 'word',
-
-    // custom
-    // REF-TODO: is it used?
-    WAIT_FOR_SELECTION: 'device-wait_for_selection',
 } as const;
 
 // REF-TODO: unify DeviceButtonRequest and DeviceEvent payload

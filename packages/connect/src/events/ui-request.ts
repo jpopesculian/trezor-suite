@@ -39,7 +39,6 @@ export const UI_REQUEST = {
     SET_OPERATION: 'ui-set_operation',
     SELECT_DEVICE: 'ui-select_device',
     SELECT_ACCOUNT: 'ui-select_account',
-    CHANGE_ACCOUNT: 'ui-change_account', // REF-TODO: not used
     SELECT_FEE: 'ui-select_fee',
     UPDATE_CUSTOM_FEE: 'ui-update_custom_fee',
     INSUFFICIENT_FUNDS: 'ui-insufficient_funds',
@@ -59,7 +58,6 @@ export interface UiRequestWithoutPayload {
         | typeof UI_REQUEST.REQUEST_UI_WINDOW
         | typeof UI_REQUEST.IFRAME_FAILURE
         | typeof UI_REQUEST.TRANSPORT
-        | typeof UI_REQUEST.CHANGE_ACCOUNT
         | typeof UI_REQUEST.INSUFFICIENT_FUNDS
         | typeof UI_REQUEST.CLOSE_UI_WINDOW
         | typeof UI_REQUEST.LOGIN_CHALLENGE_REQUEST;

@@ -3,6 +3,16 @@
 ## Breaking changes:
 
 -   Changed codebase to typescript.
--   Changed constants prefixes to `@trezor/connect/*`
--   removed `Lisk` methods from api.
--   Cardano constants from protobuf.
+-   Removed `Lisk` methods from api.
+-   Exported constants:
+    -   `CARDANO.ADDRESS_TYPE` => `PROTO.CardanoAddressType`
+    -   `CARDANO.CERTIFICATE_TYPE` => `PROTO.CardanoCertificateType`
+    -   `CARDANO.POOL_RELAY_TYPE` => `PROTO.CardanoPoolRelayType`
+    -   `CardanoCertificateType`
+    -   `CardanoNativeScriptType` => `PROTO.CardanoNativeScriptType`
+    -   `CardanoNativeScriptHashDisplayFormat` => `PROTO.CardanoNativeScriptHashDisplayFormat`
+    -   `CardanoPoolRelayType` => `PROTO.CardanoPoolRelayType`
+    -   `CardanoTxSigningMode` => `PROTO.CardanoTxSigningMode`
+    -   `CardanoTxWitnessType` => `PROTO.CardanoTxWitnessType`
+    -   removed unused `DEVICE.WAIT_FOR_SELECTION`
+    -   removed unused `UI.CHANGE_ACCOUNT`
