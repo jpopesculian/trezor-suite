@@ -114,7 +114,6 @@ const createUiPromise = <T extends UiPromise['type']>(promiseEvent: T, device?: 
 
 /**
  * Finds an instance of uiPromise.
- * @param {number} callId
  * @param {string} promiseEvent
  * @returns {Deferred<UiPromise> | void}
  * @memberof Core
@@ -170,7 +169,6 @@ export const handleMessage = (message: CoreMessage, isTrustedOrigin = false) => 
             break;
 
         // messages from UI (popup/modal...)
-        // case UI.CHANGE_ACCOUNT: REF-TODO: not used
         case UI.RECEIVE_DEVICE:
         case UI.RECEIVE_CONFIRMATION:
         case UI.RECEIVE_PERMISSION:
@@ -422,6 +420,7 @@ export const onCall = async (message: CoreMessage) => {
     // device is available
     // set public variables, listeners and run method
     /* eslint-disable no-use-before-define */
+    // REF-TODO: type device events correctly, so that event handlers don't need to be typed
     device.on(DEVICE.BUTTON, (d: any, code: any) => {
         onDeviceButtonHandler(d, code, method);
     });
@@ -447,6 +446,7 @@ export const onCall = async (message: CoreMessage) => {
         let PIN_TRIES = 1;
         const MAX_PIN_TRIES = 3;
         // This function will run inside Device.run() after device will be acquired and initialized
+        // REF-TODO: type inner correctly
         const inner: any = async () => {
             const firmwareException = await method.checkFirmwareRange(isUsingPopup!);
             if (firmwareException) {
@@ -814,6 +814,7 @@ const onDevicePassphraseHandler = async (device: IDevice, callback: (response: a
  * @returns {Promise<void>}
  * @memberof Core
  */
+// REF-TODO: remove unused param _device
 const onEmptyPassphraseHandler = (_device: IDevice, callback: (response: any) => void) => {
     // send as PassphrasePromptResponse
     callback({ passphrase: '' });
@@ -830,6 +831,7 @@ const onPopupClosed = (customErrorMessage?: string) => {
         : ERRORS.TypedError('Method_Interrupted');
     // Device was already acquired. Try to interrupt running action which will throw error from onCall try/catch block
     if (_deviceList && _deviceList.asArray().length > 0) {
+        // REF-TODO: type deviceList correctly, remove any
         _deviceList.allDevices().forEach((d: any) => {
             d.keepSession = false; // clear session on release
             if (d.isUsedHere()) {
