@@ -37,7 +37,9 @@ describe('Dashboard', () => {
         cy.getTestElement('@dashboard/security-card/hidden-wallet/button').click();
         cy.getTestElement('@suite/modal/confirm-action-on-device');
         cy.task('pressYes');
-        
+        cy.getTestElement('@suite/modal/confirm-action-on-device').should('not.exist');
+        // once passphrase enabled, clicking button in the same security card adds hidden wallet
+        cy.getTestElement('@dashboard/security-card/create-hidden-wallet/button').click();
         cy.getTestElement('@passphrase/input');
 
         // QA todo: discreet @dashboard/security-card/toggle-discreet/button
