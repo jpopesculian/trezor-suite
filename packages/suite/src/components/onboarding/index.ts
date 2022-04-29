@@ -11,7 +11,7 @@ import ConnectDevicePromptManager from './ConnectDevicePromptManager';
 import { OnboardingLayout } from './Layouts/OnboardingLayout';
 import ProgressBar from './ProgressBar';
 import Hologram from './Hologram';
-import DeviceAnimation, { DeviceAnimationType } from './DeviceAnimation';
+import { DeviceAnimation, DeviceAnimationType } from './DeviceAnimation';
 import OnboardingStepBox, { OnboardingStepBoxProps } from './OnboardingStepBox';
 import SkipStepConfirmation from './SkipStepConfirmation';
 
@@ -34,4 +34,5 @@ export {
     OnboardingStepBox,
     SkipStepConfirmation,
 };
+
 export type { BoxProps, DeviceAnimationType, OnboardingStepBoxProps };

@@ -7,13 +7,13 @@ import { MODAL } from '@suite-actions/constants';
 import { useSelector, useActions } from '@suite-hooks';
 
 import Pin from './Pin';
-import PinInvalid from './PinInvalid';
+import { PinInvalid } from './PinInvalid';
 import PinMismatch from './PinMismatch';
 import Passphrase from './Passphrase';
-import PassphraseSource from './PassphraseSource';
-import PassphraseOnDevice from './PassphraseOnDevice';
+import { PassphraseSource } from './PassphraseSource';
+import { PassphraseOnDevice } from './PassphraseOnDevice';
 import PassphraseDuplicate from './PassphraseDuplicate';
-import ConfirmAction from './confirm/Action';
+import { ConfirmActionModal } from './confirm/ConfirmActionModal';
 import ConfirmFingerPrint from './confirm/Fingerprint';
 import CoinmarketBuyTerms from './confirm/CoinmarketBuyTerms';
 import CoinmarketSellTerms from './confirm/CoinmarketSellTerms';
@@ -105,7 +105,7 @@ const getDeviceContextModal = ({ modal, device, onPinCancel }: SharedProps) => {
             if (device.processMode === 'sign-tx') {
                 return <ReviewTransaction type="sign-transaction" />;
             }
-            return <ConfirmAction device={device} />;
+            return <ConfirmActionModal device={device} />;
         }
         case 'ButtonRequest_FirmwareCheck':
             return <ConfirmFingerPrint device={device} />;
@@ -123,7 +123,7 @@ const getDeviceContextModal = ({ modal, device, onPinCancel }: SharedProps) => {
         case 'ButtonRequest_UnknownDerivationPath':
         case 'ButtonRequest_FirmwareUpdate':
         case 'ButtonRequest_PinEntry':
-            return <ConfirmAction device={device} />;
+            return <ConfirmActionModal device={device} />;
         default:
             return null;
     }

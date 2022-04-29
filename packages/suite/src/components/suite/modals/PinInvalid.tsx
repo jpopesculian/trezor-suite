@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Translation } from '@suite-components/Translation';
 import { Modal, ModalProps } from '@suite-components';
 import { P } from '@trezor/components';
-import DeviceConfirmImage from '@suite-components/images/DeviceConfirmImage';
+import { DeviceConfirmImage } from '@suite-components/images/DeviceConfirmImage';
 import { TrezorDevice } from '@suite-types';
 
 const Divider = styled.div`
@@ -18,7 +18,7 @@ interface PinInvalidProps extends ModalProps {
     device: TrezorDevice;
 }
 
-const PinInvalid = ({ device, ...rest }: PinInvalidProps) => (
+export const PinInvalid = ({ device, ...rest }: PinInvalidProps) => (
     <StyledModal
         heading={
             <Translation id="TR_ENTERED_PIN_NOT_CORRECT" values={{ deviceLabel: device.label }} />
@@ -32,5 +32,3 @@ const PinInvalid = ({ device, ...rest }: PinInvalidProps) => (
         </P>
     </StyledModal>
 );
-
-export default PinInvalid;
