@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { OnboardingLayout } from '@onboarding-components';
 import { WelcomeLayout } from '@suite-components';
+import { ReduxModal } from '@suite-components/ModalSwitcher/ReduxModal';
 import WelcomeStep from '@onboarding-views/steps/Welcome';
 import CreateOrRecover from '@onboarding-views/steps/CreateOrRecover';
 import FirmwareStep from '@onboarding-views/steps/Firmware';
@@ -15,18 +16,26 @@ import UnexpectedState from '@onboarding-views/unexpected-states';
 import { useOnboarding, useSelector } from '@suite-hooks';
 import { MODAL } from '@suite-actions/constants';
 import * as STEP from '@onboarding-constants/steps';
-import type { InjectedModalApplicationProps } from '@suite-types';
-import type { UserContextPayload } from '@suite-actions/modalActions';
+import type { PrerequisiteType } from '@suite-types';
 
-const useIsModalAllowed = () => {
-    const { modal } = useSelector(state => ({
-        modal: state.modal,
-    }));
-    const allowedModals: UserContextPayload['type'][] = ['advanced-coin-settings', 'disable-tor'];
-    return modal.context === MODAL.CONTEXT_USER && allowedModals.includes(modal.payload.type);
+const useModalAllowed = () => {
+    const modal = useSelector(state => state.modal);
+
+    if (modal.context !== MODAL.CONTEXT_USER) {
+        return null;
+    }
+    if (modal.payload.type !== 'advanced-coin-settings' && modal.payload.type !== 'disable-tor') {
+        return null;
+    }
+
+    return modal;
 };
 
-const Onboarding = ({ prerequisite, modal }: InjectedModalApplicationProps) => {
+type OnboardingProps = {
+    prerequisite?: PrerequisiteType;
+};
+
+const Onboarding = ({ prerequisite }: OnboardingProps) => {
     const { activeStepId } = useOnboarding();
 
     const [StepComponent, LayoutComponent, prerequisitesGuidePadded] = useMemo(() => {
@@ -66,9 +75,11 @@ const Onboarding = ({ prerequisite, modal }: InjectedModalApplicationProps) => {
         }
     }, [activeStepId]);
 
+    const allowedModal = useModalAllowed();
+
     return (
         <LayoutComponent>
-            {useIsModalAllowed() ? modal : null}
+            {allowedModal && <ReduxModal {...allowedModal} />}
             <UnexpectedState
                 prerequisite={prerequisite}
                 prerequisitesGuidePadded={prerequisitesGuidePadded}
