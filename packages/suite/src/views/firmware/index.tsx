@@ -49,7 +49,7 @@ const StyledModal = styled(Modal)`
     }
 `;
 
-const Firmware = () => {
+export const Firmware = () => {
     const { resetReducer, status, setStatus, error, firmwareUpdate } = useFirmware();
     const { device } = useSelector(state => ({
         device: state.suite.device,
@@ -154,7 +154,7 @@ const Firmware = () => {
     return (
         <StyledModal
             isCancelable={isCancelable}
-            devicePrompt={
+            modalPrompt={
                 status === 'waiting-for-confirmation' && (
                     <ConfirmOnDevice
                         title={<Translation id="TR_CONFIRM_ON_TREZOR" />}
@@ -170,5 +170,3 @@ const Firmware = () => {
         </StyledModal>
     );
 };
-
-export default Firmware;

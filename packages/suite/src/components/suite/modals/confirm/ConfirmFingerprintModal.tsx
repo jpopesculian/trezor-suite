@@ -13,9 +13,9 @@ interface ConfirmFingerprintProps extends ModalProps {
     device: TrezorDevice;
 }
 
-const ConfirmFingerprint = ({ device, ...rest }: ConfirmFingerprintProps) => (
+export const ConfirmFingerprintModal = ({ device, ...rest }: ConfirmFingerprintProps) => (
     <StyledModal
-        devicePrompt={
+        modalPrompt={
             <ConfirmOnDevice
                 title={<Translation id="TR_CONFIRM_ON_TREZOR" />}
                 trezorModel={device.features?.major_version === 1 ? 1 : 2}
@@ -29,5 +29,3 @@ const ConfirmFingerprint = ({ device, ...rest }: ConfirmFingerprintProps) => (
         <Fingerprint device={device} />
     </StyledModal>
 );
-
-export default ConfirmFingerprint;

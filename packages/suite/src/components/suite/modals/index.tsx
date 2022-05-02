@@ -14,7 +14,7 @@ import { PassphraseSource } from './PassphraseSource';
 import { PassphraseOnDevice } from './PassphraseOnDevice';
 import PassphraseDuplicate from './PassphraseDuplicate';
 import { ConfirmActionModal } from './confirm/ConfirmActionModal';
-import ConfirmFingerPrint from './confirm/Fingerprint';
+import { ConfirmFingerprintModal } from './confirm/ConfirmFingerprintModal';
 import CoinmarketBuyTerms from './confirm/CoinmarketBuyTerms';
 import CoinmarketSellTerms from './confirm/CoinmarketSellTerms';
 import CoinmarketExchangeTerms from './confirm/CoinmarketExchangeTerms';
@@ -25,7 +25,7 @@ import WordAdvanced from './WordAdvanced';
 import ConfirmAddress from './confirm/Address';
 import ConfirmXpub from './confirm/Xpub';
 import ConfirmNoBackup from './confirm/NoBackup';
-import ReviewTransaction from './ReviewTransaction';
+import { ReviewTransaction } from './ReviewTransaction';
 import ImportTransaction from './ImportTransaction';
 import ConfirmUnverifiedAddress from './confirm/UnverifiedAddress';
 import AddAccount from './AddAccount';
@@ -108,7 +108,7 @@ const getDeviceContextModal = ({ modal, device, onPinCancel }: SharedProps) => {
             return <ConfirmActionModal device={device} />;
         }
         case 'ButtonRequest_FirmwareCheck':
-            return <ConfirmFingerPrint device={device} />;
+            return <ConfirmFingerprintModal device={device} />;
         // Generic Button requests
         // todo: consider fallback (if windowType.contains('ButtonRequest')). but add also possibility to blacklist some buttonRequests
         case 'ButtonRequest_Warning':

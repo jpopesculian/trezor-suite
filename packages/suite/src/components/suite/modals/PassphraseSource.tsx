@@ -39,7 +39,7 @@ export const PassphraseSource = ({ device }: PassphraseSourceProps) => {
                     values={{ deviceLabel: device.label }}
                 />
             }
-            devicePrompt={
+            modalPrompt={
                 !authConfirmation ? (
                     <ConfirmOnDevice
                         title={<Translation id="TR_CONFIRM_ON_TREZOR" />}
