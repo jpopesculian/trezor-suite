@@ -1,7 +1,12 @@
 // @group:suite
 // @retry=2
 
-
+// steps:
+// seeded trezor
+// navigate to dashboard
+// scroll to Security checks section
+// Enable discreet mode
+// check that status of Dicreet mode card changed to explored
 
 
 describe('Dashboard', () => {
