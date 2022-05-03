@@ -14,6 +14,17 @@
     - schedules
     - /^release\//
 
+.run_connect_rules: &run_connect_rules
+  refs:
+    - schedules
+    - develop
+  changes:
+    - "packages/blockchain-link"
+    - "packages/connect*/**"
+    - "packages/transport"
+    - "packages/utxo-lib"
+    - "packages/utils"
+
 # Suite-web build
 suite-web build dev:
   stage: build
@@ -291,8 +302,8 @@ suite-native build android:
 
 connect-explorer build:
   extends: .connect-explorer build base
-  # only:
-  #   <<: *run_everything_rules
+  only:
+    <<: *run_connect_rules
 
 # connect-explorer build manual:
 #   extends: .connect-explorer build base
@@ -303,6 +314,8 @@ connect-explorer build:
 # connect-web build
 connect-web build:
   stage: build
+  only:
+    <<: *run_connect_rules
   variables:
     GIT_STRATEGY: clone
     GIT_SUBMODULE_STRATEGY: recursive
