@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import TrezorConnect, { DEVICE, DEVICE_EVENT, TRANSPORT_EVENT } from '@trezor/connect-web';
 
 import { TrezorConnectDevice, Dispatch } from '../types';
@@ -35,20 +36,16 @@ export const init =
         });
 
         const { origin } = window.location;
-        let connectSrc = '';
-        if (origin.indexOf('localhost') > -1) {
+
+        // yarn workspace @trezor/connect-explorer dev starts @trezor/connect-web on localhost port
+        if (!window.__TREZOR_CONNECT_SRC && origin.indexOf('localhost') > -1) {
             // use local connect for local development
-            connectSrc = `${window.location.origin}/`;
-        }
-        if (origin.indexOf('sldev.cz') > -1) {
-            // REF-TODO use sldev structure (current branch name)
-            console.warn(window.location);
-            connectSrc = `${window.location.origin}/`;
+            window.__TREZOR_CONNECT_SRC = `${window.location.origin}/`;
+        } else {
+            console.warn('using production @trezor/connect');
         }
 
         const connectOptions = {
-            connectSrc,
-            webusb: true,
             transportReconnect: true,
             popup: true,
             debug: true,
