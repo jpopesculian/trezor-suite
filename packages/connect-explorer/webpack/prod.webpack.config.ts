@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+
 import webpack from 'webpack';
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
@@ -57,6 +59,9 @@ const config: webpack.Configuration = {
             template: path.resolve(__dirname, '../src/index.html'),
             filename: 'index.html',
             inject: true,
+        }),
+        new webpack.DefinePlugin({
+            __TREZOR_CONNECT_SRC: JSON.stringify(process.env.__TREZOR_CONNECT_SRC),
         }),
     ],
 };
