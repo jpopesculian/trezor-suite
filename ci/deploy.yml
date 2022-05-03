@@ -220,7 +220,7 @@ connect deploy to dev:
   variables:
     GIT_STRATEGY: none
     DEPLOY_DIRECTORY: ${DEPLOY_BASE_DIR}/connect/${CI_BUILD_REF_NAME}
-  when: manual
+  # when: manual
   dependencies:
     - connect-web build
   environment:
@@ -235,6 +235,8 @@ connect deploy to dev:
     - rsync -aviuzP packages/connect-popup/build/ "${DEPLOY_DIRECTORY}/"
     - ls -la packages/connect-web/build
     - rsync -aviuzP packages/connect-web/build/ "${DEPLOY_DIRECTORY}/"
+    - ls -la ${DEPLOY_DIRECTORY}
+    - rsync -aviuzP packages/connect-explorer/build/ "${DEPLOY_DIRECTORY}/"
     - ls -la ${DEPLOY_DIRECTORY}
   tags:
     - connect_deploy

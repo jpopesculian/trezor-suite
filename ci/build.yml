@@ -298,7 +298,7 @@ connect-explorer build manual:
   extends: .connect-explorer build base
   except:
     <<: *run_everything_rules
-  when: manual
+  # when: manual
 
 # connect-web build
 connect-web build:
