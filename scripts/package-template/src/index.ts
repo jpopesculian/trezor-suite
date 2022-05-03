@@ -1,1 +1,0 @@
-export { logHello } from './logHello';

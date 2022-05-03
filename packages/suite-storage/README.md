@@ -1,1 +1,0 @@
-# @trezor/suite-storage
