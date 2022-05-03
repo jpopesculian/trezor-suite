@@ -215,6 +215,7 @@ connect deploy to dev:
   stage: deploy to dev
   needs:
     - connect-web build
+    - connect-explorer build
   except:
     - v8
   variables:
