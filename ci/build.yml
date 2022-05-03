@@ -291,14 +291,14 @@ suite-native build android:
 
 connect-explorer build:
   extends: .connect-explorer build base
-  only:
-    <<: *run_everything_rules
+  # only:
+  #   <<: *run_everything_rules
 
-connect-explorer build manual:
-  extends: .connect-explorer build base
-  except:
-    <<: *run_everything_rules
-  # when: manual
+# connect-explorer build manual:
+#   extends: .connect-explorer build base
+#   except:
+#     <<: *run_everything_rules
+#   # when: manual
 
 # connect-web build
 connect-web build:
