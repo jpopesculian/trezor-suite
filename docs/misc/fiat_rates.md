@@ -82,18 +82,7 @@ When passing function as a children it will get called with one parameter, objec
             <Tooltip
                 content={
                     <LastUpdate>
-                        <Translation
-                            id="TR_LAST_UPDATE"
-                            values={{
-                                value: (
-                                    <FormattedRelativeTime
-                                        value={rateAge(timestamp) * 60}
-                                        numeric="auto"
-                                        updateIntervalInSeconds={10}
-                                    />
-                                ),
-                            }}
-                        />
+                        <Translation id="TR_LAST_UPDATE" />
                     </LastUpdate>
                 }
             >
