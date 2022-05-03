@@ -220,7 +220,7 @@ connect deploy to dev:
     - v8
   variables:
     GIT_STRATEGY: none
-    DEPLOY_DIRECTORY: ${DEPLOY_BASE_DIR}/connect/${CI_BUILD_REF_NAME}
+    DEPLOY_DIRECTORY: ${CONNECT_DEPLOY_BASE_DIR}/${CI_BUILD_REF_NAME}
   # when: manual
   dependencies:
     - connect-web build
