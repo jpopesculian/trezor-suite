@@ -1,4 +1,7 @@
-export default [
+// origin: https://github.com/trezor/connect/blob/develop/src/js/utils/bip39.js
+
+/* eslint-disable prettier/prettier */
+export const BIP_39: string[] = [
     'abandon',
     'ability',
     'able',
@@ -2047,4 +2050,4 @@ export default [
     'zero',
     'zone',
     'zoo',
-] as const;
+];

@@ -3,10 +3,7 @@ import { FixedSizeList as List } from 'react-window';
 import { MenuListComponentProps, createFilter } from 'react-select';
 import styled, { keyframes } from 'styled-components';
 import { Select, variables } from '@trezor/components';
-import { BIP_39 } from '@suite-constants';
 import { useTranslation } from '@suite-hooks/useTranslation';
-
-const options = BIP_39.map(item => ({ label: item, value: item }));
 
 const shake = keyframes`
     10%, 90% {
@@ -55,10 +52,11 @@ const MenuList = (props: MenuListComponentProps<Option, boolean>) => {
 
 interface Props {
     onSubmit: (word: string) => void;
+    options: Option[];
 }
 
 const WordInput = React.memo((props: Props) => {
-    const { onSubmit } = props;
+    const { onSubmit, options } = props;
     const { translationString } = useTranslation();
 
     const MemoSelect = React.memo(() => (

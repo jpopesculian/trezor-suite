@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import TrezorConnect, { UI } from '@trezor/connect';
+import TrezorConnect, { UI, BIP_39 } from '@trezor/connect';
 import { Translation, WordInput, Modal, ModalProps } from '@suite-components';
+
+const options = BIP_39.map(item => ({ label: item, value: item }));
 
 const StyledModal = styled(Modal)`
     width: 100%;
@@ -21,6 +23,7 @@ const Word = (props: ModalProps) => (
         {...props}
     >
         <WordInput
+            options={options}
             onSubmit={value => {
                 TrezorConnect.uiResponse({ type: UI.RECEIVE_WORD, payload: value });
             }}

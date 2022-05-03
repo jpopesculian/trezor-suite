@@ -117,8 +117,8 @@ connect-explorer deploy dev:
   extends: .connect-explorer deploy dev base
   needs:
     - connect-explorer build
-  only:
-    <<: *run_connect_rules
+  # only:
+  #   <<: *run_connect_rules
 
 # connect-explorer deploy dev manual:
 #   extends: .connect-explorer deploy dev base
@@ -226,8 +226,8 @@ utxo-lib deploy npm:
 # connect deploy to dev
 connect deploy to dev:
   stage: deploy to dev
-  only:
-    <<: *run_connect_rules
+  # only:
+  #   <<: *run_connect_rules
   needs:
     - connect-web build
     - connect-explorer build

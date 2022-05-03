@@ -2,9 +2,8 @@
 
 /* eslint-disable no-loop-func */
 
-import { UI, createUiResponse, UiRequestDeviceAction } from '@trezor/connect';
+import { UI, createUiResponse, UiRequestDeviceAction, BIP_39 } from '@trezor/connect';
 import { container, showView, postMessage } from './common';
-import bipWords from '@trezor/connect/src/utils/bip39';
 
 const initWordPlainView = (payload: UiRequestDeviceAction['payload']) => {
     showView('word-plain');
@@ -37,7 +36,7 @@ const initWordPlainView = (payload: UiRequestDeviceAction['payload']) => {
         }
     };
 
-    bipWords.forEach(word => {
+    BIP_39.forEach(word => {
         const item = document.createElement('option');
         item.value = word;
         datalist.appendChild(item);
