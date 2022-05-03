@@ -7,24 +7,6 @@
   needs:
     - msg-system config sign dev
 
-.run_everything_rules: &run_everything_rules
-  refs:
-    - develop
-    - releases
-    - schedules
-    - /^release\//
-
-.run_connect_rules: &run_connect_rules
-  refs:
-    - schedules
-    - develop
-  changes:
-    - "packages/blockchain-link"
-    - "packages/connect*/**"
-    - "packages/transport"
-    - "packages/utxo-lib"
-    - "packages/utils"
-
 # Suite-web build
 suite-web build dev:
   stage: build

@@ -1,6 +1,25 @@
 # ! DO NOT set latest here USE custom hash !
 image: registry.gitlab.com/satoshilabs/trezor/trezor-suite/base@sha256:7002a4716e04b8b087dbd7b553c37724026949a0f0ee0c16618d5227d3224df0
 
+# Config
+.run_everything_rules: &run_everything_rules
+  refs:
+    - develop
+    - releases
+    - schedules
+    - /^release\//
+
+.run_connect_rules: &run_connect_rules
+  refs:
+    - schedules
+    - develop
+  changes:
+    - "packages/blockchain-link"
+    - "packages/connect*/**"
+    - "packages/transport"
+    - "packages/utxo-lib"
+    - "packages/utils"
+
 variables:
   DEV_SERVER_URL: "https://suite.corp.sldev.cz"
   STAGING_WALLET_SERVER_URL: "https://staging-wallet.trezor.io/wallet"
