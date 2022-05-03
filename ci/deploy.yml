@@ -107,13 +107,13 @@ connect-explorer deploy dev:
   only:
     <<: *run_everything_rules
 
-connect-explorer deploy dev manual:
-  extends: .connect-explorer deploy dev base
-  needs:
-    - connect-explorer build manual
-  except:
-    <<: *run_everything_rules
-  when: manual
+# connect-explorer deploy dev manual:
+#   extends: .connect-explorer deploy dev base
+#   needs:
+#     - connect-explorer build
+#   except:
+#     <<: *run_everything_rules
+#   when: manual
 
 # npm packages deploy to npm registry
 .npm_deploy_rules: &npm_deploy_rules
