@@ -13,8 +13,14 @@ import { useGuideKeyboard } from '@guide-hooks';
 
 import type { AppState } from '@suite-types';
 
-const getFullscreenApp = (route: AppState['router']['route']) =>
-    route?.app === 'onboarding' ? Onboarding : undefined;
+const getFullscreenApp = (route: AppState['router']['route']) => {
+    switch (route?.app) {
+        case 'onboarding':
+            return Onboarding;
+        default:
+            return undefined;
+    }
+};
 
 interface PreloaderProps {
     children: JSX.Element;
