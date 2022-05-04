@@ -10,5 +10,8 @@
         "lint": "eslint '**/*.{ts,tsx,js}'",
         "test:unit": "jest",
         "type-check": "tsc --build"
+    },
+    "dependencies": {
+        "@trezor/utils": "*"
     }
 }

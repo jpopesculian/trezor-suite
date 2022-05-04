@@ -27,6 +27,7 @@
         "@sentry/integrations": "6.17.2",
         "@sentry/minimal": "6.17.2",
         "@hookform/resolvers": "1.3.5",
+        "@trezor/analytics": "1.0.0",
         "@trezor/components": "1.0.0",
         "@trezor/suite-data": "1.0.0",
         "@trezor/suite-desktop-api": "1.0.0",
