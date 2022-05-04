@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { analytics } from '@trezor/analytics';
+
 import { variables, H2, Button, Card } from '@trezor/components';
 import { Translation, Image } from '@suite-components';
 import { useActions, useSelector, useAnalytics } from '@suite-hooks';
@@ -75,7 +77,6 @@ const AccountEmpty = (props: Props) => {
     });
     const bip43 = getBip43Type(props.account.path);
     const networkSymbol = props.account.symbol.toUpperCase();
-    const analytics = useAnalytics();
 
     return (
         <Wrapper>

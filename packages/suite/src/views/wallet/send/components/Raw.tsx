@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
+import { analytics } from '@trezor/analytics';
+
 import { Card, Translation } from '@suite-components';
 import { InputError } from '@wallet-components';
 import { Textarea, Button, Icon, Tooltip, variables } from '@trezor/components';
@@ -40,7 +42,6 @@ const ButtonSend = styled(Button)`
 `;
 
 const Raw = ({ network }: { network: Network }) => {
-    const analytics = useAnalytics();
     const { register, getValues, setValue, errors } = useForm({
         mode: 'onChange',
         defaultValues: {

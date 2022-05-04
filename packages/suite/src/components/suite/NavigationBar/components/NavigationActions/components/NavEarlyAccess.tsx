@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { analytics } from '@trezor/analytics';
 
 import { Translation } from '@suite-components';
 import { ActionItem } from './ActionItem';
-import { useActions, useAnalytics } from '@suite-hooks';
+import { useActions } from '@suite-hooks';
 import * as routerActions from '@suite-actions/routerActions';
 import { SettingsAnchor } from '@suite-constants/anchors';
 
@@ -18,8 +19,6 @@ interface NavEarlyAccessProps {
 }
 
 export const NavEarlyAccess = (props: NavEarlyAccessProps) => {
-    const analytics = useAnalytics();
-
     const { goto } = useActions({
         goto: routerActions.goto,
     });

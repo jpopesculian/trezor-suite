@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { darken } from 'polished';
+import { analytics } from '@trezor/analytics';
 
 import { Icon, variables, useTheme } from '@trezor/components';
-import { useActions, useSelector, useAnalytics } from '@suite-hooks';
+import { useActions, useSelector } from '@suite-hooks';
 import * as guideActions from '@suite-actions/guideActions';
 import { Node } from '@suite-types/guide';
 import { getNodeTitle } from '@suite-utils/guide';
@@ -72,7 +73,6 @@ export const GuideNode = ({ node, description }: GuideNodeProps) => {
     }));
 
     const theme = useTheme();
-    const analytics = useAnalytics();
 
     const { openNode } = useActions({
         setView: guideActions.setView,

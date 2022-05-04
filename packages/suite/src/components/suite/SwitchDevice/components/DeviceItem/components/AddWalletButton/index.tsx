@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { analytics } from '@trezor/analytics';
+
 import { Button, Tooltip } from '@trezor/components';
 import { Translation } from '@suite-components';
 import { TrezorDevice, AcquiredDevice } from '@suite-types';
@@ -51,8 +53,6 @@ const AddWalletButton = ({ device, instances, addDeviceInstance, selectDeviceIns
         !device.connected ||
         locks.includes(SUITE.LOCK_TYPE.DEVICE) ||
         locks.includes(SUITE.LOCK_TYPE.UI);
-
-    const analytics = useAnalytics();
 
     const onAddWallet = () => {
         if (hasAtLeastOneWallet) {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { analytics } from '@trezor/analytics';
 
 import { Translation } from '@suite-components';
 import { ActionButton, ActionColumn, SectionItem, TextColumn } from '@suite-components/Settings';
@@ -17,7 +18,6 @@ export const BackupRecoverySeed = ({ isDeviceLocked }: BackupRecoverySeedProps) 
     const { goto } = useActions({
         goto: routerActions.goto,
     });
-    const analytics = useAnalytics();
     const { anchorRef, shouldHighlight } = useAnchor(SettingsAnchor.BackupRecoverySeed);
 
     const needsBackup = !!device?.features?.needs_backup;

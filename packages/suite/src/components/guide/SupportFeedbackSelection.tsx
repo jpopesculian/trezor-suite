@@ -1,10 +1,11 @@
 import React from 'react';
 import { darken } from 'polished';
 import styled from 'styled-components';
+import { analytics } from '@trezor/analytics';
 
 import { Translation } from '@suite-components';
 import * as guideActions from '@suite-actions/guideActions';
-import { useActions, useAnalytics, useSelector } from '@suite-hooks';
+import { useActions, useSelector } from '@suite-hooks';
 import { Icon, Link, variables } from '@trezor/components';
 import { isDev } from '@suite-utils/build';
 import { resolveStaticPath } from '@trezor/utils';
@@ -100,7 +101,6 @@ const LabelSubheadline = styled.div`
 `;
 
 export const SupportFeedbackSelection = () => {
-    const analytics = useAnalytics();
     const { setView } = useActions({
         setView: guideActions.setView,
     });

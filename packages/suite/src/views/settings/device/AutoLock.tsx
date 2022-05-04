@@ -1,4 +1,5 @@
 import React from 'react';
+import { analytics } from '@trezor/analytics';
 
 import { Translation } from '@suite-components';
 import { ActionColumn, ActionSelect, SectionItem, TextColumn } from '@suite-components/Settings';
@@ -33,7 +34,6 @@ export const AutoLock = ({ isDeviceLocked }: AutoLockProps) => {
     const { anchorRef, shouldHighlight } = useAnchor(SettingsAnchor.Autolock);
 
     const { device } = useDevice();
-    const analytics = useAnalytics();
     const locale = useLocales();
 
     const autoLockDelay = device?.features?.auto_lock_delay_ms;

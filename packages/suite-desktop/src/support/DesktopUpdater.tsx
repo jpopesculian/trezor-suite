@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { desktopApi } from '@trezor/suite-desktop-api';
+import { analytics } from '@trezor/analytics';
 
-import { useActions, useSelector, useAnalytics } from '@suite-hooks';
+import { desktopApi } from '@trezor/suite-desktop-api';
+import { useActions, useSelector } from '@suite-hooks';
 import * as desktopUpdateActions from '@suite-actions/desktopUpdateActions';
 import { UpdateState } from '@suite-reducers/desktopUpdateReducer';
 import Available from './DesktopUpdater/Available';
@@ -16,8 +17,6 @@ interface DesktopUpdaterProps {
 }
 
 const DesktopUpdater = ({ setIsUpdateVisible }: DesktopUpdaterProps) => {
-    const analytics = useAnalytics();
-
     const {
         enable,
         checking,
@@ -91,7 +90,7 @@ const DesktopUpdater = ({ setIsUpdateVisible }: DesktopUpdaterProps) => {
             type: 'app-update',
             payload,
         });
-    }, [setUpdateWindow, analytics, desktopUpdate.latest, desktopUpdate.allowPrerelease]);
+    }, [setUpdateWindow, desktopUpdate.latest, desktopUpdate.allowPrerelease]);
 
     const isVisible = useMemo(() => {
         // Not displayed as a modal

@@ -1,7 +1,8 @@
 import TrezorConnect, { Device } from 'trezor-connect';
+import { analytics } from '@trezor/analytics';
 
 import { FIRMWARE } from '@firmware-actions/constants';
-import { report, AnalyticsEvent } from '@suite-actions/analyticsActions';
+import { AnalyticsEvent } from '@suite-actions/analyticsActions';
 import { getBootloaderVersion, getFwVersion, isBitcoinOnly } from '@suite-utils/device';
 import { resolveStaticPath } from '@trezor/utils';
 import { addToast } from '@suite-actions/notificationActions';
@@ -128,17 +129,15 @@ const firmwareInstall =
             }
         }
 
-        dispatch(
-            report({
-                type: 'device-update-firmware',
-                payload: {
-                    fromFwVersion,
-                    fromBlVersion,
-                    error: !updateResponse.success ? updateResponse.payload.error : '',
-                    ...analyticsPayload,
-                },
-            }),
-        );
+        analytics.report({
+            type: 'device-update-firmware',
+            payload: {
+                fromFwVersion,
+                fromBlVersion,
+                error: !updateResponse.success ? updateResponse.payload.error : '',
+                ...analyticsPayload,
+            },
+        });
 
         if (!updateResponse.success) {
             return dispatch({ type: FIRMWARE.SET_ERROR, payload: updateResponse.payload.error });

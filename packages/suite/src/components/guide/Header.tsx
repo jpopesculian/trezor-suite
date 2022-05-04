@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import { darken, transparentize } from 'polished';
+import { analytics } from '@trezor/analytics';
 
 import * as guideActions from '@suite-actions/guideActions';
-import { useActions, useAnalytics } from '@suite-hooks';
+import { useActions } from '@suite-hooks';
 import { Icon, variables, useTheme } from '@trezor/components';
 import { HeaderBreadcrumb, ContentScrolledContext } from '@guide-components';
 
@@ -82,7 +83,6 @@ interface HeaderProps {
 
 export const Header = ({ back, label, useBreadcrumb }: HeaderProps) => {
     const theme = useTheme();
-    const analytics = useAnalytics();
 
     const isScrolled = useContext(ContentScrolledContext);
 

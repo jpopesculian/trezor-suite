@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { analytics } from '@trezor/analytics';
+
 import { homescreensT1, homescreensT2 } from '@suite-constants';
 import { resolveStaticPath } from '@trezor/utils';
 import * as deviceSettingsActions from '@settings-actions/deviceSettingsActions';
@@ -43,7 +45,6 @@ type Props = {
 
 const HomescreenGallery = ({ device, onConfirm }: Props) => {
     const { applySettings } = useActions({ applySettings: deviceSettingsActions.applySettings });
-    const analytics = useAnalytics();
 
     const isModelT = getDeviceModel(device) === 'T';
     const trezorModel = isModelT ? 2 : 1;

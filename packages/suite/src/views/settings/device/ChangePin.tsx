@@ -1,4 +1,5 @@
 import React from 'react';
+import { analytics } from '@trezor/analytics';
 
 import { Translation } from '@suite-components';
 import { ActionButton, ActionColumn, SectionItem, TextColumn } from '@suite-components/Settings';
@@ -12,7 +13,6 @@ interface ChangePinProps {
 }
 
 export const ChangePin = ({ isDeviceLocked }: ChangePinProps) => {
-    const analytics = useAnalytics();
     const { anchorRef, shouldHighlight } = useAnchor(SettingsAnchor.ChangePin);
 
     const { changePin } = useActions({

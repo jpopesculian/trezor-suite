@@ -1,4 +1,5 @@
 import React from 'react';
+import { analytics } from '@trezor/analytics';
 
 import { Translation } from '@suite-components';
 import { ActionColumn, SectionItem, TextColumn } from '@suite-components/Settings';
@@ -18,7 +19,6 @@ export const Passphrase = ({ isDeviceLocked }: PassphraseProps) => {
     const { applySettings } = useActions({
         applySettings: deviceSettingsActions.applySettings,
     });
-    const analytics = useAnalytics();
     const { anchorRef, shouldHighlight } = useAnchor(SettingsAnchor.Passphrase);
 
     const passphraseProtection = !!device?.features?.passphrase_protection;

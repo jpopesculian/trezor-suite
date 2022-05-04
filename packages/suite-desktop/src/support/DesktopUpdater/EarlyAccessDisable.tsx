@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { analytics } from '@trezor/analytics';
 
 import { desktopApi } from '@trezor/suite-desktop-api';
 import { Button } from '@trezor/components';
@@ -29,8 +30,6 @@ interface Props {
 }
 
 const EarlyAccessDisable = ({ hideWindow }: Props) => {
-    const analytics = useAnalytics();
-
     const [enabled, setEnabled] = useState(true);
 
     const allowPrerelease = useCallback(() => {
@@ -42,7 +41,7 @@ const EarlyAccessDisable = ({ hideWindow }: Props) => {
         });
         desktopApi.allowPrerelease(false);
         setEnabled(false);
-    }, [analytics]);
+    }, []);
 
     return enabled ? (
         <StyledModal

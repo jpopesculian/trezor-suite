@@ -1,8 +1,10 @@
 import TrezorConnect, { CommonParams } from 'trezor-connect';
+import { analytics } from '@trezor/analytics';
+
 import * as notificationActions from '@suite-actions/notificationActions';
 import { BACKUP } from '@backup-actions/constants';
 
-import { Dispatch, GetState } from '@suite-types';
+import type { Dispatch, GetState } from '@suite-types';
 
 export type ConfirmKey =
     | 'has-enough-time'
@@ -63,16 +65,30 @@ export const backupDevice =
             },
         });
         if (!result.success) {
-            dispatch(notificationActions.addToast({ type: 'backup-failed' }));
             dispatch({
                 type: BACKUP.SET_ERROR,
                 payload: result.payload.error,
             });
+            dispatch(notificationActions.addToast({ type: 'backup-failed' }));
+            analytics.report({
+                type: 'create-backup',
+                payload: {
+                    status: 'error',
+                    error: result.payload.error,
+                },
+            });
         } else {
-            dispatch(notificationActions.addToast({ type: 'backup-success' }));
             dispatch({
                 type: BACKUP.SET_STATUS,
                 payload: 'finished',
+            });
+            dispatch(notificationActions.addToast({ type: 'backup-success' }));
+            analytics.report({
+                type: 'create-backup',
+                payload: {
+                    status: 'finished',
+                    error: '',
+                },
             });
         }
     };

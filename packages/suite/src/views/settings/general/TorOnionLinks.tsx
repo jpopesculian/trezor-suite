@@ -1,4 +1,5 @@
 import React from 'react';
+import { analytics } from '@trezor/analytics';
 
 import * as suiteActions from '@suite-actions/suiteActions';
 import { useAnalytics, useSelector, useActions } from '@suite-hooks';
@@ -11,7 +12,6 @@ import { SettingsAnchor } from '@suite-constants/anchors';
 /* keep torOnionLinks value as it is but hide this section when tor is off.
    when tor is off this value has no effect anyway (handled by ExternalLink hook) */
 export const TorOnionLinks = () => {
-    const analytics = useAnalytics();
     const { anchorRef, shouldHighlight } = useAnchor(SettingsAnchor.TorOnionLinks);
 
     const { torOnionLinks } = useSelector(state => ({

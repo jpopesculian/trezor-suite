@@ -1,11 +1,13 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
+import { analytics } from '@trezor/analytics';
+
 import * as walletSettingsActions from '@settings-actions/walletSettingsActions';
 import * as suiteActions from '@suite-actions/suiteActions';
 import * as routerActions from '@suite-actions/routerActions';
 import { Translation } from '@suite-components';
 import { findRouteByName } from '@suite-utils/router';
-import { useActions, useAnalytics, useSelector } from '@suite-hooks';
+import { useActions, useSelector } from '@suite-hooks';
 import { useCustomBackends } from '@settings-hooks/backends';
 import { ActionItem } from './components/ActionItem';
 import { isDesktop } from '@suite-utils/env';
@@ -53,7 +55,6 @@ export const NavigationActions: React.FC<NavigationActionsProps> = ({
     closeMainNavigation,
     isMobileLayout,
 }) => {
-    const analytics = useAnalytics();
     const { activeApp, notifications, discreetMode, tor, allowPrerelease, enabledNetworks } =
         useSelector(state => ({
             activeApp: state.router.app,

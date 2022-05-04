@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useActions, useSelector, useTranslation, useAnalytics } from '@suite-hooks';
+import { analytics } from '@trezor/analytics';
+
+import { useActions, useSelector, useTranslation } from '@suite-hooks';
 import { isUrl } from '@trezor/utils';
 import { isOnionUrl } from '@suite-utils/tor';
 import { setBackend, resetBackend } from '@wallet-actions/blockchainActions';
@@ -90,7 +92,6 @@ const getStoredState = (
 });
 
 export const useBackendsForm = (coin: Network['symbol']) => {
-    const analytics = useAnalytics();
     const backends = useSelector(state => state.wallet.blockchain[coin].backends);
     const initial = getStoredState(coin, backends.selected, backends.urls);
     const [currentValues, setCurrentValues] = useState(initial);

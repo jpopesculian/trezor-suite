@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { analytics } from '@trezor/analytics';
+
 import { Button, SecurityCard, SecurityCardProps, variables } from '@trezor/components';
 import { Translation } from '@suite-components';
 import { Section } from '@dashboard-components';
 import { AcquiredDevice } from '@suite-types';
-import { useDevice, useDiscovery, useAnalytics, useActions, useSelector } from '@suite-hooks';
+import { useDevice, useDiscovery, useActions, useSelector } from '@suite-hooks';
 import * as walletSettingsActions from '@settings-actions/walletSettingsActions';
 import * as suiteActions from '@suite-actions/suiteActions';
 import * as deviceSettingsActions from '@settings-actions/deviceSettingsActions';
@@ -45,7 +47,6 @@ const SecurityFeatures = () => {
     const { getDiscoveryStatus } = useDiscovery();
     const discoveryStatus = getDiscoveryStatus();
     const isDisabledGlobal = discoveryStatus && discoveryStatus.status === 'loading';
-    const analytics = useAnalytics();
 
     const { discreetModeCompleted, securityStepsHidden } = flags;
     let needsBackup;

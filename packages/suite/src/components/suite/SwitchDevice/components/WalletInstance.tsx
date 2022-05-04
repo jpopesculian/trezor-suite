@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { analytics } from '@trezor/analytics';
+
 import { Switch, Box, Icon, useTheme, variables } from '@trezor/components';
 import * as accountUtils from '@wallet-utils/accountUtils';
 import * as suiteActions from '@suite-actions/suiteActions';
@@ -121,7 +123,6 @@ export const WalletInstance = ({
         localCurrency,
         fiat.coins,
     );
-    const analytics = useAnalytics();
     const isSelected = enabled && selected && !!discoveryProcess;
 
     const dataTestBase = `@switch-device/wallet-on-index/${index}`;

@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
+import { analytics } from '@trezor/analytics';
 
 import { desktopApi } from '@trezor/suite-desktop-api';
 import { Button, P, Tooltip } from '@trezor/components';
 import { CheckItem, Translation, Modal, Image } from '@suite-components';
-import { useAnalytics } from '@suite-hooks';
 import { ImageWrapper, Description, Divider, Title } from './styles';
 
 const DescriptionWrapper = styled.div`
@@ -38,8 +38,6 @@ interface Props {
 }
 
 const EarlyAccessEnable = ({ hideWindow }: Props) => {
-    const analytics = useAnalytics();
-
     const [understood, setUnderstood] = useState(false);
     const [enabled, setEnabled] = useState(false);
 
@@ -52,7 +50,7 @@ const EarlyAccessEnable = ({ hideWindow }: Props) => {
         });
         desktopApi.allowPrerelease(true);
         setEnabled(true);
-    }, [analytics]);
+    }, []);
     const checkForUpdates = useCallback(() => {
         analytics.report({
             type: 'settings/general/early-access/check-for-updates',
@@ -61,7 +59,7 @@ const EarlyAccessEnable = ({ hideWindow }: Props) => {
             },
         });
         desktopApi.checkForUpdates(true);
-    }, [analytics]);
+    }, []);
 
     return enabled ? (
         <StyledModal

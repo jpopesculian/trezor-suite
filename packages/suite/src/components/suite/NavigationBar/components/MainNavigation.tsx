@@ -1,12 +1,13 @@
 import React from 'react';
 import { transparentize } from 'polished';
 import styled, { css } from 'styled-components';
+import { analytics } from '@trezor/analytics';
 
 import { findRouteByName } from '@suite-utils/router';
 import { variables, HoverAnimation } from '@trezor/components';
 import { Translation } from '@suite-components';
 import { MAIN_MENU_ITEMS } from '@suite-constants/menu';
-import { useAnalytics, useActions, useSelector, useAccountSearch } from '@suite-hooks';
+import { useActions, useSelector, useAccountSearch } from '@suite-hooks';
 import * as routerActions from '@suite-actions/routerActions';
 
 interface ComponentProps {
@@ -110,7 +111,6 @@ export const MainNavigation = ({ isMobileLayout, closeMainNavigation }: MainNavi
         goto: routerActions.goto,
     });
 
-    const analytics = useAnalytics();
     const { setCoinFilter, setSearchString } = useAccountSearch();
 
     const gotoWithReport = (routeName: typeof MAIN_MENU_ITEMS[number]['route']) => {

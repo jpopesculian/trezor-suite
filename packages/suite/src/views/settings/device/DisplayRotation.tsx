@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { analytics } from '@trezor/analytics';
 
 import { Translation } from '@suite-components';
 import { ActionButton, ActionColumn, SectionItem, TextColumn } from '@suite-components/Settings';
@@ -35,7 +36,6 @@ export const DisplayRotation = ({ isDeviceLocked }: DisplayRotationProps) => {
     const { applySettings } = useActions({
         applySettings: deviceSettingsActions.applySettings,
     });
-    const analytics = useAnalytics();
     const { anchorRef, shouldHighlight } = useAnchor(SettingsAnchor.DisplayRotation);
 
     return (

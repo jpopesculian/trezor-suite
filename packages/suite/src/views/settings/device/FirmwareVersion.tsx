@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { analytics } from '@trezor/analytics';
 
 import { Translation, TrezorLink } from '@suite-components';
 import { ActionButton, ActionColumn, SectionItem, TextColumn } from '@suite-components/Settings';
@@ -60,7 +61,6 @@ export const FirmwareVersion = ({ isDeviceLocked }: FirmwareVersionProps) => {
     const { goto } = useActions({
         goto: routerActions.goto,
     });
-    const analytics = useAnalytics();
     const { anchorRef, shouldHighlight } = useAnchor(SettingsAnchor.FirmwareVersion);
 
     if (!device?.features) {

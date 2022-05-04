@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { analytics } from '@trezor/analytics';
 
 import { variables } from '@trezor/components';
 import { resolveStaticPath } from '@trezor/utils';
-import { useAnalytics } from '@suite-hooks';
 import { useGuide } from '@guide-hooks';
 
 const Wrapper = styled.button<{ isGuideOpen?: boolean; isModalOpen?: boolean }>`
@@ -33,7 +33,6 @@ const Wrapper = styled.button<{ isGuideOpen?: boolean; isModalOpen?: boolean }>`
 
 export const GuideButton = () => {
     const { openGuide, isGuideOpen, isModalOpen } = useGuide();
-    const analytics = useAnalytics();
 
     const handleButtonClick = () => {
         openGuide();

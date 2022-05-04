@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
+import { analytics } from '@trezor/analytics';
 
 import { Translation } from '@suite-components';
 import { isTranslationMode, getOsLocale } from '@suite-utils/l10n';
-import { useActions, useAnalytics, useSelector, useTranslation } from '@suite-hooks';
+import { useActions, useSelector, useTranslation } from '@suite-hooks';
 import LANGUAGES, { Locale, LocaleInfo } from '@suite-config/languages';
 import * as suiteActions from '@suite-actions/suiteActions';
 import * as languageActions from '@settings-actions/languageActions';
@@ -43,7 +44,6 @@ const useLanguageOptions = () => {
 };
 
 export const Language = () => {
-    const analytics = useAnalytics();
     const { language, autodetectLanguage } = useSelector(state => ({
         language: state.suite.settings.language,
         autodetectLanguage: state.suite.settings.autodetect.language,

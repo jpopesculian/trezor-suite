@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { darken } from 'polished';
+import { analytics } from '@trezor/analytics';
 
-import { useActions, useSelector, useAnalytics } from '@suite-hooks';
+import { useActions, useSelector } from '@suite-hooks';
 import * as guideActions from '@suite-actions/guideActions';
 import { variables } from '@trezor/components';
 import { Translation } from '@suite-components';
@@ -47,8 +48,6 @@ export const HeaderBreadcrumb = () => {
         indexNode: state.guide.indexNode,
         currentNode: state.guide.currentNode,
     }));
-
-    const analytics = useAnalytics();
 
     const { setView, openNode } = useActions({
         setView: guideActions.setView,

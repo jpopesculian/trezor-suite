@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { analytics } from '@trezor/analytics';
 
 import { Translation } from '@suite-components';
 import {
@@ -8,7 +9,7 @@ import {
     SectionItem,
     TextColumn,
 } from '@suite-components/Settings';
-import { useDevice, useAnalytics, useActions } from '@suite-hooks';
+import { useDevice, useActions } from '@suite-hooks';
 import * as deviceSettingsActions from '@settings-actions/deviceSettingsActions';
 import { MAX_LABEL_LENGTH } from '@suite-constants/device';
 import { useAnchor } from '@suite-hooks/useAnchor';
@@ -23,7 +24,6 @@ export const DeviceLabel = ({ isDeviceLocked }: DeviceLabelProps) => {
     const { applySettings } = useActions({
         applySettings: deviceSettingsActions.applySettings,
     });
-    const analytics = useAnalytics();
     const { anchorRef, shouldHighlight } = useAnchor(SettingsAnchor.DeviceLabel);
 
     const [label, setLabel] = useState('');

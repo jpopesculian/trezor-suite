@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react';
+import { analytics } from '@trezor/analytics';
+
 import { Button, Tooltip } from '@trezor/components';
 import { Account } from '@wallet-types';
 import { Translation } from '@suite-components';
-import { useAnalytics, useAccountSearch } from '@suite-hooks';
+import { useAccountSearch } from '@suite-hooks';
 
 const verifyAvailibility = ({
     emptyAccounts,
@@ -31,7 +33,6 @@ interface ButtonProps {
 }
 
 const AddButton = ({ account, isDisabled, onEnableAccount }: ButtonProps) => {
-    const analytics = useAnalytics();
     const { setCoinFilter, setSearchString, coinFilter } = useAccountSearch();
 
     const handleClick = useCallback(() => {

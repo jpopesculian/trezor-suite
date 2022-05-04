@@ -1,5 +1,6 @@
 import React, { createRef, useState } from 'react';
 import styled from 'styled-components';
+import { analytics } from '@trezor/analytics';
 
 import { Translation } from '@suite-components';
 import { ActionButton, ActionColumn, SectionItem, TextColumn } from '@suite-components/Settings';
@@ -51,7 +52,6 @@ export const Homescreen = ({ isDeviceLocked }: HomescreenProps) => {
         applySettings: deviceSettingsActions.applySettings,
         openModal: modalActions.openModal,
     });
-    const analytics = useAnalytics();
     const fileInputElement = createRef<HTMLInputElement>();
     const { anchorRef, shouldHighlight } = useAnchor(SettingsAnchor.Homescreen);
 

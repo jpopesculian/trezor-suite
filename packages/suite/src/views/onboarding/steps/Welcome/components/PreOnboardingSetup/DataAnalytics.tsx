@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { analytics } from '@trezor/analytics';
+
 import { H1, Switch, variables } from '@trezor/components';
-import { useAnalytics, useOnboarding, useSelector } from '@suite-hooks';
+import { useOnboarding, useSelector } from '@suite-hooks';
 import { CollapsibleBox } from '@suite-components';
 import { Translation } from '@suite-components/Translation';
 import TrezorLink from '@suite-components/TrezorLink'; // Separate import because of circular dep problem. Error: Cannot create styled-component for component: undefined
@@ -86,18 +88,17 @@ const collectedData = [
 ];
 
 const DataAnalytics = () => {
-    const { enable, dispose, enabled } = useAnalytics();
     const { goToSubStep, rerun } = useOnboarding();
     const { recovery } = useSelector(state => ({
         recovery: state.recovery,
     }));
-    const [analyticsEnabled, setAnalytics] = useState<boolean>(!!enabled);
+    const [analyticsEnabled, setAnalytics] = useState<boolean>(analytics.isEnabled());
 
     const confirmChoice = () => {
         if (analyticsEnabled) {
-            enable();
+            analytics.enable();
         } else {
-            dispose();
+            analytics.disable();
         }
     };
 
