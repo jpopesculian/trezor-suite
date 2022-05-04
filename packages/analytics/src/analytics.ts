@@ -40,20 +40,14 @@ export class Analytics {
 
     public isEnabled = () => this.enabled;
 
-    /**
-     * Reports event data to analytics.
-     *
-     * @param {Event} data
-     * @param {boolean} force log to analytics even its not enabled.
-     */
-    public report = (data: Event, force = false) => {
+    public report = (data: Event) => {
         // TODO: initiate in suite earlier, enable later
         if (!this.url || !this.instanceId || !this.sessionId || !this.commitId) {
             console.error('Unable to report. Analytics is not initialized');
             return;
         }
 
-        if (!this.enabled && !force) {
+        if (!this.enabled) {
             return;
         }
 
