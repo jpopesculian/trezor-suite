@@ -14,13 +14,11 @@ const ModalContext = createContext<ModalContextData>({
     modalTarget: null,
 });
 
-const useModalDisabled = () => useContext(ModalContext).isDisabled;
-
 export const useModalTarget = () => useContext(ModalContext).modalTarget?.current ?? null;
 
 export const ModalContextProvider = ({ isDisabled, children }: ModalContextProviderProps) => {
     const target = useRef<HTMLDivElement>(null);
-    const disabled = useModalDisabled() || isDisabled;
+    const disabled = useContext(ModalContext).isDisabled || isDisabled;
     return (
         <ModalContext.Provider
             value={{
