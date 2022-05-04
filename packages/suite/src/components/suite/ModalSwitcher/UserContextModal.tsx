@@ -34,7 +34,7 @@ import type { ReduxModalProps } from './types';
 /** Modals opened as result of user action */
 export const UserContextModal = ({
     payload,
-    render,
+    renderer,
 }: ReduxModalProps<typeof MODAL.CONTEXT_USER>) => {
     const { onCancel } = useActions({ onCancel: onCancelAction });
 
@@ -113,7 +113,7 @@ export const UserContextModal = ({
         case 'import-transaction':
             return <ImportTransaction {...payload} onCancel={onCancel} />;
         case 'pin-mismatch':
-            return <PinMismatch render={render} />;
+            return <PinMismatch renderer={renderer} />;
         case 'log':
             return <Log onCancel={onCancel} />;
         case 'metadata-provider':

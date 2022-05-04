@@ -16,7 +16,7 @@ export type ReduxModalProps<
         typeof MODAL.CONTEXT_NONE
     >,
 > = Extract<AppState['modal'], { context: T }> & {
-    render?: ModalProps['render'];
+    renderer?: ModalProps['renderer'];
 };
 
 export type Route = NonNullable<AppState['router']['route']>;

@@ -10,7 +10,7 @@ import type { ReduxModalProps } from './types';
 /** Modals requested from `trezor-connect` */
 export const DeviceConfirmationModal = ({
     windowType,
-    render,
+    renderer,
 }: ReduxModalProps<typeof MODAL.CONTEXT_DEVICE_CONFIRMATION>) => {
     const actions = useActions({
         onReceiveConfirmation,
@@ -23,7 +23,7 @@ export const DeviceConfirmationModal = ({
                 <ConfirmNoBackup
                     onReceiveConfirmation={actions.onReceiveConfirmation}
                     onCreateBackup={() => actions.goto('settings-device')}
-                    render={render}
+                    renderer={renderer}
                 />
             );
         default:

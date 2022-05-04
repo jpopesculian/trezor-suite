@@ -13,7 +13,7 @@ import { useLayoutSize } from '@suite-hooks/useLayoutSize';
 import { useModalTarget } from '@suite-support/ModalContext';
 
 export type ModalProps = TrezorModalProps & {
-    render?: ComponentType<TrezorModalProps>;
+    renderer?: ComponentType<TrezorModalProps>;
 };
 
 const DefaultRenderer = ({
@@ -66,7 +66,7 @@ const DefaultRenderer = ({
     return ReactDOM.createPortal(modal, modalTarget);
 };
 
-export const Modal = ({ render: View = DefaultRenderer, ...props }: ModalProps) => (
+export const Modal = ({ renderer: View = DefaultRenderer, ...props }: ModalProps) => (
     <View {...props} />
 );
 

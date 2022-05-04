@@ -252,7 +252,7 @@ export const Recovery = ({ onCancel }: ForegroundAppProps) => {
                                 <Translation id="TR_ALL_THE_WORDS" />
                             </StyledP>
                         )}
-                        <ReduxModal {...modal} render={RawRenderer} />
+                        <ReduxModal {...modal} renderer={RawRenderer} />
                     </>
                 ) : (
                     <Loading />

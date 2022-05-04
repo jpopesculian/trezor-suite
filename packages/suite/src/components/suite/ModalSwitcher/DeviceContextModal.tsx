@@ -21,7 +21,7 @@ import type { ReduxModalProps } from './types';
 /** Modals requested by Device from `trezor-connect` */
 export const DeviceContextModal = ({
     windowType,
-    render,
+    renderer,
 }: ReduxModalProps<typeof MODAL.CONTEXT_DEVICE>) => {
     const device = useSelector(state => state.suite.device);
     const actions = useActions({ onPinCancel });
@@ -30,21 +30,21 @@ export const DeviceContextModal = ({
     switch (windowType) {
         // T1 firmware
         case UI.REQUEST_PIN:
-            return <Pin device={device} onCancel={actions.onPinCancel} render={render} />;
+            return <Pin device={device} onCancel={actions.onPinCancel} renderer={renderer} />;
         // T1 firmware
         case UI.INVALID_PIN:
-            return <PinInvalid device={device} render={render} />;
+            return <PinInvalid device={device} renderer={renderer} />;
 
         // Passphrase on host
         case UI.REQUEST_PASSPHRASE:
             return <Passphrase device={device} />;
 
         case 'WordRequestType_Plain':
-            return <Word render={render} />;
+            return <Word renderer={renderer} />;
         case 'WordRequestType_Matrix6':
-            return <WordAdvanced count={6} render={render} />;
+            return <WordAdvanced count={6} renderer={renderer} />;
         case 'WordRequestType_Matrix9':
-            return <WordAdvanced count={9} render={render} />;
+            return <WordAdvanced count={9} renderer={renderer} />;
         case 'ButtonRequest_PassphraseType':
             return <PassphraseSource device={device} />;
         // TT firmware
@@ -62,10 +62,10 @@ export const DeviceContextModal = ({
             if (device.processMode === 'sign-tx') {
                 return <ReviewTransaction type="sign-transaction" />;
             }
-            return <ConfirmAction device={device} render={render} />;
+            return <ConfirmAction device={device} renderer={renderer} />;
         }
         case 'ButtonRequest_FirmwareCheck':
-            return <ConfirmFingerPrint device={device} render={render} />;
+            return <ConfirmFingerPrint device={device} renderer={renderer} />;
         // Generic Button requests
         // todo: consider fallback (if windowType.contains('ButtonRequest')). but add also possibility to blacklist some buttonRequests
         case 'ButtonRequest_Warning':
@@ -80,7 +80,7 @@ export const DeviceContextModal = ({
         case 'ButtonRequest_UnknownDerivationPath':
         case 'ButtonRequest_FirmwareUpdate':
         case 'ButtonRequest_PinEntry':
-            return <ConfirmAction device={device} render={render} />;
+            return <ConfirmAction device={device} renderer={renderer} />;
         default:
             return null;
     }
