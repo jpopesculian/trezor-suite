@@ -83,8 +83,8 @@ export const enable = (): AnalyticsAction => {
 };
 
 export const disable = (): AnalyticsAction => {
+    analytics.report({ type: 'analytics/dispose' });
     analytics.disable();
-    analytics.report({ type: 'analytics/dispose' }, true);
     allowSentryReport(false);
 
     return {
