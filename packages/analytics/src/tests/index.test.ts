@@ -48,4 +48,3 @@ describe('Analytics', () => {
         expect(global.fetch).toHaveBeenCalledTimes(2);
     });
 });
-*/
