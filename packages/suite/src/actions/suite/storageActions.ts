@@ -1,3 +1,4 @@
+import { mergeObject } from '@trezor/utils';
 import { db } from '@suite/storage';
 import { getAccountKey } from '@wallet-utils/accountUtils';
 import * as notificationActions from '@suite-actions/notificationActions';
