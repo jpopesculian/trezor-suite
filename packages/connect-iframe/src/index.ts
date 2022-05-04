@@ -87,12 +87,10 @@ const handleMessage = (event: PostMessageEvent) => {
         const method = _core.getCurrentMethod()[0];
         // eslint-disable-next-line no-use-before-define
         postMessage(
-            // REF-TODO:
-            // @ts-ignore
             createPopupMessage(POPUP.HANDSHAKE, {
                 settings: DataManager.getSettings(),
                 transport: _core.getTransportInfo(),
-                method: method ? method.info : null,
+                method: method ? method.info : undefined,
             }),
         );
     }
