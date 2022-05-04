@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Translation } from '@suite-components';
-import { resolveStaticPath } from '@suite-utils/build';
+import { resolveStaticPath } from '@trezor/utils';
 import { withInvityLayout, WithInvityLayoutProps } from '@wallet-components';
 import { useInvityNavigation } from '@wallet-hooks/useInvityNavigation';
 import { Button } from '@trezor/components';

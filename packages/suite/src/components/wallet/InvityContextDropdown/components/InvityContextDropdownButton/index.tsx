@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 import { Button, variables } from '@trezor/components';
 import { Translation } from '@suite-components';
-import { resolveStaticPath } from '@suite/utils/suite/build';
+import { resolveStaticPath } from '@trezor/utils';
 import type { ExtendedMessageDescriptor } from '@suite/types/suite';
 
 // TODO: extract somewhere?

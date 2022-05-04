@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { resolveStaticPath } from '@suite-utils/build';
+import { resolveStaticPath } from '@trezor/utils';
 import { Loader } from '@trezor/components';
 import { useSelector } from '@suite-hooks';
 import { ExtendedMessageDescriptor } from '@suite-types';

@@ -4,7 +4,7 @@ import { withCoinmarketSavingsLoaded, WithSelectedAccountLoadedProps } from '@wa
 import { useInvityNavigation } from '@wallet-hooks/useInvityNavigation';
 import styled from 'styled-components';
 import { Button } from '@trezor/components';
-import { resolveStaticPath } from '@suite-utils/build';
+import { resolveStaticPath } from '@trezor/utils';
 import { Translation } from '@suite-components/Translation';
 
 const Wrapper = styled.div`

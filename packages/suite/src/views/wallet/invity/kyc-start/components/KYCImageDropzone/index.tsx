@@ -4,7 +4,7 @@ import { Control, Controller, FieldError } from 'react-hook-form';
 import styled from 'styled-components';
 import { Translation } from '@suite-components';
 import { colors, variables, Icon } from '@trezor/components';
-import { resolveStaticPath } from '@suite-utils/build';
+import { resolveStaticPath } from '@trezor/utils';
 
 interface DropzoneProps {
     isError: boolean;

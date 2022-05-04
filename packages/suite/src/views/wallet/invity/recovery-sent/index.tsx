@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { InvityLayout, withSelectedAccountLoaded } from '@wallet-components';
 import { InvityLayoutProps } from '@suite/components/wallet/InvityLayout';
 import { Translation } from '@suite-components';
-import { resolveStaticPath } from '@suite/utils/suite/build';
+import { resolveStaticPath } from '@trezor/utils';
 
 const Wrapper = styled.div`
     display: flex;

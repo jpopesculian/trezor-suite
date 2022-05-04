@@ -4,7 +4,7 @@ import parseISO from 'date-fns/parseISO';
 import format from 'date-fns/format';
 import styled from 'styled-components';
 import { Button, Icon } from '@trezor/components';
-import { resolveStaticPath } from '@suite-utils/build';
+import { resolveStaticPath } from '@trezor/utils';
 import { Translation } from '@suite-components';
 import type { SavingsTradePlannedPayment } from '@suite-services/invityAPI';
 import type { ExtendedMessageDescriptor } from '@suite/types/suite';

@@ -5,7 +5,7 @@ import { Translation } from '@suite-components';
 import { withInvityLayout } from '@suite/components/wallet';
 import { useSavingsKYCFailed } from '@suite/hooks/wallet/coinmarket/savings/useSavingsKYCFailed';
 import { Button, Link } from '@trezor/components';
-import { resolveStaticPath } from '@suite-utils/build';
+import { resolveStaticPath } from '@trezor/utils';
 
 const Wrapper = styled.div`
     display: flex;

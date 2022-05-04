@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Translation } from '@suite-components';
-import { resolveStaticPath } from '@suite-utils/build';
+import { resolveStaticPath } from '@trezor/utils';
 import { InvityAuthenticationContext } from '@wallet-components/InvityAuthentication';
 import invityAPI from '@suite-services/invityAPI';
 import { withInvityLayout } from '@wallet-components';

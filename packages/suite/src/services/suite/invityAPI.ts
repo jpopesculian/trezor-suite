@@ -38,7 +38,7 @@ import type {
     InvityServerEnvironment,
     InvityServers,
 } from '@wallet-types/invity';
-import { resolveStaticPath } from '@suite-utils/build';
+import { resolveStaticPath } from '@trezor/utils';
 import { getPrefixedURL } from '@suite-utils/router';
 import type { SuiteThemeColors } from '@trezor/components';
 import { InvityAuthenticationThemeKey } from '@wallet-constants/coinmarket/metadata';
