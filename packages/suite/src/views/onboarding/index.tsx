@@ -13,23 +13,10 @@ import SetPinStep from '@onboarding-views/steps/Pin';
 import BasicSettingsStep from '@onboarding-views/steps/BasicSettings';
 import FinalStep from '@onboarding-views/steps/Final';
 import UnexpectedState from '@onboarding-views/unexpected-states';
-import { useOnboarding, useSelector } from '@suite-hooks';
+import { useOnboarding, useFilteredModal } from '@suite-hooks';
 import { MODAL } from '@suite-actions/constants';
 import * as STEP from '@onboarding-constants/steps';
 import type { PrerequisiteType } from '@suite-types';
-
-const useModalAllowed = () => {
-    const modal = useSelector(state => state.modal);
-
-    if (modal.context !== MODAL.CONTEXT_USER) {
-        return null;
-    }
-    if (modal.payload.type !== 'advanced-coin-settings' && modal.payload.type !== 'disable-tor') {
-        return null;
-    }
-
-    return modal;
-};
 
 type OnboardingProps = {
     prerequisite?: PrerequisiteType;
@@ -75,7 +62,10 @@ const Onboarding = ({ prerequisite }: OnboardingProps) => {
         }
     }, [activeStepId]);
 
-    const allowedModal = useModalAllowed();
+    const allowedModal = useFilteredModal(
+        [MODAL.CONTEXT_USER],
+        ['advanced-coin-settings', 'disable-tor'],
+    );
 
     return (
         <LayoutComponent>
