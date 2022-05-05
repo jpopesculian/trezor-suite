@@ -24,7 +24,6 @@ export const UI_RESPONSE = {
 
 export interface UiResponsePopupHandshake {
     type: typeof POPUP.HANDSHAKE;
-    // REF-TODO: breaking change optional payload
     payload?: typeof undefined;
 }
 

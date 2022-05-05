@@ -9,3 +9,5 @@ export const TYPES = {
     tezos: 'Tezos',
     binance: 'Binance',
 } as const;
+
+export type NetworkType = keyof typeof TYPES;

@@ -33,7 +33,6 @@ export interface Unsuccessful {
 
 export interface Success<T> {
     success: true;
-    id: number; // REF-TODO, this should be a part of CoreMessage, not response
     payload: T;
 }
 
