@@ -100,13 +100,11 @@ export class DeviceList extends EventEmitter {
 
             this.fetchController = getAbortController();
             const { signal } = this.fetchController;
-            // REF-TODO: @trezor/transport related
-            // @ts-expect-error
+            // @ts-expect-error TODO: https://github.com/trezor/trezor-suite/issues/5332
             const fetchWithSignal = (args, options = {}) => fetch(args, { ...options, signal });
             BridgeV2.setFetch(fetchWithSignal, typeof window === 'undefined');
 
-            // REF-TODO: @trezor/transport related
-            // @ts-expect-error
+            // @ts-expect-error TODO: https://github.com/trezor/trezor-suite/issues/5332
             transports.push(bridge);
         }
 
@@ -130,7 +128,7 @@ export class DeviceList extends EventEmitter {
 
             const { activeName } = transport;
             if (activeName === 'LowlevelTransportWithSharedConnections') {
-                // @ts-expect-error
+                // @ts-expect-error TODO: https://github.com/trezor/trezor-suite/issues/5332
                 this.transportPlugin = transport.activeTransport.plugin;
             }
 

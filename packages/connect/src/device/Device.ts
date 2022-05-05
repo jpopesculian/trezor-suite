@@ -166,8 +166,7 @@ export class Device extends EventEmitter {
             const sessionID = await this.transport.acquire(
                 {
                     path: this.originalDescriptor.path,
-                    // REF-TODO: might need refactoring
-                    // @ts-expect-error
+                    // @ts-expect-error TODO: https://github.com/trezor/trezor-suite/issues/5332
                     previous: this.originalDescriptor.session,
                 },
                 false,
