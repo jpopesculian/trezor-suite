@@ -1,4 +1,4 @@
-// REF-TODO: shared util with desktop-api
+// TODO: https://github.com/trezor/trezor-suite/issues/4786
 export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
     k: infer I,
 ) => void
