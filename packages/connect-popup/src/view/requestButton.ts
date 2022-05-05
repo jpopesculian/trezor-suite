@@ -41,7 +41,7 @@ const showAddressValidation = (payload: UiRequestButton['payload']) => {
         el.style.left = '-9999px';
         dataContainer.appendChild(el);
         el.select();
-        document.execCommand('copy'); // REF-TODO: deprecated
+        document.execCommand('copy');
         dataContainer.removeChild(el);
 
         showToast();
