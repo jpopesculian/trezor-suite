@@ -20,7 +20,6 @@ import type { FirmwareRange } from '../types';
 
 export type Payload<M> = Extract<CallMethodPayload, { method: M }> & { override?: boolean };
 export type MethodReturnType<M extends CallMethodPayload['method']> = CallMethodResponse<M>;
-type NetworkKeys = keyof typeof NETWORK.TYPES;
 
 export abstract class AbstractMethod<Name extends CallMethodPayload['method'], Params = undefined> {
     responseID: number;
@@ -70,7 +69,7 @@ export abstract class AbstractMethod<Name extends CallMethodPayload['method'], P
 
     requireDeviceMode: string[];
 
-    network: typeof NETWORK.TYPES[NetworkKeys];
+    network: NETWORK.NetworkType;
 
     useCardanoDerivation: boolean;
 
@@ -122,10 +121,10 @@ export abstract class AbstractMethod<Name extends CallMethodPayload['method'], P
             this.allowDeviceMode = [UI.SEEDLESS];
         }
         // Determine the type based on the method name
-        this.network = 'Bitcoin';
-        (Object.keys(NETWORK.TYPES) as NetworkKeys[]).forEach(t => {
-            if (this.name.startsWith(t)) {
-                this.network = NETWORK.TYPES[t];
+        this.network = 'bitcoin';
+        (Object.keys(NETWORK.TYPES) as NETWORK.NetworkType[]).forEach(key => {
+            if (this.name.startsWith(key)) {
+                this.network = key;
             }
         });
         // default values for all methods
