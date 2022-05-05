@@ -44,7 +44,7 @@ export const parseCapabilities = (features?: Features): PROTO.Capability[] => {
     if (!features.capabilities || !features.capabilities.length) {
         return features.major_version === 1 ? DEFAULT_CAPABILITIES_T1 : DEFAULT_CAPABILITIES_TT;
     }
-    // REF-TODO:
+    // TODO: https://github.com/trezor/trezor-suite/issues/5299
     // @trezor/transport is not parsing enums in arrays correctly. this part of code can be removed
     // once this is fixed in @trezor/transport
     // regular capabilities
