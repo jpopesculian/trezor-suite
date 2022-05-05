@@ -7,7 +7,7 @@ import { VERSION, DEFAULT_DOMAIN } from './version';
  * It could be changed by passing values into TrezorConnect.init(...) method
  */
 
-// REF-TODO: move chrome checks to connect-web
+// TODO: move chrome checks to connect-web, https://github.com/trezor/trezor-suite/issues/5319
 declare const chrome: any;
 
 export const DEFAULT_PRIORITY = 2;
@@ -26,7 +26,7 @@ const initialSettings: ConnectSettings = {
     webusb: true,
     pendingTransportEvent: true,
     supportedBrowser:
-        typeof navigator !== 'undefined' ? !/Trident|MSIE|Edge/.test(navigator.userAgent) : true, // REF-TODO: remove from settings
+        typeof navigator !== 'undefined' ? !/Trident|MSIE|Edge/.test(navigator.userAgent) : true, // TODO: https://github.com/trezor/trezor-suite/issues/5319
     // manifest: null,
     env: 'web',
     lazyLoad: false,
@@ -56,7 +56,7 @@ export const getEnv = () => {
     if (typeof navigator !== 'undefined') {
         if (
             typeof navigator.product === 'string' &&
-            navigator.product.toLowerCase() === 'reactnative' // REF-TODO: deprecated
+            navigator.product.toLowerCase() === 'reactnative'
         ) {
             return 'react-native';
         }
@@ -78,7 +78,6 @@ export const getEnv = () => {
 // see: https://github.com/trezor/trezord-go/blob/05991cea5900d18bcc6ece5ae5e319d138fc5551/server/api/api.go#L229
 // Its pointless to allow `trezor-connect` endpoints { connectSrc } for domains other than listed below
 // `trezord` will block communication anyway
-// REF-TODO: move to @trezor/utils
 export const corsValidator = (url?: string) => {
     if (typeof url !== 'string') return;
     if (url.match(/^https:\/\/([A-Za-z0-9\-_]+\.)*trezor\.io\//)) return url;
