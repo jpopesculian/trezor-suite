@@ -2,7 +2,6 @@ import * as Methods from '../api';
 import { ERRORS } from '../constants';
 import { MethodCallMessage } from '../events';
 
-// REF-TODO abstract method constructor params
 export const getMethod = (message: MethodCallMessage & { id?: number }) => {
     const { method } = message.payload;
     if (typeof method !== 'string') {
