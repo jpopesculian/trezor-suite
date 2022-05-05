@@ -26,14 +26,6 @@ const config: webpack.Configuration = {
     resolve: prod.resolve,
     performance: prod.performance,
 
-    // REF-TODO: check inline build in browser, like connect-explorer or codepen
-    // resolve @trezor/connect imports from "src" instead of "lib"
-    // new webpack.NormalModuleReplacementPlugin(/@trezor\/connect/, resource => {
-    //     resource.request = resource.request
-    //         .replace('@trezor/connect/lib', TREZOR_CONNECT_SRC)
-    //         .replace('@trezor/connect', `${TREZOR_CONNECT_SRC}/index-browser.ts`);
-    // }),
-
     optimization: {
         minimizer: [
             new TerserPlugin({
