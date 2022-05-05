@@ -1,6 +1,6 @@
 // origin: https://github.com/trezor/connect/blob/develop/src/js/utils/deferred.js
 
-// REF-TODO: unify deferred with @trezor/utils
+// TODO: https://github.com/trezor/trezor-suite/issues/4786
 export type Deferred<T, I = any, D = any> = {
     id?: I;
     data?: D;
