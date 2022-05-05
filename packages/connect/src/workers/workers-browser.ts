@@ -7,11 +7,9 @@ import TrezorLink from '@trezor/transport';
 
 const WebUsbPlugin = () =>
     new TrezorLink.Lowlevel(
-        // REF-TODO ts-ignore
-        // @ts-expect-error
+        // @ts-expect-error TODO: https://github.com/trezor/trezor-suite/issues/5332
         new TrezorLink.WebUsb(),
-        // REF-TODO ts-ignore
-        // @ts-expect-error
+        // @ts-expect-error TODO: https://github.com/trezor/trezor-suite/issues/5332
         typeof SharedWorker !== 'undefined' ? () => new SharedConnectionWorker() : null,
     );
 
