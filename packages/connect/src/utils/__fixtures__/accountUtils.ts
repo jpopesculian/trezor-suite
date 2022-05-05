@@ -11,14 +11,7 @@ import {
 
 parseCoinsJson(coinsJSON);
 
-// REF-TODO: sharing types used only in tests?
-type Fixtures<TestedMethod extends (...args: any) => any> = {
-    description: string;
-    input: Parameters<TestedMethod>;
-    output: ReturnType<TestedMethod>;
-}[];
-
-export const getAccountLabelFixtures: Fixtures<typeof getAccountLabel> = [
+export const getAccountLabelFixtures: TestFixtures<typeof getAccountLabel> = [
     {
         description: 'Legacy',
         input: [[44], getBitcoinNetwork('btc')!],
@@ -26,7 +19,7 @@ export const getAccountLabelFixtures: Fixtures<typeof getAccountLabel> = [
     },
 ];
 
-export const isUtxoBasedFixtures: Fixtures<typeof isUtxoBased> = [
+export const isUtxoBasedFixtures: TestFixtures<typeof isUtxoBased> = [
     {
         description: 'btc',
         input: [getBitcoinNetwork('btc')!],

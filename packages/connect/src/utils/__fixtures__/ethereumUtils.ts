@@ -6,14 +6,7 @@ import { parseCoinsJson, getEthereumNetwork } from '../../data/coinInfo';
 
 parseCoinsJson(coinsJSON);
 
-// REF-TODO: sharing types used only in tests?
-type Fixtures<TestedMethod extends (...args: any) => any> = {
-    description: string;
-    input: Parameters<TestedMethod>;
-    output: ReturnType<TestedMethod>;
-}[];
-
-export const getNetworkLabelFixtures: Fixtures<typeof getNetworkLabel> = [
+export const getNetworkLabelFixtures: TestFixtures<typeof getNetworkLabel> = [
     {
         description: 'eth',
         input: ['Export #NETWORK address', getEthereumNetwork('eth')],
