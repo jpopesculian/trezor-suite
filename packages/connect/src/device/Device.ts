@@ -119,7 +119,7 @@ export class Device extends EventEmitter {
 
     unavailableCapabilities: UnavailableCapabilities = {};
 
-    networkTypeState: string[] = [];
+    networkTypeState: NETWORK.NetworkType[] = [];
 
     constructor(transport: Transport, descriptor: DeviceDescriptor) {
         super();
@@ -411,7 +411,7 @@ export class Device extends EventEmitter {
         return this.externalState[this.instance];
     }
 
-    async validateState(networkType?: string) {
+    async validateState(networkType?: NETWORK.NetworkType) {
         if (!this.features) return;
         const altMode = this._altModeChange(networkType);
         const expectedState = altMode ? undefined : this.getExternalState();
@@ -742,7 +742,7 @@ export class Device extends EventEmitter {
         return this.networkTypeState[this.instance];
     }
 
-    _setNetworkTypeState(networkType?: string) {
+    _setNetworkTypeState(networkType?: NETWORK.NetworkType) {
         if (typeof networkType !== 'string') {
             delete this.networkTypeState[this.instance];
         } else {
@@ -750,7 +750,7 @@ export class Device extends EventEmitter {
         }
     }
 
-    _altModeChange(networkType?: string) {
+    _altModeChange(networkType?: NETWORK.NetworkType) {
         const prevAltMode = this._isAltModeNetworkType(this._getNetworkTypeState());
         const nextAltMode = this._isAltModeNetworkType(networkType);
 
@@ -761,10 +761,8 @@ export class Device extends EventEmitter {
     }
 
     // Is it a network type that requires the device to operate in an alternative state (ie: Cardano)
-    _isAltModeNetworkType(networkType?: string) {
-        // REF-TODO
-        // @ts-expect-error
-        return [NETWORK.TYPES.cardano].includes(networkType);
+    _isAltModeNetworkType(networkType?: keyof typeof NETWORK.TYPES) {
+        return networkType ? ['cardano'].includes(networkType) : false;
     }
 
     //
