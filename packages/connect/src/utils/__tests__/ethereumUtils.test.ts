@@ -1,7 +1,13 @@
-// @ts-expect-error
 import { getNetworkLabel } from '../ethereumUtils';
 
-// REF-TODO
+import * as fixtures from '../__fixtures__/ethereumUtils';
+
 describe('utils/ethereumUtils', () => {
-    it.skip('getNetworkLabel', () => {});
+    describe('getNetworkLabel', () => {
+        fixtures.getNetworkLabelFixtures.forEach(f => {
+            it(f.description, () => {
+                expect(getNetworkLabel(...f.input)).toEqual(f.output);
+            });
+        });
+    });
 });

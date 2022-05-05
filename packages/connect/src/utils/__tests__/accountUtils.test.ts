@@ -1,15 +1,25 @@
-// REF-TODO
-// @ts-expect-error
-import {
-    getAccountAddressN,
-    getAccountLabel,
-    getPublicKeyLabel,
-    isUtxoBased,
-} from '../accountUtils';
+import { getAccountLabel, isUtxoBased } from '../accountUtils';
+
+import * as fixtures from '../__fixtures__/accountUtils';
 
 describe('utils/accountUtils', () => {
-    test.skip('getAccountAddressN', () => {});
-    test.skip('getAccountLabel', () => {});
-    test.skip('getPublicKeyLabel', () => {});
-    test.skip('isUtxoBased', () => {});
+    describe('getAccountLabel', () => {
+        fixtures.getAccountLabelFixtures.forEach(f => {
+            it(f.description, () => {
+                expect(getAccountLabel(...f.input)).toEqual(f.output);
+            });
+        });
+    });
+    describe('isUtxoBased', () => {
+        fixtures.isUtxoBasedFixtures.forEach(f => {
+            it(f.description, () => {
+                expect(isUtxoBased(...f.input)).toEqual(f.output);
+            });
+        });
+    });
+
+    // todo:
+    describe.skip('getAccountAddressN', () => {});
+    describe.skip('getAccountLabel', () => {});
+    describe.skip('getPublicKeyLabel', () => {});
 });

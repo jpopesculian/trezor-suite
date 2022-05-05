@@ -1,21 +1,21 @@
-// @ts-expect-error
-import {
-    formatAmount,
-    formatAmountOld,
-    btckb2satoshib,
-    formatTime,
-    hasHexPrefix,
-    messageToHex,
-    stripHexPrefix,
-} from '../formatUtils';
+import { formatAmount } from '../formatUtils';
 
-// REF-TODO
+import * as fixtures from '../__fixtures__/formatUtils';
+
 describe('utils/formatUtils', () => {
-    it.skip('formatAmount', () => {});
-    it.skip('formatAmountOld', () => {});
-    it.skip('btckb2satoshib', () => {});
-    it.skip('formatTime', () => {});
-    it.skip('hasHexPrefix', () => {});
-    it.skip('messageToHex', () => {});
-    it.skip('stripHexPrefix', () => {});
+    describe('formatAmount', () => {
+        fixtures.formatAmountFixtures.forEach(f => {
+            it(f.description, () => {
+                expect(formatAmount(...f.input)).toEqual(f.output);
+            });
+        });
+    });
+
+    // todo:
+    describe.skip('formatAmountOld', () => {});
+    describe.skip('btckb2satoshib', () => {});
+    describe.skip('formatTime', () => {});
+    describe.skip('hasHexPrefix', () => {});
+    describe.skip('messageToHex', () => {});
+    describe.skip('stripHexPrefix', () => {});
 });
